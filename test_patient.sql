@@ -1,0 +1,10 @@
+INSERT INTO test.patient (id, adresse, bornDate, email, firstName, lastName, maidenName, note, secuNumber, telephone) VALUES (1, null, '2017-05-17', null, 'P0', 'P0', 'P0', null, 0, '0');
+INSERT INTO test.patient (id, adresse, bornDate, email, firstName, lastName, maidenName, note, secuNumber, telephone) VALUES (2, null, '2017-05-17', null, 'P1', 'P1', 'P1', null, 0, '8');
+INSERT INTO test.patient (id, adresse, bornDate, email, firstName, lastName, maidenName, note, secuNumber, telephone) VALUES (3, null, '2017-05-17', null, 'P2', 'P2', 'P2', null, 0, '16');
+INSERT INTO test.patient (id, adresse, bornDate, email, firstName, lastName, maidenName, note, secuNumber, telephone) VALUES (4, null, '2017-05-17', null, 'P3', 'P3', 'P3', null, 0, '24');
+INSERT INTO test.patient (id, adresse, bornDate, email, firstName, lastName, maidenName, note, secuNumber, telephone) VALUES (5, null, '2017-05-17', null, 'P4', 'P4', 'P4', null, 0, '32');
+INSERT INTO test.patient (id, adresse, bornDate, email, firstName, lastName, maidenName, note, secuNumber, telephone) VALUES (6, null, '2017-05-17', null, 'P5', 'P5', 'P5', null, 0, '40');
+INSERT INTO test.patient (id, adresse, bornDate, email, firstName, lastName, maidenName, note, secuNumber, telephone) VALUES (7, null, '2017-05-17', null, 'P6', 'P6', 'P6', null, 0, '48');
+INSERT INTO test.patient (id, adresse, bornDate, email, firstName, lastName, maidenName, note, secuNumber, telephone) VALUES (8, null, '2017-05-17', null, 'P7', 'P7', 'P7', null, 0, '56');
+INSERT INTO test.patient (id, adresse, bornDate, email, firstName, lastName, maidenName, note, secuNumber, telephone) VALUES (9, null, '2017-05-17', null, 'P8', 'P8', 'P8', null, 0, '64');
+INSERT INTO test.patient (id, adresse, bornDate, email, firstName, lastName, maidenName, note, secuNumber, telephone) VALUES (10, null, '2017-05-17', null, 'P9', 'P9', 'P9', null, 0, '72');

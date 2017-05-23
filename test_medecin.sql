@@ -1,0 +1,10 @@
+INSERT INTO test.medecin (id, email, firstName, lastName, telephone) VALUES (30, null, 'M9', 'M9', '99999999');
+INSERT INTO test.medecin (id, email, firstName, lastName, telephone) VALUES (29, null, 'M8', 'M8', '88888888');
+INSERT INTO test.medecin (id, email, firstName, lastName, telephone) VALUES (28, null, 'M7', 'M7', '77777777');
+INSERT INTO test.medecin (id, email, firstName, lastName, telephone) VALUES (27, null, 'M6', 'M6', '66666666');
+INSERT INTO test.medecin (id, email, firstName, lastName, telephone) VALUES (26, null, 'M5', 'M5', '55555555');
+INSERT INTO test.medecin (id, email, firstName, lastName, telephone) VALUES (25, null, 'M4', 'M4', '44444444');
+INSERT INTO test.medecin (id, email, firstName, lastName, telephone) VALUES (24, null, 'M3', 'M3', '33333333');
+INSERT INTO test.medecin (id, email, firstName, lastName, telephone) VALUES (23, null, 'M2', 'M2', '22222222');
+INSERT INTO test.medecin (id, email, firstName, lastName, telephone) VALUES (22, null, 'M1', 'M1', '11111111');
+INSERT INTO test.medecin (id, email, firstName, lastName, telephone) VALUES (21, null, 'M0', 'M0', '00000000');

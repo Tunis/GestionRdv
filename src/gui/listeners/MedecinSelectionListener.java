@@ -1,0 +1,34 @@
+package gui.listeners;
+
+import gui.RootCtrl;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import metier.hibernate.DataMedecin;
+import metier.hibernate.DataPatient;
+import models.Medecin;
+import models.Patient;
+
+public class MedecinSelectionListener implements ChangeListener<Medecin> {
+
+    private DataMedecin dm;
+    private RootCtrl rc;
+
+    public MedecinSelectionListener(RootCtrl rootCtrl, DataMedecin dm) {
+        rc = rootCtrl;
+        this.dm = dm;
+    }
+
+    @Override
+    public void changed(ObservableValue<? extends Medecin> observable, Medecin oldValue, Medecin newValue) {
+        if(newValue != null) {
+            rc.getmSelected().setText(newValue.getFirstName());
+            newValue.setEmail("modifUi@fred.fred");
+            dm.saveEntity(newValue);
+        }else{
+            rc.getmSelected().setText("");
+        }
+        if(oldValue != null) {
+            dm.saveEntity(oldValue);
+        }
+    }
+}
