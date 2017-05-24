@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<TabPane prefHeight="450.0" prefWidth="650.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.RootLayoutCtrl">
+   <tabs>
+      <Tab fx:id="TabHome" closable="false" text="Home" />
+      <Tab fx:id="TabPlanning" closable="false" text="Planning" />
+      <Tab fx:id="TabPaiement" closable="false" text="Paiement" />
+      <Tab fx:id="TabTP" closable="false" text="Tiers-Payants" />
+      <Tab fx:id="TabCompta" closable="false" text="Comptabilité" />
+   </tabs>
+</TabPane>

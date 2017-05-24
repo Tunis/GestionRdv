@@ -18,6 +18,6 @@
         <mapping class="models.Cheque"/>
         <mapping class="models.Tp"/>
         <mapping class="models.Paiement"/>
-        <mapping class="models.ComptaJournaliere"/>
+        <mapping class="models.compta.ComptaJournaliere"/>
     </session-factory>
 </hibernate-configuration>

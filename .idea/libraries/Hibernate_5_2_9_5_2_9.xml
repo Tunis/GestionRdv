@@ -14,8 +14,6 @@
       <root url="jar://$PROJECT_DIR$/lib/hibernate-core-5.2.9.Final.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://$USER_HOME$/.ideaLibSources/hibernate-core-5.2.9.Final-sources.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>

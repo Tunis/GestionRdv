@@ -1,33 +1,28 @@
 package metier.hibernate;
 
-import metier.hibernate.interfaces.DataGettersSetters;
+import metier.hibernate.interfaces.IDataGetAll;
 import models.Patient;
 
-public class DataPatient extends Data<Patient> implements DataGettersSetters<Patient>{
+import java.util.List;
+
+public class DataPatient extends Data<Patient> implements IDataGetAll<Patient>{
 
     public DataPatient(){
         super();
-        entities.setAll(session.createQuery("from Patient ").getResultList());
-    }
-
-    @Override
-    public Patient getEntity(long id) {
-        try {
-            return session.find(Patient.class, id);
-        }catch (Exception ignored){
-            return null;
-        }
     }
 
     @Override
     public boolean deleteEntity(Patient p) {
         try {
             if(session.find(Patient.class, p.getId()) != null) {
-                session.remove(p);
+                return super.deleteEntity(p);
             }
-            return true;
-        }catch (Exception ignored){
-            return false;
-        }
+        }catch (Exception ignored){}
+        return false;
+    }
+
+    @Override
+    public List<Patient> getEntities() {
+        return session.createQuery("from Patient ", Patient.class).getResultList();
     }
 }
