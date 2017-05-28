@@ -1,6 +1,7 @@
 package models;
 
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -30,7 +31,6 @@ public class PresentDay {
     public long getId() {
         return id;
     }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -39,7 +39,6 @@ public class PresentDay {
     public LocalDate getPresent() {
         return date;
     }
-
     public void setPresent(LocalDate present) {
         this.date = present;
     }
@@ -47,14 +46,13 @@ public class PresentDay {
     @ManyToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     public Medecin getMedecin(){return medecin;}
-
     public void setMedecin(Medecin medecin){ this.medecin = medecin;}
 
     @OneToMany(mappedBy = "presentDay", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.EXTRA)
     public List<Rdv> getRdvList() {
         return rdvList;
     }
-
     public void setRdvList(List<Rdv> rdvList) {
         this.rdvList = rdvList;
     }

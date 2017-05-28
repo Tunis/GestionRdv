@@ -1,4 +1,4 @@
-package metier.interfaces;
+package metier.hibernate.data.interfaces;
 
 import models.Medecin;
 import models.Paiement;

@@ -34,7 +34,6 @@ public class Rdv {
     public long getId() {
         return id;
     }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -44,7 +43,6 @@ public class Rdv {
     public String getCotation() {
         return cotation;
     }
-
     public void setCotation(String cotation) {
         this.cotation = cotation;
     }
@@ -54,7 +52,6 @@ public class Rdv {
     public Duration getDuration() {
         return duration;
     }
-
     public void setDuration(Duration duration) {
         this.duration = duration;
     }
@@ -63,7 +60,6 @@ public class Rdv {
     public TypeRdv getTypeRdv() {
         return typeRdv;
     }
-
     public void setTypeRdv(TypeRdv typeRdv) {
         this.typeRdv = typeRdv;
     }
@@ -72,7 +68,6 @@ public class Rdv {
     public LocalTime getTime() {
         return time;
     }
-
     public void setTime(LocalTime time) {
         this.time = time;
     }
@@ -82,7 +77,6 @@ public class Rdv {
     public Patient getPatient() {
         return patient;
     }
-
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
@@ -92,7 +86,6 @@ public class Rdv {
     public PresentDay getPresentDay() {
         return presentDay;
     }
-
     public void setPresentDay(PresentDay presentDay) {
         this.presentDay = presentDay;
     }
@@ -101,7 +94,6 @@ public class Rdv {
     public Paiement getPaiement() {
         return paiement;
     }
-
     public void setPaiement(Paiement paiement) {
         this.paiement = paiement;
     }

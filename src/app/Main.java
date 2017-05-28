@@ -13,6 +13,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import metier.action.MPatient;
+import metier.hibernate.DataBase;
 
 import java.io.IOException;
 
@@ -22,6 +24,8 @@ public class Main extends Application {
 	private Stage primaryStage;
 	private TabPane rootLayout;
 	private BorderPane planningContainer;
+
+	private MPatient mPatient = new MPatient();
 	
 	//Construct
 	public Main(){
@@ -41,6 +45,8 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Gestion RdV");
+
+        this.primaryStage.setOnCloseRequest(event -> DataBase.close());
         
         initRootLayout();
 	}
@@ -81,7 +87,7 @@ public class Main extends Application {
             
             //Give the controller access to the main app.
             TabHomeCtrl controller = loader.getController();
-            controller.setMainApp(this);
+            controller.setMainApp(this, mPatient);
          
             return borderPane;
         } catch (IOException e) {
@@ -168,7 +174,7 @@ public class Main extends Application {
 
             // Set the person into the controller.
             CreatePatientDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage);
+            controller.setDialogStage(dialogStage, mPatient);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
