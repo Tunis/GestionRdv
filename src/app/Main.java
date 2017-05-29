@@ -16,8 +16,11 @@ import javafx.stage.Stage;
 import metier.action.MMedecin;
 import metier.action.MPatient;
 import metier.hibernate.DataBase;
+import models.Adresse;
+import models.Patient;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 
 public class Main extends Application {
@@ -214,7 +217,7 @@ public class Main extends Application {
     }
     
     //Show "Profil" Dialog
-    public void showProfilPatientDialog(){
+    public void showProfilPatientDialog(Patient p){
     	try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
@@ -229,10 +232,10 @@ public class Main extends Application {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
-            // Set the person into the controller.
+            // Set the patient into the controller.
             ProfilPatientDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage);
-
+            controller.setDialogStage(dialogStage, mPatient, p);
+            
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
             

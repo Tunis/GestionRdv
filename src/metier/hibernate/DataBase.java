@@ -14,7 +14,7 @@ public class DataBase {
         try {
             Configuration configuration = new Configuration();
             configuration.configure();
-            configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/test?serverTimezone=" + TimeZone.getDefault().getID());
+            configuration.setProperty("hibernate.connection.url", "jdbc:mysql://172.17.220.241:3306/test?serverTimezone=" + TimeZone.getDefault().getID());
 
             sessionFactory = configuration.buildSessionFactory();
         } catch (Throwable ex) {
