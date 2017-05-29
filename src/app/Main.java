@@ -18,6 +18,7 @@ import metier.action.MPatient;
 import metier.hibernate.DataBase;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 
 public class Main extends Application {
@@ -28,6 +29,10 @@ public class Main extends Application {
 
 	private MPatient mPatient = new MPatient();
     private MMedecin mMedecin = new MMedecin();
+    private LocalDate date;
+
+    public LocalDate getDate(){ return date;}
+    public void changeDate(LocalDate date){ this.date = date;}
 	
 	//Construct
 	public Main(){
@@ -146,7 +151,7 @@ public class Main extends Application {
             
             //Give the controller access to the main app.
             TabPlanningContainerCtrl controller = loader.getController();
-            controller.setMainApp(this);
+            controller.setMainApp(this, mMedecin);
             
             
             return planningContainer;

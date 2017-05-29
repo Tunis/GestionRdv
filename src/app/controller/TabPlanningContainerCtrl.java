@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import metier.action.MMedecin;
+import models.Medecin;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.IOException;
@@ -20,8 +22,6 @@ public class TabPlanningContainerCtrl {
 	private BorderPane planningJour;
 	private BorderPane planningMois;
 	private BorderPane planningSemaine;
-	
-	private ObservableList<String> comboBox = FXCollections.observableArrayList();
 	
 	@FXML
 	private Button btnPlanningPrevious;
@@ -40,10 +40,11 @@ public class TabPlanningContainerCtrl {
 	private Label labelTypePlanning;
 	
 	@FXML
-	private ComboBox<String> listMedecin;
+	private ComboBox<Medecin> listMedecin;
 	@FXML
 	private ToggleGroup planningToggleGroup;
-    
+	private MMedecin mMedecin;
+
 	public TabPlanningContainerCtrl(){
 		//Load all view
         planningJour = setController("view/PlanningJourOverview.fxml");
@@ -51,15 +52,15 @@ public class TabPlanningContainerCtrl {
         planningSemaine = setController("view/PlanningSemaineOverview.fxml");
 	}
 	
-	public void setMainApp(Main mainApp) {
+	public void setMainApp(Main mainApp, MMedecin mMedecin) {
         this.mainApp = mainApp;
+        this.mMedecin = mMedecin;
         
         //planning first view
         mainApp.getPlanningContainer().setCenter(planningMois);
-        
-        comboBox.addAll("Fred", "Fred2", "Totoro", "Nausicaa");
-	    listMedecin.setItems(comboBox);
-	    TextFields.bindAutoCompletion(listMedecin.getEditor(), listMedecin.getItems());
+
+	    listMedecin.itemsProperty().bind(mMedecin.listProperty());
+	    //TextFields.bindAutoCompletion(listMedecin.getEditor(), listMedecin.getItems());
 	    
 	    //Disable ToggleButton when clikOn
 	    planningToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
@@ -108,6 +109,16 @@ public class TabPlanningContainerCtrl {
 				break;
 			default:
 				break;
+		}
+	}
+
+	private void changeData(){
+		if (mainApp.getPlanningContainer().getCenter().equals(planningMois)) {
+
+		}else if(mainApp.getPlanningContainer().getCenter().equals(planningSemaine)){
+
+		}else{
+
 		}
 	}
 }
