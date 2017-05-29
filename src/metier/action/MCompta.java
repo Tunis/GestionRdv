@@ -1,14 +1,16 @@
 package metier.action;
 
-import metier.interfaces.IDbCompta;
+import metier.hibernate.data.interfaces.IDbCompta;
 import models.Medecin;
 import models.compta.ComptaJournaliere;
 
+import java.time.LocalDate;
 import java.time.Month;
+import java.time.Year;
 import java.util.List;
 
 public class MCompta implements IDbCompta{
-
+// TODO: 25/05/2017 a faire
 
 	@Override
 	public boolean save(ComptaJournaliere entity) {
@@ -16,7 +18,12 @@ public class MCompta implements IDbCompta{
 	}
 
 	@Override
-	public List<ComptaJournaliere> getComptaOfMonth(Medecin medecin, Month month) {
+	public List<ComptaJournaliere> getComptaOfMonth(Medecin medecin, Month month, Year year) {
+		return null;
+	}
+
+	@Override
+	public ComptaJournaliere getComptaOfDay(Medecin medecin, LocalDate date) {
 		return null;
 	}
 

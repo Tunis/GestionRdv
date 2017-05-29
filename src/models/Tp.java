@@ -18,7 +18,6 @@ public class Tp {
     public long getId() {
         return id;
     }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -27,7 +26,6 @@ public class Tp {
     public float getMontant() {
         return montant;
     }
-
     public void setMontant(float montant) {
         this.montant = montant;
     }
@@ -36,7 +34,6 @@ public class Tp {
     public boolean isPayer() {
         return payer;
     }
-
     public void setPayer(boolean payer) {
         this.payer = payer;
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import app.controller.test.ComboBoxAC?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -15,7 +16,7 @@
       <VBox BorderPane.alignment="CENTER">
          <children>
             <Label text="Patients" />
-            <ComboBox fx:id="cbBoxPatient" editable="true" prefWidth="150.0" />
+            <ComboBoxAC fx:id="cbBoxPatient" editable="true" prefWidth="150.0" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Button fx:id="btnCreatePatient" mnemonicParsing="false" onAction="#handleNewPatient" text="Creer" />
@@ -23,6 +24,7 @@
                   <Button fx:id="btnDeletePatient" mnemonicParsing="false" onAction="#handleDeletePatient" text="Supprimer" />
                </children>
             </HBox>
+            <Label fx:id="testPatient"/>
          </children>
          <BorderPane.margin>
             <Insets right="50.0" />

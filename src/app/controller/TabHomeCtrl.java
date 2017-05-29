@@ -1,22 +1,30 @@
 package app.controller;
 
 import app.Main;
-import app.models.Medecin;
-import app.models.Patient;
+import app.controller.test.ComboBoxAC;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import metier.action.MMedecin;
+import metier.action.MPatient;
+import models.Medecin;
+import models.Patient;
+
 
 public class TabHomeCtrl {
 	
 	private Main mainApp;
+	private MPatient mPatient;
+	private MMedecin mMedecin;
 	
 	@FXML
     private ComboBox<Medecin> cbBoxMedecin;
 	@FXML
-    private ComboBox<Patient> cbBoxPatient;
+    private ComboBoxAC<Patient> cbBoxPatient;
 	
 	//Button
     //-----------------------------------
@@ -32,11 +40,32 @@ public class TabHomeCtrl {
     private Button btnUpdateMedecin;
     @FXML
     private Button btnDeleteMedecin;
-    
-	//Main m�thods
+    @FXML
+    private Label testPatient;
+
+    //Main m�thods
     //-----------------------------------
-    public void setMainApp(Main mainApp) {
+    public void setMainApp(Main mainApp, MPatient mPatient) {
+        this.mPatient = mPatient;
         this.mainApp = mainApp;
+
+
+        // pour l'autocompletion :
+        cbBoxPatient.setMetier(mPatient);
+        cbBoxPatient.itemsProperty().bind(mPatient.listProperty());
+        //TextFields.bindAutoCompletion(cbBoxPatient.getEditor(), cbBoxPatient.getItems());
+        cbBoxPatient.itemsProperty().get().addListener(new ListChangeListener<Patient>() {
+            @Override
+            public void onChanged(Change<? extends Patient> c) {
+                // mise a jour de l'autocompletion a chaque changement de la liste.
+                //AutoCompletionBinding<Patient> ac = TextFields.bindAutoCompletion(cbBoxPatient.getEditor(), cbBoxPatient.getItems());
+            }
+        });
+
+        cbBoxPatient.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            // test pour voir la selection
+            testPatient.setText((newValue == null ? "" : newValue.toString()));
+        });
     }
     
     //Calls when buttons are click
@@ -86,6 +115,4 @@ public class TabHomeCtrl {
 
         alert.showAndWait();
     }
-    
-	
 }

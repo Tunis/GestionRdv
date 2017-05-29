@@ -43,6 +43,7 @@ public class Adresse {
         this.rue = rue;
     }
 
+    @Basic
     public int getCodePostal() {
         return codePostal;
     }
@@ -51,6 +52,7 @@ public class Adresse {
         this.codePostal = codePostal;
     }
 
+    @Basic
     public String getVille() {
         return ville;
     }

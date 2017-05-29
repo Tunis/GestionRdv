@@ -16,6 +16,7 @@ public class Paiement {
     private boolean payer;
     private LocalDate date;
     private Rdv rdv;
+    private Medecin medecin;
 
     public Paiement() {}
 
@@ -34,7 +35,6 @@ public class Paiement {
     public long getId() {
         return id;
     }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -43,7 +43,6 @@ public class Paiement {
     public float getEspece() {
         return espece;
     }
-
     public void setEspece(float espece) {
         this.espece = espece;
     }
@@ -53,7 +52,6 @@ public class Paiement {
     public Cheque getCheque() {
         return cheque;
     }
-
     public void setCheque(Cheque cheque) {
         this.cheque = cheque;
     }
@@ -62,7 +60,6 @@ public class Paiement {
     public float getCb() {
         return cb;
     }
-
     public void setCb(float cb) {
         this.cb = cb;
     }
@@ -72,7 +69,6 @@ public class Paiement {
     public Tp getTp() {
         return tp;
     }
-
     public void setTp(Tp tp) {
         this.tp = tp;
     }
@@ -81,7 +77,6 @@ public class Paiement {
     public float getPrix() {
         return prix;
     }
-
     public void setPrix(float prix) {
         this.prix = prix;
     }
@@ -90,7 +85,6 @@ public class Paiement {
     public boolean isPayer() {
         return payer;
     }
-
     public void setPayer(boolean payer) {
         this.payer = payer;
     }
@@ -99,7 +93,6 @@ public class Paiement {
     public LocalDate getDate() {
         return date;
     }
-
     public void setDate(LocalDate date) {
         this.date = date;
     }
@@ -108,8 +101,15 @@ public class Paiement {
     public Rdv getRdv() {
         return rdv;
     }
-
     public void setRdv(Rdv rdv) {
         this.rdv = rdv;
+    }
+
+    @OneToOne
+    private Medecin getMedecin() {
+        return medecin;
+    }
+    private void setMedecin(Medecin medecin) {
+        this.medecin = medecin;
     }
 }

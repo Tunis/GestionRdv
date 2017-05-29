@@ -1,8 +1,11 @@
 package metier.hibernate;
 
+import metier.hibernate.data.exceptions.DbDeleteException;
+import metier.hibernate.data.exceptions.DbSaveException;
+import metier.hibernate.data.interfaces.IDb;
 import org.hibernate.Session;
 
-public abstract class Data<T> {
+public abstract class Data<T> implements IDb<T> {
 
     protected Session session;
 
@@ -10,26 +13,16 @@ public abstract class Data<T> {
         session = DataBase.getSession();
     }
 
-    public boolean saveEntity(T e){
-        try {
-            // TODO: 24/05/2017 verifier le retour de save si echoue
-            session.beginTransaction();
-            session.save(e);
-            session.getTransaction().commit();
-
-            return true;
-        }catch (Exception ignored){
-            return false;
-        }
+    @Override
+    public void save(T e) throws DbSaveException{
+        // TODO: 24/05/2017 verifier le retour de save si echoue
+        session.beginTransaction();
+        session.save(e);
+        session.getTransaction().commit();
     }
 
-    public boolean deleteEntity(T e){
-        try {
-            // TODO: 24/05/2017 verifier le retour de remove si echoue.
-            session.remove(e);
-            return true;
-        }catch (Exception ignored){
-            return false;
-        }
+    protected void delete(T e) throws DbDeleteException {
+        // TODO: 24/05/2017 verifier le retour de remove si echoue.
+        session.remove(e);
     }
 }

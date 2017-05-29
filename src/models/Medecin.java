@@ -1,7 +1,9 @@
 package models;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +77,7 @@ public class Medecin {
     }
 
     @OneToMany(mappedBy = "medecin", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.EXTRA)
     public List<PresentDay> getPlannings() {
         return plannings;
     }

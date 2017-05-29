@@ -3,7 +3,7 @@ package gui.listeners;
 import gui.RootCtrl;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import metier.hibernate.DataPatient;
+import metier.hibernate.data.DataPatient;
 import models.Patient;
 
 public class PatientSelectionListener implements ChangeListener<Patient> {
@@ -21,12 +21,12 @@ public class PatientSelectionListener implements ChangeListener<Patient> {
         if(newValue != null) {
             rc.getpSelected().setText(newValue.getFirstName());
             newValue.setEmail("modifUi@fred.fred");
-            dp.saveEntity(newValue);
+            //dp.saveEntity(newValue);
         }else{
             rc.getpSelected().setText("");
         }
         if(oldValue != null) {
-            dp.saveEntity(oldValue);
+            //dp.saveEntity(oldValue);
         }
     }
 }

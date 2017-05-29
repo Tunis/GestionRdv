@@ -70,7 +70,6 @@ public class ComptaJournaliere extends Compta{
     public void setNbCS(int nbCS) {
         this.nbCS = nbCS;
     }
-    public void addCS(){nbCS++;}
 
     @Basic
     public int getNbC2() {
@@ -79,7 +78,6 @@ public class ComptaJournaliere extends Compta{
     public void setNbC2(int nbC2) {
         this.nbC2 = nbC2;
     }
-    public void addC2(){nbC2++;}
 
     @Basic
     public int getNbDIU() {
@@ -88,7 +86,6 @@ public class ComptaJournaliere extends Compta{
     public void setNbDIU(int nbDIU) {
         this.nbDIU = nbDIU;
     }
-    public void addDIU(){nbDIU++;}
 
     @Basic
     public int getNbEcho() {
@@ -97,7 +94,6 @@ public class ComptaJournaliere extends Compta{
     public void setNbEcho(int nbEcho) {
         this.nbEcho = nbEcho;
     }
-    public void addEcho(){nbEcho++;}
 
     @Basic
     public float getTp() {
@@ -105,9 +101,6 @@ public class ComptaJournaliere extends Compta{
     }
     public void setTp(float Tp) {
         this.Tp = Tp;
-    }
-    public void addTp(float tp){
-        this.Tp += tp;
     }
 
     @Basic
@@ -117,9 +110,6 @@ public class ComptaJournaliere extends Compta{
     public void setImpayer(float impayer) {
         this.impayer = impayer;
     }
-    public void addImpayer(float impayer) {
-        this.impayer += impayer;
-    }
 
     @Basic
     public float getCheque() {
@@ -127,9 +117,6 @@ public class ComptaJournaliere extends Compta{
     }
     public void setCheque(float cheque) {
         this.cheque = cheque;
-    }
-    public void addCheque(float cheque) {
-        this.cheque += cheque;
     }
 
     @Basic
@@ -139,9 +126,6 @@ public class ComptaJournaliere extends Compta{
     public void setEspece(float espece) {
         this.espece = espece;
     }
-    public void addEspece(float espece) {
-        this.espece += espece;
-    }
 
     @Basic
     public float getCB() {
@@ -149,9 +133,6 @@ public class ComptaJournaliere extends Compta{
     }
     public void setCB(float CB) {
         this.CB = CB;
-    }
-    public void addCB(float cb) {
-        this.CB += cb;
     }
 
     @Basic

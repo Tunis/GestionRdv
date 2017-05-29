@@ -1,13 +1,17 @@
 package models;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "Patient")
-public class Patient {
+public class Patient implements Serializable{
 
     private long id;
     private String lastName;
@@ -41,7 +45,6 @@ public class Patient {
     public long getId() {
         return id;
     }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -50,7 +53,6 @@ public class Patient {
     public String getLastName() {
         return lastName;
     }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -60,7 +62,6 @@ public class Patient {
     public String getFirstName() {
         return firstName;
     }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -70,7 +71,6 @@ public class Patient {
     public String getMaidenName() {
         return maidenName;
     }
-
     public void setMaidenName(String maidenName) {
         this.maidenName = maidenName;
     }
@@ -79,7 +79,6 @@ public class Patient {
     public String getTelephone() {
         return telephone;
     }
-
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
@@ -88,7 +87,6 @@ public class Patient {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -97,7 +95,6 @@ public class Patient {
     public String getNote() {
         return note;
     }
-
     public void setNote(String note) {
         this.note = note;
     }
@@ -106,7 +103,6 @@ public class Patient {
     public int getSecuNumber() {
         return secuNumber;
     }
-
     public void setSecuNumber(int secuNumber) {
         this.secuNumber = secuNumber;
     }
@@ -116,22 +112,26 @@ public class Patient {
     public LocalDate getBornDate() {
         return bornDate;
     }
-
     public void setBornDate(LocalDate bornDate) {
         this.bornDate = bornDate;
     }
 
     @OneToOne(cascade = CascadeType.ALL)
     public Adresse getAdresse(){return adresse;}
-
     public void setAdresse(Adresse adresse){ this.adresse = adresse;}
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.EXTRA)
     public List<Rdv> getRdvList() {
         return rdvList;
     }
-
     public void setRdvList(List<Rdv> rdvList) {
         this.rdvList = rdvList;
+    }
+
+
+    @Override
+    public String toString() {
+        return lastName + " " + firstName + " " + maidenName;
     }
 }
