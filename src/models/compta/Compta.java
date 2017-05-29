@@ -2,6 +2,7 @@ package models.compta;
 
 
 import models.Medecin;
+import models.TypeRdv;
 
 public abstract class Compta {
 
@@ -18,6 +19,11 @@ public abstract class Compta {
     protected float CB;
     protected float retrait;
 
+    protected int nbTp;
+    protected int nbCB;
+    protected int nbEspece;
+    protected int nbCheque;
+
     public Compta() {}
 
     public Compta(Medecin medecin) {
@@ -30,8 +36,8 @@ public abstract class Compta {
     public void setNbCS(int nbCS) {
         this.nbCS = nbCS;
     }
-    public void addCS() {
-        nbCS++;
+    public void addCS(int nb) {
+        nbCS += nb;
     }
 
     public int getNbC2() {
@@ -40,8 +46,8 @@ public abstract class Compta {
     public void setNbC2(int nbC2) {
         this.nbC2 = nbC2;
     }
-    public void addC2() {
-        nbC2++;
+    public void addC2(int nb) {
+        nbC2 += nb;
     }
 
     public int getNbDIU() {
@@ -50,8 +56,8 @@ public abstract class Compta {
     public void setNbDIU(int nbDIU) {
         this.nbDIU = nbDIU;
     }
-    public void addDIU() {
-        nbDIU++;
+    public void addDIU(int nb) {
+        nbDIU += nb;
     }
 
     public int getNbEcho() {
@@ -60,8 +66,8 @@ public abstract class Compta {
     public void setNbEcho(int nbEcho) {
         this.nbEcho = nbEcho;
     }
-    public void addEcho() {
-        nbEcho++;
+    public void addEcho(int nb) {
+        nbEcho += nb;
     }
 
     public float getTp() {
@@ -123,4 +129,36 @@ public abstract class Compta {
     public void addRetrait(float retrait) {
         this.retrait += retrait;
     }
+
+    public int getNbTp() {
+        return nbTp;
+    }
+    public void setNbTp(int nbTp) {
+        this.nbTp = nbTp;
+    }
+    public void addNbTp(int nb){nbTp += nb;}
+
+    public int getNbCB() {
+        return nbCB;
+    }
+    public void setNbCB(int nbCB) {
+        this.nbCB = nbCB;
+    }
+    public void addNbCB(int nb){nbCB += nb;}
+
+    public int getNbEspece() {
+        return nbEspece;
+    }
+    public void setNbEspece(int nbEspece) {
+        this.nbEspece = nbEspece;
+    }
+    public void addNbEspece(int nb){nbEspece += nb;}
+
+    public int getNbCheque() {
+        return nbCheque;
+    }
+    public void setNbCheque(int nbCheque) {
+        this.nbCheque = nbCheque;
+    }
+    public void addNbCheque(int nb){nbCheque += nb;}
 }

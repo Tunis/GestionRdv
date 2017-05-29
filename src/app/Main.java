@@ -10,6 +10,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -54,8 +55,19 @@ public class Main extends Application {
         this.primaryStage.setTitle("Gestion RdV");
 
         this.primaryStage.setOnCloseRequest(event -> DataBase.close());
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("view/dialog/CreateRdvDialog.fxml"));
+        AnchorPane test = null;
+        try {
+            test = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(test != null)
+        this.primaryStage.setScene(new Scene(test));
+        this.primaryStage.show();
         
-        initRootLayout();
+        //initRootLayout();
 	}
 	
 	//Initializes the root layout.

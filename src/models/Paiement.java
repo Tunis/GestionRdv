@@ -1,11 +1,12 @@
 package models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "Paiement")
-public class Paiement {
+public class Paiement implements Serializable, Comparable<Paiement>{
 
     private long id;
     private float espece;
@@ -20,7 +21,7 @@ public class Paiement {
 
     public Paiement() {}
 
-    public Paiement(float espece, Cheque cheque, float cb, Tp tp, float prix, boolean payer, LocalDate date) {
+    public Paiement(float espece, Cheque cheque, float cb, Tp tp, float prix, boolean payer, LocalDate date, Medecin medecin, Rdv rdv) {
         this.espece = espece;
         this.cheque = cheque;
         this.cb = cb;
@@ -28,6 +29,8 @@ public class Paiement {
         this.prix = prix;
         this.payer = payer;
         this.date = date;
+        this.rdv = rdv;
+        this.medecin = medecin;
     }
 
     @Id
@@ -111,5 +114,44 @@ public class Paiement {
     }
     private void setMedecin(Medecin medecin) {
         this.medecin = medecin;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Paiement paiement = (Paiement) o;
+
+        if (Float.compare(paiement.getEspece(), getEspece()) != 0) return false;
+        if (Float.compare(paiement.getCb(), getCb()) != 0) return false;
+        if (Float.compare(paiement.getPrix(), getPrix()) != 0) return false;
+        if (isPayer() != paiement.isPayer()) return false;
+        if (getCheque() != null ? !getCheque().equals(paiement.getCheque()) : paiement.getCheque() != null)
+            return false;
+        if (getTp() != null ? !getTp().equals(paiement.getTp()) : paiement.getTp() != null) return false;
+        if (!getDate().equals(paiement.getDate())) return false;
+        if (!getRdv().equals(paiement.getRdv())) return false;
+        return getMedecin().equals(paiement.getMedecin());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (getEspece() != +0.0f ? Float.floatToIntBits(getEspece()) : 0);
+        result = 31 * result + (getCheque() != null ? getCheque().hashCode() : 0);
+        result = 31 * result + (getCb() != +0.0f ? Float.floatToIntBits(getCb()) : 0);
+        result = 31 * result + (getTp() != null ? getTp().hashCode() : 0);
+        result = 31 * result + (getPrix() != +0.0f ? Float.floatToIntBits(getPrix()) : 0);
+        result = 31 * result + (isPayer() ? 1 : 0);
+        result = 31 * result + getDate().hashCode();
+        result = 31 * result + getRdv().hashCode();
+        result = 31 * result + getMedecin().hashCode();
+        return result;
+    }
+
+
+    @Override
+    public int compareTo(Paiement o) {
+        return rdv.getPresentDay().getPresent().compareTo(o.getRdv().getPresentDay().getPresent());
     }
 }

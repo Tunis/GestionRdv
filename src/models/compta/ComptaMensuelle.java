@@ -9,13 +9,37 @@ import java.util.List;
 public class ComptaMensuelle extends Compta {
 
     private Month month;
-    private Year year;
+    private int year;
     private List<ComptaJournaliere> comptaJournaliere;
 
-    public ComptaMensuelle(Medecin medecin, Month month, Year year) {
+    public ComptaMensuelle(Medecin medecin, Month month, int year) {
         super(medecin);
         this.month = month;
         this.year = year;
+    }
+
+    public Month getMonth() {
+        return month;
+    }
+
+    public void setMonth(Month month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public List<ComptaJournaliere> getComptaJournaliere() {
+        return comptaJournaliere;
+    }
+
+    public void setComptaJournaliere(List<ComptaJournaliere> comptaJournaliere) {
+        this.comptaJournaliere = comptaJournaliere;
     }
 
     protected void calculCompta() {

@@ -15,11 +15,11 @@ public class DataCompta extends Data<ComptaJournaliere> implements IDbCompta {
     public DataCompta() {super();}
 
     @Override
-    public List<ComptaJournaliere> getComptaOfMonth(Medecin medecin, Month month, Year year) {
+    public List<ComptaJournaliere> loadComptaOfMonth(Medecin medecin, Month month, int year) {
         return session.createQuery("from ComptaJournaliere where " +
                 "medecin = :medecin and " +
                 "MONTH(date) = :month and " +
-                "YEAR(date) = :year", ComptaJournaliere.class)
+                "YEAR(date) = :year ORDER BY date ASC", ComptaJournaliere.class)
                 .setParameter("medecin", medecin)
                 .setParameter("month", month)
                 .setParameter("year", year)

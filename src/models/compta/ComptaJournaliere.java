@@ -2,6 +2,7 @@ package models.compta;
 
 import models.Medecin;
 import models.Paiement;
+import models.TypeRdv;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,14 +14,15 @@ public class ComptaJournaliere extends Compta{
 
     protected long id;
     private LocalDate date;
-    private float soldePrecedent;
     private List<Paiement> paiementList;
+    private float soldePrecedent;
 
     public ComptaJournaliere(){}
 
-    public ComptaJournaliere(Medecin medecin, LocalDate date) {
+    public ComptaJournaliere(Medecin medecin, LocalDate date, float retrait) {
         super(medecin);
         this.date = date;
+        this.retrait = retrait;
     }
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -48,19 +50,11 @@ public class ComptaJournaliere extends Compta{
     }
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Paiement> getPaiementList() {
+    public List<Paiement> getPaiementList() {
         return paiementList;
     }
-    private void setPaiementList(List<Paiement> paiementList) {
+    public void setPaiementList(List<Paiement> paiementList) {
         this.paiementList = paiementList;
-    }
-
-    @Basic
-    public float getSoldePrecedent() {
-        return soldePrecedent;
-    }
-    public void setSoldePrecedent(float soldePrecedent) {
-        this.soldePrecedent = soldePrecedent;
     }
 
     @Basic
@@ -141,5 +135,62 @@ public class ComptaJournaliere extends Compta{
     }
     public void setRetrait(float retrait) {
         this.retrait = retrait;
+    }
+
+    @Basic
+    public int getNbTp() {
+        return nbTp;
+    }
+    public void setNbTp(int nbTp) {
+        this.nbTp = nbTp;
+    }
+    public void addNbTp(int nb){nbTp += nb;}
+
+    @Basic
+    public int getNbCB() {
+        return nbCB;
+    }
+    public void setNbCB(int nbCB) {
+        this.nbCB = nbCB;
+    }
+    public void addNbCB(int nb){nbCB += nb;}
+
+    @Basic
+    public int getNbEspece() {
+        return nbEspece;
+    }
+    public void setNbEspece(int nbEspece) {
+        this.nbEspece = nbEspece;
+    }
+    public void addNbEspece(int nb){nbEspece += nb;}
+
+    @Basic
+    public int getNbCheque() {
+        return nbCheque;
+    }
+    public void setNbCheque(int nbCheque) {
+        this.nbCheque = nbCheque;
+    }
+    public void addNbCheque(int nb){nbCheque += nb;}
+
+    @Basic
+    public float getSoldePrecedent() {
+        return soldePrecedent;
+    }
+    public void setSoldePrecedent(float soldePrecedent) {
+        this.soldePrecedent = soldePrecedent;
+    }
+
+    public void addTypeRdv(TypeRdv typeRdv){
+        switch (typeRdv){
+            case CS: addCS(1);
+                break;
+            case C2: addC2(1);
+                break;
+            case ECHO: addEcho(1);
+                break;
+            case DUI: addDIU(1);
+                break;
+        }
     }
 }
