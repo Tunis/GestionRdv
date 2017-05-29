@@ -11,8 +11,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import metier.action.MMedecin;
 import metier.action.MPatient;
+import metier.hibernate.data.exceptions.DbDeleteException;
 import models.Medecin;
 import models.Patient;
+
+import javax.sound.midi.Soundbank;
 
 
 public class TabHomeCtrl {
@@ -24,7 +27,7 @@ public class TabHomeCtrl {
 	@FXML
     private ComboBox<Medecin> cbBoxMedecin;
 	@FXML
-    private ComboBoxAC<Patient> cbBoxPatient;
+    private ComboBox<Patient> cbBoxPatient;
 	
 	//Button
     //-----------------------------------
@@ -45,13 +48,15 @@ public class TabHomeCtrl {
 
     //Main m�thods
     //-----------------------------------
-    public void setMainApp(Main mainApp, MPatient mPatient) {
+    public void setMainApp(Main mainApp, MPatient mPatient, MMedecin mMedecin) {
         this.mPatient = mPatient;
+        this.mMedecin = mMedecin;
         this.mainApp = mainApp;
 
+        cbBoxMedecin.itemsProperty().bind(mMedecin.listProperty());
 
         // pour l'autocompletion :
-        cbBoxPatient.setMetier(mPatient);
+        //cbBoxPatient.setMetier(mPatient);
         cbBoxPatient.itemsProperty().bind(mPatient.listProperty());
         //TextFields.bindAutoCompletion(cbBoxPatient.getEditor(), cbBoxPatient.getItems());
         cbBoxPatient.itemsProperty().get().addListener(new ListChangeListener<Patient>() {
@@ -62,10 +67,10 @@ public class TabHomeCtrl {
             }
         });
 
-        cbBoxPatient.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            // test pour voir la selection
-            testPatient.setText((newValue == null ? "" : newValue.toString()));
-        });
+//        cbBoxPatient.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+//            // test pour voir la selection
+//            testPatient.setText((newValue == null ? "" : newValue.toString()));
+//        });
     }
     
     //Calls when buttons are click
@@ -74,45 +79,54 @@ public class TabHomeCtrl {
     private void handleNewPatient() {
         mainApp.showCreatePatientDialog();
     }
-    
+
     @FXML
     private void handleUpdatePatient() {
     }
     
     @FXML
     private void handleDeletePatient() {
-    	cbBoxPatient.getSelectionModel().getSelectedItem();
-    	
-    	//TODO : Supprimer en base le patient
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.initOwner(mainApp.getPrimaryStage());
-        alert.setTitle("Maintenance");
-        alert.setHeaderText("Demande de Suppression du Patient");
-        alert.setContentText("SUPPRIME");
+        //Patient selectedItem = cbBoxPatient.getSelectionModel().getSelectedItem();
+        System.out.println("selected index :");
 
-        alert.showAndWait();
+        Patient patient = cbBoxPatient.getItems().get(cbBoxPatient.getSelectionModel().getSelectedIndex());
+
+        try {
+            mPatient.delete(patient);
+        } catch (DbDeleteException e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Maintenance");
+            alert.setHeaderText("Demande de Suppression du Patient");
+            alert.setContentText("erreur de suppression du patient");
+
+            alert.showAndWait();
+        }
+
     }
     
     @FXML
     private void handleNewMedecin() {
         mainApp.showCreateMedecinDialog();
     }
-    
+
     @FXML
     private void handleUpdateMedecin() {
     }
     
     @FXML
     private void handleDeleteMedecin() {
-    	cbBoxMedecin.getSelectionModel().getSelectedItem();
-    	
-    	//TODO : Supprimer en base le Medecin
-    	Alert alert = new Alert(AlertType.ERROR);
-        alert.initOwner(mainApp.getPrimaryStage());
-        alert.setTitle("Maintenance");
-        alert.setHeaderText("Demande de Suppression du Medecin");
-        alert.setContentText("SUPPRIME");
+        Medecin selectedItem = cbBoxMedecin.getItems().get(cbBoxMedecin.getSelectionModel().getSelectedIndex());
+        try{
+            mMedecin.delete(selectedItem);
+        } catch (DbDeleteException e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Maintenance");
+            alert.setHeaderText("Demande de Suppression du Medecin");
+            alert.setContentText("SUPPRIME");
 
-        alert.showAndWait();
+            alert.showAndWait();
+        }
     }
 }

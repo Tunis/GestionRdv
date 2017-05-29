@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Patient")
-public class Patient implements Serializable{
+public class Patient implements Serializable, Comparable<Patient>{
 
     private long id;
     private String lastName;
@@ -133,5 +133,45 @@ public class Patient implements Serializable{
     @Override
     public String toString() {
         return lastName + " " + firstName + " " + maidenName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Patient patient = (Patient) o;
+
+        if (getLastName() != null ? !getLastName().equals(patient.getLastName()) : patient.getLastName() != null)
+            return false;
+        if (!getFirstName().equals(patient.getFirstName())) return false;
+        if (!getMaidenName().equals(patient.getMaidenName())) return false;
+        return getBornDate().equals(patient.getBornDate());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getLastName() != null ? getLastName().hashCode() : 0;
+        result = 31 * result + getFirstName().hashCode();
+        result = 31 * result + getMaidenName().hashCode();
+        result = 31 * result + getBornDate().hashCode();
+        return result;
+    }
+
+    @Override
+    public int compareTo(Patient o) {
+        if(maidenName.compareTo(o.getMaidenName()) == 0){
+            if(firstName.compareTo(o.getFirstName()) == 0){
+                if((o.getLastName() != null && lastName != null) && lastName.compareTo(o.getLastName()) == 0){
+                    return o.getBornDate().compareTo(bornDate);
+                }else {
+                    if(o.getLastName() != null && lastName != null) return lastName.compareTo(o.getLastName());
+                    if(o.getLastName() == null && lastName == null) return 0;
+                    if(o.getLastName() == null) return 1;
+                    if(lastName == null) return -1;
+                    return 0;
+                }
+            }else return firstName.compareTo(o.getFirstName());
+        }else return maidenName.compareTo(o.getMaidenName());
     }
 }

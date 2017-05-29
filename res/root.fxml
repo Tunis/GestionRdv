@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.Button?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="421.0" prefWidth="538.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.RootCtrl">
    <children>
       <HBox alignment="TOP_CENTER" spacing="10.0">
@@ -23,6 +24,7 @@
                   <TextField fx:id="searchM" onKeyReleased="#search" />
                   <ListView fx:id="listMedecin" VBox.vgrow="ALWAYS" />
                   <Label fx:id="mSelected" text="Label" />
+                  <Button onAction="#test"/>
                </children>
             </VBox>
          </children>

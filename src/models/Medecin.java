@@ -4,11 +4,12 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Medecin {
+public class Medecin implements Serializable, Comparable<Medecin> {
 
     private long id;
     private String firstName;
@@ -84,5 +85,39 @@ public class Medecin {
 
     public void setPlannings(List<PresentDay> plannings) {
         this.plannings = plannings;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Medecin medecin = (Medecin) o;
+
+        if (!getFirstName().equals(medecin.getFirstName())) return false;
+        if (!getLastName().equals(medecin.getLastName())) return false;
+        if (!getTelephone().equals(medecin.getTelephone())) return false;
+        return getEmail() != null ? getEmail().equals(medecin.getEmail()) : medecin.getEmail() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getFirstName().hashCode();
+        result = 31 * result + getLastName().hashCode();
+        result = 31 * result + getTelephone().hashCode();
+        result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public int compareTo(Medecin o) {
+        return (firstName.compareTo(o.getFirstName()) == 0) ?
+                lastName.compareTo(o.getLastName()):
+                firstName.compareTo(o.getFirstName());
+    }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
     }
 }

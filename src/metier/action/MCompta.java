@@ -13,9 +13,7 @@ public class MCompta implements IDbCompta{
 // TODO: 25/05/2017 a faire
 
 	@Override
-	public boolean save(ComptaJournaliere entity) {
-		return false;
-	}
+	public void save(ComptaJournaliere entity) {}
 
 	@Override
 	public List<ComptaJournaliere> getComptaOfMonth(Medecin medecin, Month month, Year year) {

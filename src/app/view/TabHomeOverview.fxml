@@ -16,7 +16,7 @@
       <VBox BorderPane.alignment="CENTER">
          <children>
             <Label text="Patients" />
-            <ComboBoxAC fx:id="cbBoxPatient" editable="true" prefWidth="150.0" />
+            <ComboBox fx:id="cbBoxPatient" editable="true" prefWidth="150.0" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Button fx:id="btnCreatePatient" mnemonicParsing="false" onAction="#handleNewPatient" text="Creer" />

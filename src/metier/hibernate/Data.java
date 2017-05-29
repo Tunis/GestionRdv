@@ -16,13 +16,23 @@ public abstract class Data<T> implements IDb<T> {
     @Override
     public void save(T e) throws DbSaveException{
         // TODO: 24/05/2017 verifier le retour de save si echoue
-        session.beginTransaction();
-        session.save(e);
-        session.getTransaction().commit();
+        try {
+            session.beginTransaction();
+            session.save(e);
+            session.getTransaction().commit();
+        }catch (Exception ex){
+            throw new DbSaveException("erreur sql");
+        }
     }
 
     protected void delete(T e) throws DbDeleteException {
         // TODO: 24/05/2017 verifier le retour de remove si echoue.
-        session.remove(e);
+        try {
+            session.beginTransaction();
+            session.delete(e);
+            session.getTransaction().commit();
+        }catch (Exception ex){
+            throw new DbDeleteException("erreur sql");
+        }
     }
 }

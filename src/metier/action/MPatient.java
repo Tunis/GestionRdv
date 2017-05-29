@@ -3,11 +3,13 @@ package metier.action;
 import app.controller.test.Metier;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.SortedList;
 import metier.hibernate.data.DataPatient;
 import metier.hibernate.data.exceptions.*;
 import models.Patient;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.function.Predicate;
 
 public class MPatient extends Metier<Patient>{
@@ -31,6 +33,7 @@ public class MPatient extends Metier<Patient>{
 		db = new DataPatient();
 		try {
 			list = new SimpleListProperty<>(FXCollections.observableArrayList(db.getAll()));
+			list.sort(Patient::compareTo);
 		}catch (DbGetException e){
 			e.printStackTrace();
 		}
@@ -57,6 +60,7 @@ public class MPatient extends Metier<Patient>{
 				// patient sauvé en bdd on l'ajoute a la liste des patients.
 				// moyen de mettre a jour l'ui?
 			list.get().add(patient);
+			list.sort(Patient::compareTo);
 
 		}
 	}
@@ -72,5 +76,6 @@ public class MPatient extends Metier<Patient>{
 
 	public void delete(Patient p) throws DbDeleteException{
 		db.delete(p);
+		list.remove(p);
 	}
 }

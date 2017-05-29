@@ -1,6 +1,7 @@
 package metier.hibernate.data;
 
 import metier.hibernate.Data;
+import metier.hibernate.data.exceptions.DbDeleteException;
 import metier.hibernate.data.exceptions.DbGetException;
 import metier.hibernate.data.interfaces.IDbPersons;
 import models.Patient;
@@ -20,16 +21,17 @@ public class DataPatient extends Data<Patient> implements IDbPersons<Patient> {
     }
 
     @Override
-    public boolean delete(Patient patient){
-        if(session.find(Patient.class, patient) != null){
-            return super.delete(patient);
+    public void delete(Patient patient)throws DbDeleteException {
+        if(session.find(Patient.class, patient.getId()) != null){
+            super.delete(patient);
+        }else{
+            throw new DbDeleteException("Element inconnu");
         }
-        return false;
     }
 
     public Patient getPatient(Patient p) throws DbGetException{
         try {
-            return session.find(Patient.class, p);
+            return session.find(Patient.class, p.getId());
         }catch (Exception e){
             throw new DbGetException();
         }

@@ -1,5 +1,6 @@
 package metier.action;
 
+import app.controller.test.Metier;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
@@ -9,7 +10,7 @@ import models.Medecin;
 
 import java.util.function.Predicate;
 
-public class MMedecin {
+public class MMedecin extends Metier<Medecin> {
 
 	/*
 	getAllMedecin
@@ -20,12 +21,12 @@ public class MMedecin {
 	liste de tous les medecin comme pour les Medecin.
 	 */
 
-	private ListProperty<Medecin> list = new SimpleListProperty<>();
 	private DataMedecin db;
 
 	public MMedecin(){
 		this.db = new DataMedecin();
 		list.set(FXCollections.observableArrayList(db.getAll()));
+		list.sort(Medecin::compareTo);
 	}
 
 	public void createMedecin(String nom, String prenom, String mail, String tel) throws DbDuplicateException, DbCreateException {
@@ -49,6 +50,7 @@ public class MMedecin {
 			// Medecin sauvé en bdd on l'ajoute a la liste des patients.
 			// moyen de mettre a jour l'ui?
 			list.get().add(medecin);
+			list.sort(Medecin::compareTo);
 
 		}
 	}
@@ -64,5 +66,6 @@ public class MMedecin {
 
 	public void delete(Medecin m) throws DbDeleteException {
 		db.delete(m);
+		list.remove(m);
 	}
 }

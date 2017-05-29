@@ -3,6 +3,8 @@ package gui;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import metier.hibernate.DataBase;

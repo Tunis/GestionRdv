@@ -13,6 +13,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import metier.action.MMedecin;
 import metier.action.MPatient;
 import metier.hibernate.DataBase;
 
@@ -26,6 +27,7 @@ public class Main extends Application {
 	private BorderPane planningContainer;
 
 	private MPatient mPatient = new MPatient();
+    private MMedecin mMedecin = new MMedecin();
 	
 	//Construct
 	public Main(){
@@ -87,7 +89,7 @@ public class Main extends Application {
             
             //Give the controller access to the main app.
             TabHomeCtrl controller = loader.getController();
-            controller.setMainApp(this, mPatient);
+            controller.setMainApp(this, mPatient, mMedecin);
          
             return borderPane;
         } catch (IOException e) {

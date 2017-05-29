@@ -19,7 +19,7 @@ public class DataMedecin extends Data<Medecin> implements IDbPersons<Medecin>{
     }
 
     public void delete(Medecin entity) throws DbDeleteException {
-        if(session.find(Medecin.class, entity) != null){
+        if(session.find(Medecin.class, entity.getId()) != null){
             super.delete(entity);
         }else {
             throw new DbDeleteException();
