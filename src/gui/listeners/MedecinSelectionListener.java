@@ -8,7 +8,8 @@ import models.Medecin;
 
 public class MedecinSelectionListener implements ChangeListener<Medecin> {
 
-    private DataMedecin dm;
+    @SuppressWarnings("unused")
+	private DataMedecin dm;
     private RootCtrl rc;
 
     public MedecinSelectionListener(RootCtrl rootCtrl, DataMedecin dm) {

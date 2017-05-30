@@ -33,13 +33,14 @@ public class ProfilPatientDialogCtrl {
 	private Button btnSubmit;
 	
 	@FXML
+	private DatePicker dpDate;
+	
+	@FXML
 	private TextField textFPrenom;
 	@FXML
 	private TextField textFNom;
 	@FXML
 	private TextField textFNomJF;
-	@FXML
-	private DatePicker dpDate;
 	@FXML
 	private TextField textFAdresse;
 	@FXML

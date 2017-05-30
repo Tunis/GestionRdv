@@ -7,8 +7,8 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "Paiement")
 public class Paiement implements Serializable, Comparable<Paiement>{
-
-    private long id;
+	private static final long serialVersionUID = 1L;
+	private long id;
     private float espece;
     private Cheque cheque;
     private float cb;
@@ -112,7 +112,8 @@ public class Paiement implements Serializable, Comparable<Paiement>{
     private Medecin getMedecin() {
         return medecin;
     }
-    private void setMedecin(Medecin medecin) {
+    @SuppressWarnings("unused")
+	private void setMedecin(Medecin medecin) {
         this.medecin = medecin;
     }
 

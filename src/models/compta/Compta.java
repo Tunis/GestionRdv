@@ -2,7 +2,6 @@ package models.compta;
 
 
 import models.Medecin;
-import models.TypeRdv;
 
 public abstract class Compta {
 

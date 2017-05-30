@@ -12,8 +12,8 @@ import java.util.List;
 @Entity
 @Table(name = "Patient")
 public class Patient implements Serializable, Comparable<Patient>{
-
-    private long id;
+	private static final long serialVersionUID = 1L;
+	private long id;
     private String lastName;
     private String firstName;
     private String maidenName;

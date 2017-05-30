@@ -10,8 +10,8 @@ import java.util.List;
 
 @Entity
 public class Medecin implements Serializable, Comparable<Medecin> {
-
-    private long id;
+	private static final long serialVersionUID = 1L;
+	private long id;
     private String firstName;
     private String lastName;
     private String telephone;
