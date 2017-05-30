@@ -1,9 +1,6 @@
 package models;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Adresse")
@@ -35,6 +32,7 @@ public class Adresse {
     }
 
     @Basic
+    @Column(nullable = false)
     public String getRue() {
         return rue;
     }
@@ -44,6 +42,7 @@ public class Adresse {
     }
 
     @Basic
+    @Column(nullable = false)
     public int getCodePostal() {
         return codePostal;
     }
@@ -53,6 +52,7 @@ public class Adresse {
     }
 
     @Basic
+    @Column(nullable = false)
     public String getVille() {
         return ville;
     }

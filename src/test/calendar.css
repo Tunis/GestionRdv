@@ -1,0 +1,36 @@
+.calendar-grid {
+    -fx-hgap: 4 ;
+    -fx-vgap: 4 ;
+    -fx-padding: 4 ;
+}
+
+.calendar-header {
+    -fx-alignment: center ;
+    -fx-font-size: 18pt ;
+    -fx-font-weight: bold ;
+}
+
+.calendar-cell {
+    -fx-padding: 4 ;
+    -fx-alignment: center ;
+    -fx-background-color: red;
+}
+.calendar-cell:hover {
+    -fx-background-color: greenyellow;
+}
+
+.calendar-cell-not-display-month {
+    -fx-opacity: 0.4;
+    -fx-background-color: grey;
+}
+
+.calendar-cell-not-display-month:hover {
+    -fx-opacity: 0.4 ;
+    -fx-background-color: blueviolet;
+}
+
+.calendar-header-cell {
+    -fx-padding: 4 ;
+    -fx-alignment: center ;
+    -fx-font-weight: bold ;
+}
