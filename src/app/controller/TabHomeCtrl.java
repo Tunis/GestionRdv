@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.Main;
-import app.controller.test.ComboBoxAC;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -12,13 +11,8 @@ import javafx.scene.control.Label;
 import metier.action.MMedecin;
 import metier.action.MPatient;
 import metier.hibernate.data.exceptions.DbDeleteException;
-import models.Adresse;
 import models.Medecin;
 import models.Patient;
-
-import java.time.LocalDate;
-
-import javax.sound.midi.Soundbank;
 
 
 public class TabHomeCtrl {

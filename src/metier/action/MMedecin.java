@@ -1,8 +1,6 @@
 package metier.action;
 
 import app.controller.test.Metier;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import metier.hibernate.data.DataMedecin;
 import metier.hibernate.data.exceptions.*;

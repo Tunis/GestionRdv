@@ -3,14 +3,12 @@ package metier.action;
 import app.controller.test.Metier;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.transformation.SortedList;
 import metier.hibernate.data.DataPatient;
 import metier.hibernate.data.exceptions.*;
 import models.Adresse;
 import models.Patient;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.function.Predicate;
 
 public class MPatient extends Metier<Patient>{

@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 import metier.action.MMedecin;
 import metier.action.MPatient;
 import metier.hibernate.DataBase;
-import models.Adresse;
 import models.Patient;
 
 import java.io.IOException;

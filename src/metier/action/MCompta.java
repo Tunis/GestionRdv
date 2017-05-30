@@ -2,7 +2,6 @@ package metier.action;
 
 import metier.hibernate.data.DataCompta;
 import metier.hibernate.data.exceptions.DbSaveException;
-import metier.hibernate.data.interfaces.IDbCompta;
 import models.Medecin;
 import models.PresentDay;
 import models.Rdv;
@@ -11,7 +10,6 @@ import models.compta.ComptaJournaliere;
 import models.compta.ComptaMensuelle;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

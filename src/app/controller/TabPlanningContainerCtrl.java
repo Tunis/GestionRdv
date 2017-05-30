@@ -3,8 +3,6 @@ package app.controller;
 import app.Main;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import metier.action.MMedecin;
 import models.Medecin;
-import org.controlsfx.control.textfield.TextFields;
 
 import java.io.IOException;
 
