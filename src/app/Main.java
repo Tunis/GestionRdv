@@ -5,6 +5,8 @@ import app.controller.TabHomeCtrl;
 import app.controller.TabPlanningContainerCtrl;
 import app.controller.dialog.CreateMedecinDialogCtrl;
 import app.controller.dialog.CreatePatientDialogCtrl;
+import app.controller.dialog.CreateRdvDialogCtrl;
+import app.controller.dialog.EditRdvDialogCtrl;
 import app.controller.dialog.ProfilPatientDialogCtrl;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +19,9 @@ import javafx.stage.Stage;
 import metier.action.MMedecin;
 import metier.action.MPatient;
 import metier.hibernate.DataBase;
+import models.Medecin;
 import models.Patient;
+import models.Rdv;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -54,9 +58,9 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Gestion RdV");
-
         this.primaryStage.setOnCloseRequest(event -> DataBase.close());
-        FXMLLoader loader = new FXMLLoader();
+        
+        /*FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("view/dialog/CreateRdvDialog.fxml"));
         AnchorPane test = null;
         try {
@@ -66,9 +70,9 @@ public class Main extends Application {
         }
         if(test != null)
         this.primaryStage.setScene(new Scene(test));
-        this.primaryStage.show();
+        this.primaryStage.show();*/
         
-        //initRootLayout();
+        initRootLayout();
 	}
 	
 	//Initializes the root layout.
@@ -93,8 +97,6 @@ public class Main extends Application {
             e.printStackTrace();
         }        
     }
-    
-  
     
     //Overview for Tab
     //--------------------------------------------
@@ -186,8 +188,8 @@ public class Main extends Application {
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Crï¿½er un Patient");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.setTitle("Créer un Patient");
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
@@ -213,14 +215,41 @@ public class Main extends Application {
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Crï¿½er un Medecin");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.setTitle("Créer un Medecin");
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
             // Set the person into the controller.
             CreateMedecinDialogCtrl controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void showCreateRdvDialog() {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("view/dialog/CreateRdvDialog.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Créer un RdV");
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the person into the controller.
+            CreateRdvDialogCtrl controller = loader.getController();
             controller.setDialogStage(dialogStage);
 
             // Show the dialog and wait until the user closes it
@@ -242,14 +271,68 @@ public class Main extends Application {
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Profil");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
             // Set the patient into the controller.
             ProfilPatientDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage, mPatient, p);
+            controller.setDialogStage(dialogStage, this, mPatient, p);
+            
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void showProfilMedecinDialog(Medecin p){
+    	try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("view/dialog/ProfilMedecinDialog.fxml"));
+            BorderPane page = (BorderPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Profil");
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the medecin into the controller.
+            /*ProfilPatientDialogCtrl controller = loader.getController();
+            controller.setDialogStage(dialogStage, mPatient, p);*/
+            
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void showEditRdvDialog(Rdv rdv){
+    	try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("view/dialog/EditRdvDialog.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("RdV");
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the RdV into the controller.
+            EditRdvDialogCtrl controller = loader.getController();
+            controller.setDialogStage(dialogStage, rdv);
             
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

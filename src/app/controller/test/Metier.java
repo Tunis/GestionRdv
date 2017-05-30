@@ -8,7 +8,7 @@ public class Metier<T> {
 
 	protected ListProperty<T> list = new SimpleListProperty<T>();
 
-	public ObservableList getList() {
+	public ObservableList<?> getList() {
 		return list.get();
 	}
 
@@ -16,7 +16,8 @@ public class Metier<T> {
 		return list;
 	}
 
-	private void setList(ObservableList list) {
-		this.list.set(list);
+	@SuppressWarnings({ "unused", "unchecked" })
+	private void setList(ObservableList<?> list) {
+		this.list.set((ObservableList<T>) list);
 	}
 }

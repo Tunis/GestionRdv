@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import models.Medecin;
 import models.Patient;
 import models.TypeRdv;
@@ -13,7 +14,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class CreateRdvDialogCtrl implements Initializable {
-
+	private Stage dialogStage;
+	
     @FXML
     private DatePicker dpDate;
     @FXML
@@ -31,6 +33,10 @@ public class CreateRdvDialogCtrl implements Initializable {
     @FXML
     private TextField textFCotation;
 
+    public void setDialogStage(Stage dialogStage) {
+		this.dialogStage = dialogStage;
+    }
+    
     @FXML
     private void handleCreateRdv(ActionEvent event) {
         // TODO: 29/05/2017 a faire

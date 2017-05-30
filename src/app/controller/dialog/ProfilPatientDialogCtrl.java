@@ -1,18 +1,30 @@
 package app.controller.dialog;
 
 
+import java.time.LocalDate;
+
+import app.Main;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import metier.action.MPatient;
 import metier.hibernate.data.exceptions.DbSaveException;
+import models.Medecin;
 import models.Patient;
+import models.Rdv;
+import models.TypeRdv;
 
 public class ProfilPatientDialogCtrl {
+	private Main mainApp;
 	private Stage dialogStage;
 	private MPatient mPatient;
 	private Patient p;
@@ -43,25 +55,19 @@ public class ProfilPatientDialogCtrl {
 	@FXML
 	private TextField textFNote;
 	
-	public TextField getTextFPrenom() {return textFPrenom;}
+	@FXML
+	private TableView<Rdv> tableRdv;
+	@FXML
+	private TableColumn<Rdv, LocalDate> colDate;
+	@FXML
+	private TableColumn<Rdv, TypeRdv> colCat;
+	@FXML
+	private TableColumn<Rdv, Medecin> ColMed;
+	@FXML
+	private TableColumn<Rdv, Boolean> colPay;
 
-	public TextField getTextFNom() {return textFNom;}
-	
-	public TextField getTextFNomJF() {return textFNomJF;}
-
-	public DatePicker getDpDate() {return dpDate;}
-
-	public TextField getTextFAdresse() {return textFAdresse;}
-
-	public TextField getTextFMail() {return textFMail;}
-
-	public TextField getTextFTel() {return textFTel;}
-
-	public TextField getTextFNSecu() {return textFNSecu;}
-
-	public TextField getTextFNote() {return textFNote;}
-
-	public void setDialogStage(Stage dialogStage, MPatient mPatient, Patient p) {
+	public void setDialogStage(Stage dialogStage, Main mainApp, MPatient mPatient, Patient p) {
+		this.mainApp = mainApp;
 		this.dialogStage = dialogStage;
 		this.mPatient = mPatient;
 		this.p = p;
@@ -78,6 +84,9 @@ public class ProfilPatientDialogCtrl {
 		textFTel.setText(p.getTelephone());
 		textFNSecu.setText(String.valueOf(p.getSecuNumber()));
 		textFNote.setText(p.getNote());
+		
+		//Affiche la liste des Rdv
+		listRdv();
 	}
 	
 	@FXML
@@ -97,13 +106,13 @@ public class ProfilPatientDialogCtrl {
 			e.printStackTrace();
 		}
 		
-		if(isInvalid()){
+		if(isValid()){
 			dialogStage.close();
 		}
     }
 	
 	//Check form, if is valid save data into DB else show pop-up
-	private boolean isInvalid(){
+	private boolean isValid(){
 		String errorMessage = "";
 		
 		if(textFPrenom.getText() == null || textFPrenom.getText().length() == 0){
@@ -124,5 +133,25 @@ public class ProfilPatientDialogCtrl {
 
             return false;
         }
+	}
+	
+	private void listRdv(){
+		
+		tableRdv.itemsProperty().bind(new SimpleListProperty<>(FXCollections.observableArrayList(p.getRdvList())));
+		
+		colDate.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPresentDay().getPresent()));
+		colCat.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getTypeRdv()));
+		ColMed.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPresentDay().getMedecin()));
+		colPay.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPaiement() == null ? 
+				false : 	
+				cellData.getValue().getPaiement().isPayer()));
+		
+		tableRdv.setOnMouseClicked(event -> {
+			Rdv selectedRdv = tableRdv.getSelectionModel().getSelectedItem();
+	        
+	        if(selectedRdv != null){
+	        	mainApp.showEditRdvDialog(selectedRdv);
+	        }
+		});
 	}
 }

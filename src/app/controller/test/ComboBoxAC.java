@@ -1,6 +1,5 @@
 package app.controller.test;
 
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -9,7 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.SingleSelectionModel;
 
-
 public class ComboBoxAC<T> extends ComboBox<T> {
 
 	private Metier<T> metier;
@@ -17,12 +15,15 @@ public class ComboBoxAC<T> extends ComboBox<T> {
 
 	public ComboBoxAC(){
 		getEditor().textProperty().addListener(new ChangeListener<String>() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				if (newValue != null && !newValue.isEmpty()) {
 					System.out.println("newValue : " + newValue);
 
 					getEditor().setText(newValue);
+					
+					@SuppressWarnings("rawtypes")
 					ObservableList collect = FXCollections.observableArrayList();
 					metier.getList().stream()
 							.filter(o -> o.toString().contains(newValue))

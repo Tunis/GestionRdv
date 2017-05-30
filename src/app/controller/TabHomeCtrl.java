@@ -43,7 +43,7 @@ public class TabHomeCtrl {
     @FXML
     private Label testPatient;
 
-    //Main m�thods
+    //Main methods
     //-----------------------------------
     public void setMainApp(Main mainApp, MPatient mPatient, MMedecin mMedecin) {
         this.mPatient = mPatient;
@@ -88,7 +88,6 @@ public class TabHomeCtrl {
     
     @FXML
     private void handleDeletePatient() {
-        //Patient selectedItem = cbBoxPatient.getSelectionModel().getSelectedItem();
         int selectedIndex = cbBoxPatient.getSelectionModel().getSelectedIndex();
         
         if(selectedIndex != -1){
