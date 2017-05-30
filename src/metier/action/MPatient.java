@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.transformation.SortedList;
 import metier.hibernate.data.DataPatient;
 import metier.hibernate.data.exceptions.*;
+import models.Adresse;
 import models.Patient;
 
 import java.time.LocalDate;
@@ -39,7 +40,7 @@ public class MPatient extends Metier<Patient>{
 		}
 	}
 
-	public void createPatient(String nom, String prenom, String nomJf, String mail, String numSecu, String tel, LocalDate date) throws DbDuplicateException, DbCreateException{
+	public void createPatient(String nom, String prenom, String nomJf, String mail, int numSecu, String tel, LocalDate date, Adresse addr) throws DbDuplicateException, DbCreateException{
 		// TODO: 25/05/2017 changer signature avec les bon parametre.
 		// creation du test pour verifier si le patient est deja existant?
 		Predicate<Patient> createPredi = p -> p.getMaidenName().equals(nomJf) && p.getBornDate().equals(date) && p.getFirstName().equals(prenom);
@@ -50,7 +51,7 @@ public class MPatient extends Metier<Patient>{
 			throw new DbDuplicateException();
 		}else{
 			// on cree le nouveau patient
-			Patient patient = new Patient(nom, prenom, nomJf, tel, mail, null, 0, date, null);
+			Patient patient = new Patient(nom, prenom, nomJf, tel, mail, null, numSecu, date, addr);
 			// on tente de le saver dans la bdd, throw createException
 			try {
 				db.save(patient);

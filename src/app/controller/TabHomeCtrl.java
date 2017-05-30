@@ -12,8 +12,11 @@ import javafx.scene.control.Label;
 import metier.action.MMedecin;
 import metier.action.MPatient;
 import metier.hibernate.data.exceptions.DbDeleteException;
+import models.Adresse;
 import models.Medecin;
 import models.Patient;
+
+import java.time.LocalDate;
 
 import javax.sound.midi.Soundbank;
 
@@ -81,10 +84,19 @@ public class TabHomeCtrl {
     }
 
     @FXML
+<<<<<<< HEAD
     private void handleUpdatePatient() {
         int selectedIndex = cbBoxPatient.getSelectionModel().getSelectedIndex();
         if(selectedIndex != -1) {
             mainApp.showProfilPatientDialog();
+=======
+    private void handleUpdatePatient() {    	
+    	int selectedIndex = cbBoxPatient.getSelectionModel().getSelectedIndex();
+        
+        if(selectedIndex != -1){
+        	
+        	mainApp.showProfilPatientDialog(cbBoxPatient.getItems().get(selectedIndex));
+>>>>>>> refs/heads/Dev
         }
     }
     
@@ -92,6 +104,7 @@ public class TabHomeCtrl {
     private void handleDeletePatient() {
         //Patient selectedItem = cbBoxPatient.getSelectionModel().getSelectedItem();
         int selectedIndex = cbBoxPatient.getSelectionModel().getSelectedIndex();
+<<<<<<< HEAD
         if(selectedIndex != -1) {
 
             Patient patient = cbBoxPatient.getItems().get(selectedIndex);
@@ -107,6 +120,23 @@ public class TabHomeCtrl {
 
                 alert.showAndWait();
             }
+=======
+        
+        if(selectedIndex != -1){
+        	Patient patient = cbBoxPatient.getItems().get(selectedIndex);
+        	
+	        try {
+	            mPatient.delete(patient);
+	        } catch (DbDeleteException e) {
+	            Alert alert = new Alert(AlertType.ERROR);
+	            alert.initOwner(mainApp.getPrimaryStage());
+	            alert.setTitle("Maintenance");
+	            alert.setHeaderText("Demande de Suppression du Patient");
+	            alert.setContentText("erreur de suppression du patient");
+	
+	            alert.showAndWait();
+	        }
+>>>>>>> refs/heads/Dev
         }
     }
     
@@ -117,15 +147,23 @@ public class TabHomeCtrl {
 
     @FXML
     private void handleUpdateMedecin() {
+<<<<<<< HEAD
         // TODO: 29/05/2017
         int selectedIndex = cbBoxMedecin.getSelectionModel().getSelectedIndex();
         if(selectedIndex != -1) {
             //mainApp.showProfilMedecinDialog();
+=======
+    	int selectedIndex = cbBoxMedecin.getSelectionModel().getSelectedIndex();
+        
+        if(selectedIndex != -1){
+        	
+>>>>>>> refs/heads/Dev
         }
     }
     
     @FXML
     private void handleDeleteMedecin() {
+<<<<<<< HEAD
         int selectedIndex = cbBoxMedecin.getSelectionModel().getSelectedIndex();
         if(selectedIndex != -1) {
             Medecin selectedItem = cbBoxMedecin.getItems().get(selectedIndex);
@@ -141,6 +179,24 @@ public class TabHomeCtrl {
 
                 alert.showAndWait();
             }
+=======
+    	int selectedIndex = cbBoxMedecin.getSelectionModel().getSelectedIndex();
+    	
+        if(selectedIndex != -1){
+        	Medecin selectedItem = cbBoxMedecin.getItems().get(selectedIndex);
+        	
+        	try{
+	            mMedecin.delete(selectedItem);
+	        } catch (DbDeleteException e) {
+	            Alert alert = new Alert(AlertType.ERROR);
+	            alert.initOwner(mainApp.getPrimaryStage());
+	            alert.setTitle("Maintenance");
+	            alert.setHeaderText("Demande de Suppression du Medecin");
+	            alert.setContentText("SUPPRIME");
+	
+	            alert.showAndWait();
+	        }
+>>>>>>> refs/heads/Dev
         }
     }
 }
