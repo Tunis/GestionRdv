@@ -12,8 +12,8 @@ import java.util.List;
 public class Medecin implements Serializable, Comparable<Medecin> {
 	private static final long serialVersionUID = 1L;
 	private long id;
-    private String firstName;
-    private String lastName;
+    private String firstName = "";
+    private String lastName = "";
     private String telephone;
     private String email;
     private List<PresentDay> plannings = new ArrayList<>();

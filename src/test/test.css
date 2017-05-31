@@ -13,10 +13,10 @@
 .calendar-cell {
     -fx-padding: 4 ;
     -fx-alignment: center ;
-    -fx-background-color: red;
+    -fx-background-color: lightgray;
 }
 .calendar-cell:hover {
-    -fx-background-color: greenyellow;
+    -fx-background-color: darkgray;
 }
 
 .calendar-cell-not-display-month {
@@ -25,8 +25,8 @@
 }
 
 .calendar-cell-not-display-month:hover {
-    -fx-opacity: 0.4 ;
-    -fx-background-color: blueviolet;
+    -fx-opacity: 1;
+    -fx-background-color: darkgray;
 }
 
 .calendar-header-cell {
