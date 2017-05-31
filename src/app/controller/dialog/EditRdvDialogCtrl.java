@@ -1,8 +1,6 @@
 package app.controller.dialog;
 
-import java.sql.Time;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 import javafx.collections.FXCollections;
@@ -17,13 +15,7 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
-import javafx.util.converter.LocalTimeStringConverter;
 import metier.action.MMedecin;
-import metier.action.MRdv;
-import metier.hibernate.data.exceptions.DbCreateException;
-import metier.hibernate.data.exceptions.DbDuplicateException;
-import metier.hibernate.data.exceptions.DbSaveException;
-import models.Adresse;
 import models.Medecin;
 import models.Paiement;
 import models.Rdv;
@@ -84,6 +76,7 @@ public class EditRdvDialogCtrl {
         spHeure.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,23,8,1));
         spHeure.getValueFactory().setValue(rdv.getTime().getHour());
         
+        
         spMinute.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,59,0,15));
         spMinute.getValueFactory().setValue(rdv.getTime().getMinute());
         
@@ -94,21 +87,22 @@ public class EditRdvDialogCtrl {
 	}
 	
 	public void handleUpadte(){
-		//update Object Rdv
-		rdv.getPresentDay().setPresent(dpDate.getValue());
-		rdv.setDuration(Duration.ofMinutes(spDuree.getValue()));
-		rdv.setCotation(textFCotation.getText());
-		rdv.setTime(LocalTime.of(spHeure.getValue(), spMinute.getValue()));
-		rdv.setTypeRdv(cbType.getValue());
-		//rdv.setPaiement(paiement);
-		
-		/*try {
-			MRdv.save(rdv);
-		} catch (DbSaveException e) {
-			e.printStackTrace();
-		}*/
-		
 		if(isValid()){
+			//update Object Rdv
+			rdv.getPresentDay().setPresent(dpDate.getValue());
+			rdv.setDuration(Duration.ofMinutes(spDuree.getValue()));
+			rdv.setCotation(textFCotation.getText());
+			rdv.setTime(LocalTime.of(Integer.valueOf(spHeure.getEditor().getText()), Integer.valueOf(spMinute.getEditor().getText())));
+			rdv.setTypeRdv(cbType.getValue());
+			//rdv.setPaiement(paiement);
+			
+			//TODO : Faire la save dans la Base
+			/*try {
+				MRdv.save(rdv);
+			} catch (DbSaveException e) {
+				e.printStackTrace();
+			}*/
+			
 			dialogStage.close();
 		}
 	}
@@ -123,22 +117,18 @@ public class EditRdvDialogCtrl {
 	private boolean isValid(){
 		String errorMessage = "";
 		
-		/*if(textFPrenom.getText() == null || textFPrenom.getText().length() == 0){
-			errorMessage += "Champ Prénom invalid\n";
-		}*/
 		if(dpDate.getValue() == null){
-			errorMessage += "Champ Date invalid\n";
+			errorMessage += "Date de Naissance invalide\n";
 		}
-		if(spHeure.getValue() == null || spHeure.getValue() >= 24){
-			errorMessage += "Champ Heure invalid\n";
+		if(spHeure.getEditor().getText() == null || Integer.valueOf(spHeure.getEditor().getText()) >= 24){
+			errorMessage += "Heure du Rdv invalide\n";
 		}
-		if(spMinute.getValue() == null || spMinute.getValue() >= 60){
-			errorMessage += "Champ Minute invalid\n";
+		if(spMinute.getEditor().getText() == null || Integer.valueOf(spMinute.getEditor().getText()) >= 60){
+			errorMessage += "Minute du Rdv invalide\n";
 		}
 		if(payment == null){
 			errorMessage += "Paiement non renseigné\n";
 		}
-		System.out.println(spMinute.getValue());
 		if (errorMessage.length() == 0) {
             return true;
         } else {

@@ -1,57 +1,80 @@
 package app.controller.dialog;
 
+import app.util.AlerteUtil;
+import app.util.RegexUtil;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import metier.action.MMedecin;
+import metier.hibernate.data.exceptions.DbSaveException;
+import models.Medecin;
 
 public class ProfilMedecinDialogCtrl {
 	private Stage dialogStage;
+	private MMedecin mMedecin;
+	private Medecin medecin;
 	
-	/*@FXML
-	private Button btnSubmit;*/
+	@FXML
+	private TextField textFNom;
+	@FXML
+	private TextField textFTel;
+	@FXML
+	private TextField textFPrenom;
+	@FXML
+	private TextField textFMail;
 	
-	public void setDialogStage(Stage dialogStage) {
+	@FXML
+	private Button btnSubmit;
+	
+	public void setDialogStage(Stage dialogStage, MMedecin mMedecin, Medecin m) {
         this.dialogStage = dialogStage;
+        this.mMedecin = mMedecin;
+        this.medecin = m;
+        
+        displayMedecin();
     }
 	
-	/*@FXML
+	@FXML
     private void handleSubmit() {
-		//TODO : Enregistrer le Mr dans la BDD !!!
+		String tel = textFTel.getText();
+		String mail = textFMail.getText();
 		
-		
-			textFAdresse.getText(); *
-			textFDate.getText(); *
-			textFMail.getText();
-			textFNom.getText();
-			textFNomJF.getText(); *
-			textFNumSecu.getText();
-			textFPrenom.getText(); *
-			textFTel.getText(); *
-		
-		
-		if(isInvalid()){
+		if(isValid(mail, tel)){
+			medecin.setEmail(mail);
+			medecin.setTelephone(tel);
+			
+			try {
+				mMedecin.save(medecin);
+			} catch (DbSaveException e) {
+				AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_INCORECT_FIELD, "Erreur lors de la Sauvegarde en Base");
+				e.printStackTrace();
+			}
+			
 			dialogStage.close();
 		}
-    }*/
+    }
+	
+	private void displayMedecin(){
+		textFPrenom.setText(medecin.getFirstName());
+		textFNom.setText(medecin.getLastName());
+		textFTel.setText(medecin.getTelephone());
+		textFMail.setText(medecin.getEmail());
+	}
 	
 	//Check form, if is valid save data into DB else show pop-up
-	/*private boolean isInvalid(){
+	private boolean isValid(String mail, String tel){
 		String errorMessage = "";
-		
-		if(textFPrenom.getText() == null || textFPrenom.getText().length() == 0){
-			errorMessage += "Champ Pr�nom invalid\n";
-		
+		if(!RegexUtil.validateMail(mail)){
+			errorMessage += "Mail invalide\n";
+		}
+		if(tel == null || tel.length() == 0 || !RegexUtil.validateTel(tel)){
+			errorMessage += "Tél. invalide\n";
+		}
 		if (errorMessage.length() == 0) {
             return true;
         } else {
-            // Show the error message.
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(dialogStage);
-            alert.setTitle("Erreur de Renseignement");
-            alert.setHeaderText("Merci de modifier les champ incorrect");
-            alert.setContentText(errorMessage);
-
-            alert.showAndWait();
-
+        	AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_INCORECT_FIELD, errorMessage);
             return false;
         }
-	}*/
+	}
 }

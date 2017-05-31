@@ -7,6 +7,7 @@ import app.controller.dialog.CreateMedecinDialogCtrl;
 import app.controller.dialog.CreatePatientDialogCtrl;
 import app.controller.dialog.CreateRdvDialogCtrl;
 import app.controller.dialog.EditRdvDialogCtrl;
+import app.controller.dialog.ProfilMedecinDialogCtrl;
 import app.controller.dialog.ProfilPatientDialogCtrl;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -188,7 +189,7 @@ public class Main extends Application {
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Créer un Patient");
+            dialogStage.setTitle("Crï¿½er un Patient");
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
@@ -215,7 +216,7 @@ public class Main extends Application {
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Créer un Medecin");
+            dialogStage.setTitle("CrÃ©er un Medecin");
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
@@ -242,7 +243,7 @@ public class Main extends Application {
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Créer un RdV");
+            dialogStage.setTitle("Crï¿½er un RdV");
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
@@ -288,7 +289,7 @@ public class Main extends Application {
         }
     }
     
-    public void showProfilMedecinDialog(Medecin p){
+    public void showProfilMedecinDialog(Medecin m){
     	try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
@@ -304,8 +305,8 @@ public class Main extends Application {
             dialogStage.setScene(scene);
 
             // Set the medecin into the controller.
-            /*ProfilPatientDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage, mPatient, p);*/
+            ProfilMedecinDialogCtrl controller = loader.getController();
+            controller.setDialogStage(dialogStage, mMedecin, m);
             
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

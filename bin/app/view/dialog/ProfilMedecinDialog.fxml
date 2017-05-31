@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<BorderPane fx:controller="app.controller.dialog.ProfilMedecinDialogCtrl" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.dialog.ProfilMedecinDialogCtrl">
    <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -31,15 +30,15 @@
             <Label text="Prenom" GridPane.rowIndex="1" />
             <Label text="Tel." GridPane.rowIndex="2" />
             <Label text="Mail" GridPane.rowIndex="3" />
-            <TextField fx:id="textFNom" GridPane.columnIndex="1" />
+            <TextField fx:id="textFNom" disable="true" GridPane.columnIndex="1" />
+            <TextField fx:id="textFPrenom" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="textFTel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="textFPrenom" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="textFMail" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
    </center>
    <bottom>
-      <Button fx:id="btnSubmit" mnemonicParsing="false" text="Valider" BorderPane.alignment="CENTER">
+      <Button fx:id="btnSubmit" onAction="#handleSubmit" mnemonicParsing="false" text="Valider" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </BorderPane.margin>
