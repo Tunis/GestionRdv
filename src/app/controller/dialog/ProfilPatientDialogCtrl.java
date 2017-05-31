@@ -4,12 +4,12 @@ package app.controller.dialog;
 import java.time.LocalDate;
 
 import app.Main;
+import app.util.AlerteUtil;
+import app.util.RegexUtil;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -74,6 +74,13 @@ public class ProfilPatientDialogCtrl {
 		this.p = p;
 		
 		//Affiche le profil
+		displayProfil();
+		
+		//Affiche la liste des Rdv
+		listRdv();
+	}
+	
+	private void displayProfil(){
 		textFPrenom.setText(p.getFirstName());
 		textFNom.setText(p.getLastName());
 		textFNomJF.setText(p.getMaidenName());
@@ -85,52 +92,46 @@ public class ProfilPatientDialogCtrl {
 		textFTel.setText(p.getTelephone());
 		textFNSecu.setText(String.valueOf(p.getSecuNumber()));
 		textFNote.setText(p.getNote());
-		
-		//Affiche la liste des Rdv
-		listRdv();
 	}
 	
-	@FXML
-    private void handleSubmit() {
-		p.getAdresse().setRue(textFAdresse.getText());
-		p.getAdresse().setCodePostal(Integer.valueOf(textFCP.getText()));
-		p.getAdresse().setVille(textFVille.getText());
-		p.setEmail(textFMail.getText());
-		p.setLastName(textFNom.getText());
-		p.setNote(textFNote.getText());
-		p.setSecuNumber(Integer.valueOf(textFNSecu.getText()));
-		p.setTelephone(textFTel.getText());
-		
-		try {
-			mPatient.save(p);
-		} catch (DbSaveException e) {
-			e.printStackTrace();
-		}
-		
-		if(isValid()){
-			dialogStage.close();
-		}
-    }
-	
 	//Check form, if is valid save data into DB else show pop-up
-	private boolean isValid(){
+	private boolean isValid(String cp, String nSecu){
 		String errorMessage = "";
 		
 		if(textFPrenom.getText() == null || textFPrenom.getText().length() == 0){
-			errorMessage += "Champ Pr�nom invalid\n";
+			errorMessage += "Prénom non renseigné\n";
 		}
-		
+		if(textFNom.getText() == null || textFNom.getText().length() == 0){
+			errorMessage += "Nom non renseigné\n";
+		}
+		if(textFNomJF.getText() == null || textFNomJF.getText().length() == 0){
+			errorMessage += "Nom de Jeune Fille non renseigné\n";
+		}
+		if(dpDate.getEditor().getText() == null || dpDate.getEditor().getText().length() == 0){
+			errorMessage += "Date de naissance non renseigné\n";
+		}
+		if(textFAdresse.getText() == null || textFAdresse.getText().length() == 0){
+			errorMessage += "Rue non renseigné\n";
+		}
+		if(textFVille.getText() == null || textFVille.getText().length() == 0){
+			errorMessage += "Ville non renseigné\n";
+		}
+		if(!RegexUtil.validateCP(cp)){
+			errorMessage += "Code Postal non renseigné\n";
+		}
+		if(!RegexUtil.validateMail(textFMail.getText())){
+			errorMessage += "Mail non valide\n";
+		}
+		if(!RegexUtil.validateTel(textFTel.getText())){
+			errorMessage += "Tel. non valide\n";
+		}
+		if(!RegexUtil.validateNumSecu(textFNSecu.getText())){
+			errorMessage += "Numéro Sécurité non valide\n";
+		}
 		if (errorMessage.length() == 0) {
             return true;
         } else {
-            // Show the error message.
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(dialogStage);
-            alert.setTitle("Erreur de Renseignement");
-            alert.setHeaderText("Merci de modifier les champ incorrect");
-            alert.setContentText(errorMessage);
-
-            alert.showAndWait();
+            AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_INCORECT_FIELD, errorMessage);
 
             return false;
         }
@@ -155,4 +156,31 @@ public class ProfilPatientDialogCtrl {
 	        }
 		});
 	}
+	
+	@FXML
+    private void handleSubmit() {
+		
+		String cp = textFCP.getText();
+		String nSecu = textFNSecu.getText();
+		
+		if(isValid(cp, nSecu)){
+			p.getAdresse().setRue(textFAdresse.getText());
+			p.getAdresse().setCodePostal(Integer.valueOf(textFCP.getText()));
+			p.getAdresse().setVille(textFVille.getText());
+			p.setEmail(textFMail.getText());
+			p.setLastName(textFNom.getText());
+			p.setNote(textFNote.getText());
+			p.setSecuNumber(Integer.valueOf(textFNSecu.getText()));
+			p.setTelephone(textFTel.getText());
+			
+			try {
+				mPatient.save(p);
+			} catch (DbSaveException e) {
+				e.printStackTrace();
+				AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_CREATE_DB, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
+			}
+			
+			dialogStage.close();
+		}
+    }
 }

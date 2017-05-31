@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class CreateRdvDialogCtrl implements Initializable {
+	@SuppressWarnings("unused")
 	private Stage dialogStage;
 	
     @FXML

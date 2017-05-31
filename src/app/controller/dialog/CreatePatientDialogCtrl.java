@@ -1,8 +1,6 @@
 package app.controller.dialog;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -65,7 +63,11 @@ public class CreatePatientDialogCtrl {
 		String nom = textFNom.getText();
 		String nomJf = textFNomJF.getText();//*
 		if(textFNumSecu.getText() != null){
-			numSecu = Integer.valueOf(textFNumSecu.getText());
+			try {
+				numSecu = Integer.valueOf(textFNumSecu.getText());
+			} catch (Exception e) {
+				
+			}
 		}
 		String prenom = textFPrenom.getText();//*
 		String tel = textFTel.getText();//*
@@ -90,45 +92,39 @@ public class CreatePatientDialogCtrl {
 		int codePostal = 0;
 		// TODO: 25/05/2017 changement des type selon le models plzzzz !
 		if(prenom == null || prenom.isEmpty()){
-			errorMessage += "Champ Prénom invalid\n";
+			errorMessage += "Prénom non renseigné\n";
 		}
 		if(nomJf == null || nomJf.isEmpty()){
-			errorMessage += "Champ Nom de Jeune Fille invalid\n";
+			errorMessage += "Nom de Jeune Fille  non renseigné\n";
 		}
 		if(rue == null || rue.isEmpty()){
-			errorMessage += "Champ Adresse invalid\n";
+			errorMessage += "Rue non renseigné\n";
 		}
 		if(ville == null || ville.isEmpty()){
-			errorMessage += "Champ Ville invalid\n";
+			errorMessage += "Ville  non renseigné\n";
 		}
 		if(cp == null || cp.isEmpty()){
-			errorMessage += "Champ CP invalid\n";
+			errorMessage += "Code Postal non renseigné\n";
 		} else {
 			try {
 				codePostal = Integer.valueOf(cp);
 			} catch (NumberFormatException e) {
-				errorMessage += "Champ CP invalid\n";
+				errorMessage += "Code Postal non renseigné\n";
 			}
 		}
 		if(date == null){
-			errorMessage += "Champ Date de Naissance invalid\n";
+			errorMessage += "Date de Naissance non renseigné\n";
 		}
 		if(tel == null || tel.isEmpty()){
-			errorMessage += "Champ Téléphone invalid\n";
+			errorMessage += "Téléphone non renseigné\n";
 		}
 		if (errorMessage.isEmpty()) {
-			//Cr�er une adresse
+			//Créer une adresse
 			addr = new Adresse(rue, codePostal, ville);
 			
 			return true;
         } else {
-            // Show the error message.
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(dialogStage);
-            alert.setTitle("Erreur de Renseignement");
-            alert.setHeaderText("Merci de modifier les champ incorrect");
-            alert.setContentText(errorMessage);
-            alert.showAndWait();
+            AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_INCORECT_FIELD, errorMessage);
             return false;
         }
 	}

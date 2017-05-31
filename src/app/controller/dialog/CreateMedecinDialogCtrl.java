@@ -58,11 +58,9 @@ public class CreateMedecinDialogCtrl {
 		String errorMessage = "";
 		
 		if(!RegexUtil.validateTel(tel)){
-			System.out.println("tel : " + tel);
 			errorMessage += "Tél. invalide\n";
 		}
 		if(!RegexUtil.validateMail(mail)){
-			System.out.println("mail : " + mail);
 			errorMessage += "Mail invalide\n";
 		}
 		if(textFPrenom.getText() == null || textFPrenom.getText().length() == 0){

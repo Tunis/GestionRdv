@@ -3,17 +3,10 @@ package app.controller.dialog;
 import java.time.Duration;
 import java.time.LocalTime;
 
+import app.util.AlerteUtil;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import metier.action.MMedecin;
 import models.Medecin;
@@ -87,6 +80,7 @@ public class EditRdvDialogCtrl {
 	}
 	
 	public void handleUpadte(){
+		
 		if(isValid()){
 			//update Object Rdv
 			rdv.getPresentDay().setPresent(dpDate.getValue());
@@ -117,29 +111,32 @@ public class EditRdvDialogCtrl {
 	private boolean isValid(){
 		String errorMessage = "";
 		
-		if(dpDate.getValue() == null){
-			errorMessage += "Date de Naissance invalide\n";
+		int heure = 0;
+		int minute = 0;
+		
+		try {
+			heure = Integer.valueOf(spHeure.getEditor().getText());
+			minute = Integer.valueOf(spMinute.getEditor().getText());
+			
+			if(spHeure.getEditor().getText() == null || heure >= 24){
+				errorMessage += "Heure du Rdv invalide\n";
+			}
+			if(spMinute.getEditor().getText() == null || minute >= 60){
+				errorMessage += "Minute du Rdv invalide\n";
+			}
+		} catch (NumberFormatException e) {
+			errorMessage += "Horaire invalide\n";
 		}
-		if(spHeure.getEditor().getText() == null || Integer.valueOf(spHeure.getEditor().getText()) >= 24){
-			errorMessage += "Heure du Rdv invalide\n";
-		}
-		if(spMinute.getEditor().getText() == null || Integer.valueOf(spMinute.getEditor().getText()) >= 60){
-			errorMessage += "Minute du Rdv invalide\n";
+		if(dpDate.getEditor().getText() == null || dpDate.getEditor().getText().length() == 0){
+			errorMessage += "Date RdV invalide\n";
 		}
 		if(payment == null){
-			errorMessage += "Paiement non renseigné\n";
+			errorMessage += "Paiement non renseignï¿½\n";
 		}
 		if (errorMessage.length() == 0) {
             return true;
         } else {
-            // Show the error message.
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(dialogStage);
-            alert.setTitle("Erreur de Renseignement");
-            alert.setHeaderText("Merci de modifier les champ incorrect");
-            alert.setContentText(errorMessage);
-
-            alert.showAndWait();
+            AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_INCORECT_FIELD, errorMessage);
 
             return false;
         }
