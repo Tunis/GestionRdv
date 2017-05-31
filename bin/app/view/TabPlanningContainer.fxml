@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane prefHeight="450.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.TabPlanningContainerCtrl">
+   <top>
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+            <HBox spacing="10.0">
+               <children>
+                  <Button fx:id="btnPlanningPrevious" mnemonicParsing="false" text="Précédent" />
+                  <Button fx:id="btnPlanningToday" defaultButton="true" mnemonicParsing="false" text="Ajourd'hui" />
+                  <Button fx:id="btnPlanningNext" mnemonicParsing="false" text="Suivant" />
+                  <ComboBox fx:id="listMedecin" editable="true" prefWidth="150.0" />
+                  <ToggleButton fx:id="btnPlanningDay" mnemonicParsing="false" onAction="#changeView" text="Jour">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="planningToggleGroup" />
+                     </toggleGroup>
+                  </ToggleButton>
+                  <ToggleButton fx:id="btnPlanningWeek" mnemonicParsing="false" onAction="#changeView" text="Semaine" toggleGroup="$planningToggleGroup" />
+                  <ToggleButton fx:id="btnPlanningMonth" mnemonicParsing="false" onAction="#changeView" selected="true" text="Mois" toggleGroup="$planningToggleGroup" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <Label fx:id="labelTypePlanning" text="Label" />
+         </children>
+      </VBox>
+   </top>
+</BorderPane>
