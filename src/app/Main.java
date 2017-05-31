@@ -224,7 +224,7 @@ public class Main extends Application {
 
             // Set the person into the controller.
             CreateMedecinDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage);
+            controller.setDialogStage(dialogStage, mMedecin);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

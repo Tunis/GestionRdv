@@ -46,7 +46,7 @@ public class ProfilMedecinDialogCtrl {
 			try {
 				mMedecin.save(medecin);
 			} catch (DbSaveException e) {
-				AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_INCORECT_FIELD, "Erreur lors de la Sauvegarde en Base");
+				AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_INCORECT_FIELD, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
 				e.printStackTrace();
 			}
 			

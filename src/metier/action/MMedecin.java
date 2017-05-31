@@ -43,7 +43,8 @@ public class MMedecin extends Metier<Medecin> {
 			try {
 				db.save(medecin);
 			}catch (Exception e){
-				throw new DbCreateException();
+				e.printStackTrace();
+				//throw new DbCreateException();
 			}
 			// Medecin sauvé en bdd on l'ajoute a la liste des patients.
 			// moyen de mettre a jour l'ui?

@@ -14,6 +14,8 @@ import models.Adresse;
 
 import java.time.LocalDate;
 
+import app.util.AlerteUtil;
+
 public class CreatePatientDialogCtrl {
 	
 	private Stage dialogStage;
@@ -53,6 +55,8 @@ public class CreatePatientDialogCtrl {
 	
 	@FXML
     private void handleSubmit() {
+		int numSecu = 0;
+		
 		String rue = textFAdresse.getText();//*
 		String ville = textFVille.getText();
 		String cp = textFCP.getText();
@@ -60,7 +64,9 @@ public class CreatePatientDialogCtrl {
 		String mail = textFMail.getText();
 		String nom = textFNom.getText();
 		String nomJf = textFNomJF.getText();//*
-		int numSecu = Integer.valueOf(textFNumSecu.getText());
+		if(textFNumSecu.getText() != null){
+			numSecu = Integer.valueOf(textFNumSecu.getText());
+		}
 		String prenom = textFPrenom.getText();//*
 		String tel = textFTel.getText();//*
 
@@ -70,23 +76,9 @@ public class CreatePatientDialogCtrl {
 				dialogStage.close();
 				// TODO: 25/05/2017 si reussit il faut mettre a jour la liste des patient dans le controller precedent faut l'ajouter pour qu'on puisse l'appeler !
 			} catch (DbDuplicateException e) {
-				// TODO: 25/05/2017 erreur
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.initOwner(dialogStage);
-				alert.setTitle("Patient deja enregistrer !");
-				alert.setHeaderText("les informations semble deja connu");
-				alert.setContentText("verifier les champs, ou rechercher le patient.");
-
-				alert.showAndWait();
+				AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_CREATE_PATIENT_DB, AlerteUtil.HEADERTEXT_CREATE_DB, AlerteUtil.ERROR_MESSAGE_CREATE_PATIENT_DB);
 			} catch (DbCreateException e){
-				// TODO: 25/05/2017 erreur
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.initOwner(dialogStage);
-				alert.setTitle("Erreur d'enregistrement dans la bdd !");
-				alert.setHeaderText("");
-				alert.setContentText("pas trop sur de ce qui a merder :D");
-
-				alert.showAndWait();
+				AlerteUtil.showAlerte(dialogStage, AlerteUtil.HEADERTEXT_CREATE_DB, AlerteUtil.HEADERTEXT_CREATE_DB, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
 			}
 		}
 
@@ -125,7 +117,7 @@ public class CreatePatientDialogCtrl {
 			errorMessage += "Champ Téléphone invalid\n";
 		}
 		if (errorMessage.isEmpty()) {
-			//Cr�er une adresse
+			//Cr�er une adresse
 			addr = new Adresse(rue, codePostal, ville);
 			
 			return true;
