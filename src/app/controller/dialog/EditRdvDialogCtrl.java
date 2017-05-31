@@ -3,6 +3,7 @@ package app.controller.dialog;
 import java.time.Duration;
 import java.time.LocalTime;
 
+import app.Main;
 import app.util.AlerteUtil;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -18,6 +19,7 @@ public class EditRdvDialogCtrl {
 	private Stage dialogStage;
 	private MMedecin mMedecin;
 	private Rdv rdv;
+	private Main mainApp;
 	private Paiement payment;
 	
 	@FXML
@@ -46,10 +48,11 @@ public class EditRdvDialogCtrl {
     @FXML
     private Button btnPayment;
     
-	public void setDialogStage(Stage dialogStage, Rdv rdv, MMedecin mMedecin) {
+	public void setDialogStage(Stage dialogStage, Rdv rdv, MMedecin mMedecin, Main mainApp) {
 		this.mMedecin = mMedecin;
 		this.dialogStage = dialogStage;
 		this.rdv = rdv;
+		this.mainApp = mainApp;
 		
 		displayRdv();
     }
@@ -79,6 +82,7 @@ public class EditRdvDialogCtrl {
 		textFCotation.setText(rdv.getCotation());
 	}
 	
+	@FXML
 	public void handleUpadte(){
 		
 		if(isValid()){
@@ -101,9 +105,11 @@ public class EditRdvDialogCtrl {
 		}
 	}
 	
+	@FXML
 	public void handlePayment(){
 		//TODO : Affiche le pop-up pour renseigner le paiement
-		//Besoin d'un retour paiement
+		//Besoin d'un retour paiement??
+		mainApp.showPaiementDialog();
 		//payment = ??;
 	}
 	

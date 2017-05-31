@@ -7,6 +7,7 @@ import app.controller.dialog.CreateMedecinDialogCtrl;
 import app.controller.dialog.CreatePatientDialogCtrl;
 import app.controller.dialog.CreateRdvDialogCtrl;
 import app.controller.dialog.EditRdvDialogCtrl;
+import app.controller.dialog.PaiementDialogCtrl;
 import app.controller.dialog.ProfilMedecinDialogCtrl;
 import app.controller.dialog.ProfilPatientDialogCtrl;
 import javafx.application.Application;
@@ -18,9 +19,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import metier.action.MMedecin;
+import metier.action.MPaiement;
 import metier.action.MPatient;
 import metier.hibernate.DataBase;
 import models.Medecin;
+import models.Paiement;
 import models.Patient;
 import models.Rdv;
 
@@ -333,7 +336,35 @@ public class Main extends Application {
 
             // Set the RdV into the controller.
             EditRdvDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage, rdv, mMedecin);
+            controller.setDialogStage(dialogStage, rdv, mMedecin, this);
+            
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    //Show "Payment" Dialog
+    public void showPaiementDialog(){
+    	try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("view/dialog/PaiementDialog.fxml"));
+            BorderPane page = (BorderPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Paiement");
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the RdV into the controller.
+            PaiementDialogCtrl controller = loader.getController();
+            controller.setDialogStage(dialogStage);
             
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
