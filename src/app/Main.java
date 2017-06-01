@@ -1,15 +1,7 @@
 package app;
 
-import app.controller.RootLayoutCtrl;
-import app.controller.TabHomeCtrl;
-import app.controller.TabPlanningContainerCtrl;
-import app.controller.dialog.CreateMedecinDialogCtrl;
-import app.controller.dialog.CreatePatientDialogCtrl;
-import app.controller.dialog.CreateRdvDialogCtrl;
-import app.controller.dialog.EditRdvDialogCtrl;
-import app.controller.dialog.PaiementDialogCtrl;
-import app.controller.dialog.ProfilMedecinDialogCtrl;
-import app.controller.dialog.ProfilPatientDialogCtrl;
+import app.controller.*;
+import app.controller.dialog.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,7 +15,6 @@ import metier.action.MPaiement;
 import metier.action.MPatient;
 import metier.hibernate.DataBase;
 import models.Medecin;
-import models.Paiement;
 import models.Patient;
 import models.Rdv;
 
@@ -39,6 +30,7 @@ public class Main extends Application {
 
 	private MPatient mPatient = new MPatient();
     private MMedecin mMedecin = new MMedecin();
+    private MPaiement mPaiement = new MPaiement();
     private LocalDate date;
 
     public LocalDate getDate(){ return date;}
@@ -319,7 +311,7 @@ public class Main extends Application {
         }
     }
     
-    public void showEditRdvDialog(Rdv rdv){
+    public void showEditRdvDialog(Rdv rdv, ProfilPatientDialogCtrl patientCtrl){
     	try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
@@ -336,7 +328,7 @@ public class Main extends Application {
 
             // Set the RdV into the controller.
             EditRdvDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage, rdv, mMedecin, this);
+            controller.setDialogStage(dialogStage, rdv, mMedecin, this, patientCtrl);
             
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
@@ -347,7 +339,7 @@ public class Main extends Application {
     }
     
     //Show "Payment" Dialog
-    public void showPaiementDialog(){
+    public void showPaiementDialog(Rdv rdv){
     	try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
@@ -364,7 +356,7 @@ public class Main extends Application {
 
             // Set the RdV into the controller.
             PaiementDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage);
+            controller.setDialogStage(dialogStage, mPaiement, rdv);
             
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

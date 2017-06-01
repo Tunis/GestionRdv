@@ -3,6 +3,7 @@ package app.controller.dialog;
 
 import java.time.LocalDate;
 
+
 import app.Main;
 import app.util.AlerteUtil;
 import app.util.RegexUtil;
@@ -67,6 +68,10 @@ public class ProfilPatientDialogCtrl {
 	@FXML
 	private TableColumn<Rdv, Boolean> colPay;
 
+	public TableView<Rdv> geTableView(){
+		return tableRdv;
+	}
+	
 	public void setDialogStage(Stage dialogStage, Main mainApp, MPatient mPatient, Patient p) {
 		this.mainApp = mainApp;
 		this.dialogStage = dialogStage;
@@ -116,7 +121,7 @@ public class ProfilPatientDialogCtrl {
 		if(textFVille.getText() == null || textFVille.getText().length() == 0){
 			errorMessage += "Ville non renseigné\n";
 		}
-		if(!RegexUtil.validateCP(cp)){
+		if(!RegexUtil.validateIntField(cp)){
 			errorMessage += "Code Postal non renseigné\n";
 		}
 		if(!RegexUtil.validateMail(textFMail.getText())){
@@ -125,7 +130,7 @@ public class ProfilPatientDialogCtrl {
 		if(!RegexUtil.validateTel(textFTel.getText())){
 			errorMessage += "Tel. non valide\n";
 		}
-		if(!RegexUtil.validateNumSecu(textFNSecu.getText())){
+		if(!RegexUtil.validateIntField(textFNSecu.getText())){
 			errorMessage += "Numéro Sécurité non valide\n";
 		}
 		if (errorMessage.length() == 0) {
@@ -138,7 +143,6 @@ public class ProfilPatientDialogCtrl {
 	}
 	
 	private void listRdv(){
-		
 		tableRdv.itemsProperty().bind(new SimpleListProperty<>(FXCollections.observableArrayList(p.getRdvList())));
 		
 		colDate.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPresentDay().getPresent()));
@@ -148,11 +152,12 @@ public class ProfilPatientDialogCtrl {
 				false : 	
 				cellData.getValue().getPaiement().isPayer()));
 		
+		//Permet d'éditer les rdv
 		tableRdv.setOnMouseClicked(event -> {
 			Rdv selectedRdv = tableRdv.getSelectionModel().getSelectedItem();
 	        
 	        if(selectedRdv != null){
-	        	mainApp.showEditRdvDialog(selectedRdv);
+	        	mainApp.showEditRdvDialog(selectedRdv, this);
 	        }
 		});
 	}

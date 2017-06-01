@@ -8,6 +8,7 @@ public class AlerteUtil {
 	public static final String TITLE_INCORECT_FIELD = "Erreur de Renseignement";
 	public static final String TITLE_CREATE_PATIENT_DB = "Patient déjà renseigné";
 	public static final String TITLE_CREATE_MEDECIN_DB = "Medecin déjà renseigné";
+	public static final String TITLE_SAVE_DB = "Sauvegarde Impossible";
 	
 	public static final String HEADERTEXT_INCORECT_FIELD = "Merci de modifier les champ incorrect";
 	public static final String HEADERTEXT_CREATE_DB = "Données déjà éxistante en Base !";

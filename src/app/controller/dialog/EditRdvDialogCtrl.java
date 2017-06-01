@@ -11,7 +11,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import metier.action.MMedecin;
 import models.Medecin;
-import models.Paiement;
+import models.PresentDay;
 import models.Rdv;
 import models.TypeRdv;
 
@@ -19,8 +19,8 @@ public class EditRdvDialogCtrl {
 	private Stage dialogStage;
 	private MMedecin mMedecin;
 	private Rdv rdv;
+	private ProfilPatientDialogCtrl patientCtrl;
 	private Main mainApp;
-	private Paiement payment;
 	
 	@FXML
     private DatePicker dpDate;
@@ -48,10 +48,11 @@ public class EditRdvDialogCtrl {
     @FXML
     private Button btnPayment;
     
-	public void setDialogStage(Stage dialogStage, Rdv rdv, MMedecin mMedecin, Main mainApp) {
+	public void setDialogStage(Stage dialogStage, Rdv rdv, MMedecin mMedecin, Main mainApp, ProfilPatientDialogCtrl patientCtrl) {
 		this.mMedecin = mMedecin;
 		this.dialogStage = dialogStage;
 		this.rdv = rdv;
+		this.patientCtrl = patientCtrl;
 		this.mainApp = mainApp;
 		
 		displayRdv();
@@ -87,12 +88,13 @@ public class EditRdvDialogCtrl {
 		
 		if(isValid()){
 			//update Object Rdv
-			rdv.getPresentDay().setPresent(dpDate.getValue());
+			if(!rdv.getPresentDay().getPresent().equals(dpDate.getValue())){
+				rdv.setPresentDay(new PresentDay(dpDate.getValue(), rdv.getPresentDay().getMedecin()));
+			}
 			rdv.setDuration(Duration.ofMinutes(spDuree.getValue()));
 			rdv.setCotation(textFCotation.getText());
 			rdv.setTime(LocalTime.of(Integer.valueOf(spHeure.getEditor().getText()), Integer.valueOf(spMinute.getEditor().getText())));
 			rdv.setTypeRdv(cbType.getValue());
-			//rdv.setPaiement(paiement);
 			
 			//TODO : Faire la save dans la Base
 			/*try {
@@ -101,6 +103,7 @@ public class EditRdvDialogCtrl {
 				e.printStackTrace();
 			}*/
 			
+			patientCtrl.geTableView().refresh();
 			dialogStage.close();
 		}
 	}
@@ -109,7 +112,7 @@ public class EditRdvDialogCtrl {
 	public void handlePayment(){
 		//TODO : Affiche le pop-up pour renseigner le paiement
 		//Besoin d'un retour paiement??
-		mainApp.showPaiementDialog();
+		mainApp.showPaiementDialog(rdv);
 		//payment = ??;
 	}
 	
@@ -135,9 +138,6 @@ public class EditRdvDialogCtrl {
 		}
 		if(dpDate.getEditor().getText() == null || dpDate.getEditor().getText().length() == 0){
 			errorMessage += "Date RdV invalide\n";
-		}
-		if(payment == null){
-			errorMessage += "Paiement non renseign�\n";
 		}
 		if (errorMessage.length() == 0) {
             return true;
