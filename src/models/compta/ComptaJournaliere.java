@@ -6,6 +6,7 @@ import models.enums.TypeRdv;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,7 @@ public class ComptaJournaliere extends Compta{
 
     protected long id;
     private LocalDate date;
-    private List<Paiement> paiementList;
+    private List<Paiement> paiementList = new ArrayList<>();
     private float soldePrecedent;
 
     public ComptaJournaliere(){}

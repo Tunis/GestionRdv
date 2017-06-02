@@ -58,7 +58,8 @@ public class EditRdvDialogCtrl {
 		this.rdv = rdv;
 		this.patientCtrl = patientCtrl;
 		this.mainApp = mainApp;
-		
+
+		System.out.println("rdv : " + rdv);
 		displayRdv();
     }
 	
@@ -91,6 +92,8 @@ public class EditRdvDialogCtrl {
 	public void handleUpadte(){
 		
 		if(isValid()){
+
+			System.out.println("rdv : " + rdv);
 			//update Object Rdv
 			if(!rdv.getPresentDay().getPresent().equals(dpDate.getValue())){
 				rdv.setPresentDay(new PresentDay(dpDate.getValue(), rdv.getPresentDay().getMedecin()));
@@ -118,6 +121,7 @@ public class EditRdvDialogCtrl {
 		//TODO : Affiche le pop-up pour renseigner le paiement
 		//Besoin d'un retour paiement??
 		mainApp.showPaiementDialog(rdv);
+		System.out.println("rdv : " + rdv);
 		//payment = ??;
 	}
 	

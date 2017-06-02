@@ -100,7 +100,7 @@ public class Paiement implements Serializable, Comparable<Paiement>{
         this.date = date;
     }
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     public Rdv getRdv() {
         return rdv;
     }
@@ -108,11 +108,10 @@ public class Paiement implements Serializable, Comparable<Paiement>{
         this.rdv = rdv;
     }
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     private Medecin getMedecin() {
         return medecin;
     }
-    @SuppressWarnings("unused")
 	private void setMedecin(Medecin medecin) {
         this.medecin = medecin;
     }

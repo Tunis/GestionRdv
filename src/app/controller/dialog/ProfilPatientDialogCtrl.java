@@ -2,6 +2,7 @@ package app.controller.dialog;
 
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 
 import app.Main;
@@ -148,15 +149,20 @@ public class ProfilPatientDialogCtrl {
 		colDate.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPresentDay().getPresent()));
 		colCat.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getTypeRdv()));
 		ColMed.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPresentDay().getMedecin()));
-		colPay.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPaiement() == null ? 
-				false : 	
-				cellData.getValue().getPaiement().isPayer()));
+		colPay.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPaiement() != null && cellData.getValue().getPaiement().isPayer()));
 		
 		//Permet d'éditer les rdv
 		tableRdv.setOnMouseClicked(event -> {
-			Rdv selectedRdv = tableRdv.getSelectionModel().getSelectedItem();
-	        
-	        if(selectedRdv != null){
+			Rdv selectedRdv = tableRdv.getItems().get(tableRdv.getSelectionModel().getSelectedIndex());
+			Optional<Patient> first = mPatient.getList().stream().filter(p -> p.getId() == selectedRdv.getPatient().getId()).findFirst();
+			System.out.println("present : " + first.isPresent());
+			if(first.isPresent()){
+				System.out.println("rdv liste table : " + selectedRdv);
+				System.out.println("rdv liste mPatient : " + first.get().getRdvList().get(tableRdv.getSelectionModel().getSelectedIndex()));
+			}
+
+			if(selectedRdv != null){
+				System.out.println("rdv : " + selectedRdv);
 	        	mainApp.showEditRdvDialog(selectedRdv, this);
 	        }
 		});

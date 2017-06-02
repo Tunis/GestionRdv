@@ -36,6 +36,11 @@ public class MCompta{
 		List<Rdv> rdvs = new ArrayList<>();
 		if(first.isPresent()) {
             rdvs = first.get().getRdvList();
+            for (Rdv rdv : rdvs) {
+                System.out.println("rdv de : " + rdv.getPatient());
+                System.out.println("rdv le : " + rdv.getPresentDay().getPresent());
+
+            }
 
             ComptaJournaliere cj = new ComptaJournaliere(medecin, date, retrait);
 

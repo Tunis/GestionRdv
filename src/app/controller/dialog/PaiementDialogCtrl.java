@@ -46,7 +46,8 @@ public class PaiementDialogCtrl {
         this.mPaiement = mPaiement;
         this.rdv = rdv;
         this.payment = rdv.getPaiement();
-        
+
+		System.out.println("rdv : " + rdv);
         displayPayment();
     }
 	
@@ -108,7 +109,7 @@ public class PaiementDialogCtrl {
 			float tp = Float.valueOf(textFTP.getText());
 			boolean payer = checkBoxPaye.isSelected();
 
-			if(payment != null && dateRdv.equals(LocalDate.now())){
+			if(payment != null && dateRdv.equals(payment.getDate())){
 				if(textFCB.getText() != null)
 					payment.setCb(cb);
 				
@@ -128,11 +129,24 @@ public class PaiementDialogCtrl {
 					e.printStackTrace();
 					AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_SAVE_DB, AlerteUtil.HEADERTEXT_INCORECT_FIELD, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
 				}
-			} else {
+			} else if(payment != null) {
 				Tp newTp = new Tp();
-				
 				newTp.setMontant(tp);
-				
+				payment.setPayer(payer);
+				try {
+					mPaiement.editPaiement(payment);
+					payment = mPaiement.createPaiement(espece, cheque, cb, newTp, prix, payer, LocalDate.now(), rdv.getPresentDay().getMedecin(), rdv);
+					//MAJ du rdv avec le paiement
+					rdv.setPaiement(payment);
+				}catch (DbSaveException e){
+					e.printStackTrace();
+					AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_SAVE_DB, AlerteUtil.HEADERTEXT_INCORECT_FIELD, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
+				}
+			}else{
+				Tp newTp = new Tp();
+
+				newTp.setMontant(tp);
+
 				try {
 					payment = mPaiement.createPaiement(espece, cheque, cb, newTp, prix, payer, LocalDate.now(), rdv.getPresentDay().getMedecin(), rdv);
 					//MAJ du rdv avec le paiement
@@ -142,6 +156,7 @@ public class PaiementDialogCtrl {
 					AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_SAVE_DB, AlerteUtil.HEADERTEXT_INCORECT_FIELD, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
 				}
 			}
+			System.out.println("rdv : " + rdv);
 			
 			dialogStage.close();
 		}

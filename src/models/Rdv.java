@@ -96,7 +96,7 @@ public class Rdv {
         this.presentDay = presentDay;
     }
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.REFRESH)
     public Paiement getPaiement() {
         return paiement;
     }
@@ -104,11 +104,10 @@ public class Rdv {
         this.paiement = paiement;
     }
 
-    @Override
-    public String toString() {
-        return patient.getFirstName() + " " + patient.getMaidenName();
-    }
-
+//    @Override
+//    public String toString() {
+//        return patient.getFirstName() + " " + patient.getMaidenName();
+//    }
     public static Callback<Rdv, Observable[]> extractor() {
         return (Rdv p) -> new Observable[]{p.duration};
     }

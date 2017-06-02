@@ -60,9 +60,9 @@ public class Main extends Application {
         this.primaryStage.setOnCloseRequest(event -> DataBase.close());
         this.primaryStage.show();
 
-        showCreateRdvDialog(LocalDateTime.now(), (Medecin)mMedecin.getList().get(0));
+        //showCreateRdvDialog(LocalDateTime.now(), (Medecin)mMedecin.getList().get(0));
         
-        //initRootLayout();
+        initRootLayout();
 	}
 	
 	//Initializes the root layout.

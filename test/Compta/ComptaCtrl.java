@@ -154,6 +154,7 @@ public class ComptaCtrl implements Initializable {
 
     public void createCompta(ActionEvent event) {
         try {
+            System.out.println(cbMedecin.getItems().get(cbMedecin.getSelectionModel().getSelectedIndex()) + ", " + date.get());
             mCompta.createComptaOfDay(cbMedecin.getItems().get(cbMedecin.getSelectionModel().getSelectedIndex()), date.get(), 0);
         } catch (DbSaveException e) {
             e.printStackTrace();
