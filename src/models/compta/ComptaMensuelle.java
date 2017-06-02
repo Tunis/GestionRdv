@@ -3,7 +3,6 @@ package models.compta;
 import models.Medecin;
 
 import java.time.Month;
-import java.time.Year;
 import java.util.List;
 
 public class ComptaMensuelle extends Compta {

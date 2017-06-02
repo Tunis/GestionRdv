@@ -1,13 +1,7 @@
 package app;
 
-import app.controller.RootLayoutCtrl;
-import app.controller.TabHomeCtrl;
-import app.controller.TabPlanningContainerCtrl;
-import app.controller.dialog.CreateMedecinDialogCtrl;
-import app.controller.dialog.CreatePatientDialogCtrl;
-import app.controller.dialog.CreateRdvDialogCtrl;
-import app.controller.dialog.EditRdvDialogCtrl;
-import app.controller.dialog.ProfilPatientDialogCtrl;
+import app.controller.*;
+import app.controller.dialog.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,7 +11,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import metier.action.MMedecin;
+import metier.action.MPaiement;
 import metier.action.MPatient;
+import metier.action.MRdv;
 import metier.hibernate.DataBase;
 import models.Medecin;
 import models.Patient;
@@ -25,6 +21,7 @@ import models.Rdv;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 public class Main extends Application {
@@ -35,6 +32,8 @@ public class Main extends Application {
 
 	private MPatient mPatient = new MPatient();
     private MMedecin mMedecin = new MMedecin();
+    private MPaiement mPaiement = new MPaiement();
+    private MRdv mRdv = new MRdv();
     private LocalDate date;
 
     public LocalDate getDate(){ return date;}
@@ -59,20 +58,11 @@ public class Main extends Application {
 		this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Gestion RdV");
         this.primaryStage.setOnCloseRequest(event -> DataBase.close());
+        this.primaryStage.show();
         
-        /*FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("view/dialog/CreateRdvDialog.fxml"));
-        AnchorPane test = null;
-        try {
-            test = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if(test != null)
-        this.primaryStage.setScene(new Scene(test));
-        this.primaryStage.show();*/
+        showCreateRdvDialog(LocalDateTime.now(), (Medecin)mMedecin.getList().get(0));
         
-        initRootLayout();
+        //initRootLayout();
 	}
 	
 	//Initializes the root layout.
@@ -188,7 +178,7 @@ public class Main extends Application {
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Créer un Patient");
+            dialogStage.setTitle("Crï¿½er un Patient");
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
@@ -215,7 +205,7 @@ public class Main extends Application {
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Créer un Medecin");
+            dialogStage.setTitle("CrÃ©er un Medecin");
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
@@ -223,7 +213,7 @@ public class Main extends Application {
 
             // Set the person into the controller.
             CreateMedecinDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage);
+            controller.setDialogStage(dialogStage, mMedecin);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
@@ -233,7 +223,7 @@ public class Main extends Application {
         }
     }
     
-    public void showCreateRdvDialog() {
+    public void showCreateRdvDialog(LocalDateTime dateRdv, Medecin medecin) {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
@@ -242,7 +232,7 @@ public class Main extends Application {
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Créer un RdV");
+            dialogStage.setTitle("CrÃ©er un RdV");
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
@@ -250,7 +240,7 @@ public class Main extends Application {
 
             // Set the person into the controller.
             CreateRdvDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage);
+            controller.setDialogStage(dialogStage, mPatient, mRdv, mMedecin, dateRdv, medecin);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
@@ -288,7 +278,7 @@ public class Main extends Application {
         }
     }
     
-    public void showProfilMedecinDialog(Medecin p){
+    public void showProfilMedecinDialog(Medecin m){
     	try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
@@ -304,8 +294,8 @@ public class Main extends Application {
             dialogStage.setScene(scene);
 
             // Set the medecin into the controller.
-            /*ProfilPatientDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage, mPatient, p);*/
+            ProfilMedecinDialogCtrl controller = loader.getController();
+            controller.setDialogStage(dialogStage, mMedecin, m);
             
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
@@ -315,7 +305,7 @@ public class Main extends Application {
         }
     }
     
-    public void showEditRdvDialog(Rdv rdv){
+    public void showEditRdvDialog(Rdv rdv, ProfilPatientDialogCtrl patientCtrl){
     	try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
@@ -332,7 +322,35 @@ public class Main extends Application {
 
             // Set the RdV into the controller.
             EditRdvDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage, rdv, mMedecin);
+            controller.setDialogStage(dialogStage, rdv, mMedecin, this, patientCtrl);
+            
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    //Show "Payment" Dialog
+    public void showPaiementDialog(Rdv rdv){
+    	try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("view/dialog/PaiementDialog.fxml"));
+            BorderPane page = (BorderPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Paiement");
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the RdV into the controller.
+            PaiementDialogCtrl controller = loader.getController();
+            controller.setDialogStage(dialogStage, mPaiement, rdv);
             
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

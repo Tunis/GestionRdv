@@ -118,10 +118,10 @@ public class TabPlanningContainerCtrl {
 				if(l.getProperties().get("date") != null) {
 					if(l.getProperties().get("rdv") != null){
 						Rdv rdv = (Rdv) l.getProperties().get("rdv");
-						mainApp.showEditRdvDialog(rdv);
+						mainApp.showEditRdvDialog(rdv, null);
 					}else {
 						LocalDateTime dateCliked = (LocalDateTime) l.getProperties().get("date");
-						mainApp.showCreateRdvDialog();
+						mainApp.showCreateRdvDialog(dateCliked, listMedecin.getSelectionModel().getSelectedItem());
 					}
 				}
 			}
@@ -133,10 +133,10 @@ public class TabPlanningContainerCtrl {
 			if(l != null){
 				if(l.getProperties().get("rdv") != null){
 					Rdv rdv = (Rdv) l.getProperties().get("rdv");
-					mainApp.showEditRdvDialog(rdv);
+					mainApp.showEditRdvDialog(rdv, null);
 				}else {
 					LocalDateTime dateCliked = (LocalDateTime) l.getProperties().get("date");
-					mainApp.showCreateRdvDialog();
+					mainApp.showCreateRdvDialog(dateCliked, listMedecin.getSelectionModel().getSelectedItem());
 				}
 			}
 		});

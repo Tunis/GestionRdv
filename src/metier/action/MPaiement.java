@@ -28,11 +28,12 @@ public class MPaiement extends Metier<Paiement> {
         list.sort(Paiement::compareTo);
     }
 
-	public void createPaiement(float espece, Cheque cheque, float cb, Tp tp, float prix, boolean payer, LocalDate date, Medecin medecin, Rdv rdv) throws DbSaveException {
+	public Paiement createPaiement(float espece, Cheque cheque, float cb, Tp tp, float prix, boolean payer, LocalDate date, Medecin medecin, Rdv rdv) throws DbSaveException {
         Paiement p = new Paiement(espece, cheque, cb, tp, prix, payer, date, medecin, rdv);
         db.save(p);
         if(!p.isPayer())
             list.add(p);
+        return p;
     }
 
     public void editPaiement(Paiement p) throws DbSaveException {

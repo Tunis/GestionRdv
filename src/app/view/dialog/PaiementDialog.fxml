@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<BorderPane prefHeight="350.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.dialog.PaiementDialogCtrl">
+   <left>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="140.0" minWidth="10.0" prefWidth="88.0" />
+          <ColumnConstraints fillWidth="false" halignment="CENTER" maxWidth="202.0" minWidth="10.0" prefWidth="202.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="114.0" />
+          <RowConstraints maxHeight="114.0" />
+            <RowConstraints maxHeight="114.0" minHeight="10.0" prefHeight="30.0" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" />
+        </rowConstraints>
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+         <children>
+            <Label text="Carte Bancaire" />
+            <Label text="Espèces" GridPane.rowIndex="1" />
+            <Label text="Chèques" GridPane.rowIndex="2" />
+            <Label text="TP" GridPane.rowIndex="3" />
+            <Label text="Prix" GridPane.rowIndex="4" />
+            <TextField fx:id="textFCB" promptText="Montant" GridPane.columnIndex="1" />
+            <TextField fx:id="textFEsp" promptText="Montant" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="textFTP" promptText="Montant" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="textFPrix" promptText="Montant" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <children>
+                  <TextField fx:id="textFCheqMontant" promptText="Montant" />
+                  <TextField fx:id="textFCheqBanque" promptText="Banque" />
+                  <TextField fx:id="textFCheqNom" promptText="Nom" />
+               </children>
+            </HBox>
+            <CheckBox fx:id="checkBoxPaye" mnemonicParsing="false" text="Payé" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+         	<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
+               <children>
+                  <Button fx:id="btnSubmit" mnemonicParsing="false" onAction="#handleUpadte" text="Valider" />
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+   </left>
+</BorderPane>

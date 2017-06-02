@@ -3,21 +3,15 @@ package app.controller.dialog;
 import java.time.Duration;
 import java.time.LocalTime;
 
+import app.Main;
+import app.util.AlerteUtil;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import metier.action.MMedecin;
 import models.Medecin;
-import models.Paiement;
+import models.PresentDay;
 import models.Rdv;
 import models.enums.TypeRdv;
 
@@ -25,7 +19,8 @@ public class EditRdvDialogCtrl {
 	private Stage dialogStage;
 	private MMedecin mMedecin;
 	private Rdv rdv;
-	private Paiement payment;
+	private ProfilPatientDialogCtrl patientCtrl;
+	private Main mainApp;
 	
 	@FXML
     private DatePicker dpDate;
@@ -53,10 +48,12 @@ public class EditRdvDialogCtrl {
     @FXML
     private Button btnPayment;
     
-	public void setDialogStage(Stage dialogStage, Rdv rdv, MMedecin mMedecin) {
+	public void setDialogStage(Stage dialogStage, Rdv rdv, MMedecin mMedecin, Main mainApp, ProfilPatientDialogCtrl patientCtrl) {
 		this.mMedecin = mMedecin;
 		this.dialogStage = dialogStage;
 		this.rdv = rdv;
+		this.patientCtrl = patientCtrl;
+		this.mainApp = mainApp;
 		
 		displayRdv();
     }
@@ -76,6 +73,7 @@ public class EditRdvDialogCtrl {
         spHeure.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,23,8,1));
         spHeure.getValueFactory().setValue(rdv.getTime().getHour());
         
+        
         spMinute.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,59,0,15));
         spMinute.getValueFactory().setValue(rdv.getTime().getMinute());
         
@@ -85,29 +83,37 @@ public class EditRdvDialogCtrl {
 		textFCotation.setText(rdv.getCotation());
 	}
 	
+	@FXML
 	public void handleUpadte(){
-		//update Object Rdv
-		rdv.getPresentDay().setPresent(dpDate.getValue());
-		rdv.setDuration(Duration.ofMinutes(spDuree.getValue()));
-		rdv.setCotation(textFCotation.getText());
-		rdv.setTime(LocalTime.of(spHeure.getValue(), spMinute.getValue()));
-		rdv.setTypeRdv(cbType.getValue());
-		//rdv.setPaiement(paiement);
-		
-		/*try {
-			MRdv.save(rdv);
-		} catch (DbSaveException e) {
-			e.printStackTrace();
-		}*/
 		
 		if(isValid()){
+			//update Object Rdv
+			if(!rdv.getPresentDay().getPresent().equals(dpDate.getValue())){
+				rdv.setPresentDay(new PresentDay(dpDate.getValue(), rdv.getPresentDay().getMedecin()));
+			}
+			rdv.setDuration(Duration.ofMinutes(spDuree.getValue()));
+			rdv.setCotation(textFCotation.getText());
+			rdv.setTime(LocalTime.of(Integer.valueOf(spHeure.getEditor().getText()), Integer.valueOf(spMinute.getEditor().getText())));
+			rdv.setTypeRdv(cbType.getValue());
+			
+			//TODO : Faire la save dans la Base
+			/*try {
+				MRdv.save(rdv);
+			} catch (DbSaveException e) {
+				e.printStackTrace();
+			}*/
+			
+			if(patientCtrl != null)
+				patientCtrl.geTableView().refresh();
 			dialogStage.close();
 		}
 	}
 	
+	@FXML
 	public void handlePayment(){
 		//TODO : Affiche le pop-up pour renseigner le paiement
-		//Besoin d'un retour paiement
+		//Besoin d'un retour paiement??
+		mainApp.showPaiementDialog(rdv);
 		//payment = ??;
 	}
 	
@@ -115,33 +121,29 @@ public class EditRdvDialogCtrl {
 	private boolean isValid(){
 		String errorMessage = "";
 		
-		/*if(textFPrenom.getText() == null || textFPrenom.getText().length() == 0){
-			errorMessage += "Champ Pr�nom invalid\n";
-		}*/
-		if(dpDate.getValue() == null){
-			errorMessage += "Champ Date invalid\n";
+		int heure = 0;
+		int minute = 0;
+		
+		try {
+			heure = Integer.valueOf(spHeure.getEditor().getText());
+			minute = Integer.valueOf(spMinute.getEditor().getText());
+			
+			if(spHeure.getEditor().getText() == null || heure >= 24){
+				errorMessage += "Heure du Rdv invalide\n";
+			}
+			if(spMinute.getEditor().getText() == null || minute >= 60){
+				errorMessage += "Minute du Rdv invalide\n";
+			}
+		} catch (NumberFormatException e) {
+			errorMessage += "Horaire invalide\n";
 		}
-		if(spHeure.getValue() == null || spHeure.getValue() >= 24){
-			errorMessage += "Champ Heure invalid\n";
+		if(dpDate.getEditor().getText() == null || dpDate.getEditor().getText().length() == 0){
+			errorMessage += "Date RdV invalide\n";
 		}
-		if(spMinute.getValue() == null || spMinute.getValue() >= 60){
-			errorMessage += "Champ Minute invalid\n";
-		}
-		if(payment == null){
-			errorMessage += "Paiement non renseign�\n";
-		}
-		System.out.println(spMinute.getValue());
 		if (errorMessage.length() == 0) {
             return true;
         } else {
-            // Show the error message.
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(dialogStage);
-            alert.setTitle("Erreur de Renseignement");
-            alert.setHeaderText("Merci de modifier les champ incorrect");
-            alert.setContentText(errorMessage);
-
-            alert.showAndWait();
+            AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_INCORECT_FIELD, errorMessage);
 
             return false;
         }

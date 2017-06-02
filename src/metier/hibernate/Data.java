@@ -21,7 +21,8 @@ public abstract class Data<T> implements IDb<T> {
             session.save(e);
             session.getTransaction().commit();
         }catch (Exception ex){
-            throw new DbSaveException("erreur sql");
+        	ex.printStackTrace();
+            //throw new DbSaveException("erreur sql");
         }
     }
 

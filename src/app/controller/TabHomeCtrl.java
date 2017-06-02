@@ -78,7 +78,7 @@ public class TabHomeCtrl {
     }
 
     @FXML
-    private void handleUpdatePatient() {    	
+    private void handleUpdatePatient() {
     	int selectedIndex = cbBoxPatient.getSelectionModel().getSelectedIndex();
         
         if(selectedIndex != -1){
@@ -117,7 +117,7 @@ public class TabHomeCtrl {
     	int selectedIndex = cbBoxMedecin.getSelectionModel().getSelectedIndex();
         
         if(selectedIndex != -1){
-        	
+        	mainApp.showProfilMedecinDialog(cbBoxMedecin.getItems().get(selectedIndex));
         }
     }
     
