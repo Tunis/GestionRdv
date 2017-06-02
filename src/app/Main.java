@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import metier.action.MMedecin;
 import metier.action.MPaiement;
 import metier.action.MPatient;
+import metier.action.MRdv;
 import metier.hibernate.DataBase;
 import models.Medecin;
 import models.Patient;
@@ -32,6 +33,7 @@ public class Main extends Application {
 	private MPatient mPatient = new MPatient();
     private MMedecin mMedecin = new MMedecin();
     private MPaiement mPaiement = new MPaiement();
+    private MRdv mRdv = new MRdv();
     private LocalDate date;
 
     public LocalDate getDate(){ return date;}
@@ -58,7 +60,7 @@ public class Main extends Application {
         this.primaryStage.setOnCloseRequest(event -> DataBase.close());
         this.primaryStage.show();
         
-        showCreateRdvDialog(LocalDateTime.now(), new Medecin("Jean-Eric", "Dupont", "05042034", "tot@toto.fr"));
+        showCreateRdvDialog(LocalDateTime.now(), (Medecin)mMedecin.getList().get(0));
         
         //initRootLayout();
 	}
@@ -238,7 +240,7 @@ public class Main extends Application {
 
             // Set the person into the controller.
             CreateRdvDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage, mPatient, dateRdv, medecin);
+            controller.setDialogStage(dialogStage, mPatient, mRdv, mMedecin, dateRdv, medecin);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

@@ -120,7 +120,7 @@ public class Patient implements Serializable, Comparable<Patient>{
     public Adresse getAdresse(){return adresse;}
     public void setAdresse(Adresse adresse){ this.adresse = adresse;}
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.MERGE)
     @LazyCollection(LazyCollectionOption.EXTRA)
     public List<Rdv> getRdvList() {
         return rdvList;

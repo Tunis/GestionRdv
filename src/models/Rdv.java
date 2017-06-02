@@ -72,7 +72,7 @@ public class Rdv {
         this.time = time;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @PrimaryKeyJoinColumn
     public Patient getPatient() {
         return patient;
@@ -81,7 +81,7 @@ public class Rdv {
         this.patient = patient;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @PrimaryKeyJoinColumn
     public PresentDay getPresentDay() {
         return presentDay;
@@ -90,7 +90,7 @@ public class Rdv {
         this.presentDay = presentDay;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     public Paiement getPaiement() {
         return paiement;
     }

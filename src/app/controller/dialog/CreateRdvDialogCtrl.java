@@ -6,13 +6,22 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import metier.action.MMedecin;
 import metier.action.MPatient;
+import metier.action.MRdv;
+import metier.hibernate.data.exceptions.DbCreateException;
+import metier.hibernate.data.exceptions.DbDuplicateException;
+import metier.hibernate.data.exceptions.DbSaveException;
 import models.Medecin;
 import models.Patient;
+import models.PresentDay;
 import models.TypeRdv;
 
 import java.net.URL;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import app.util.AlerteUtil;
@@ -20,6 +29,8 @@ import app.util.AlerteUtil;
 public class CreateRdvDialogCtrl implements Initializable {
 	private Stage dialogStage;
 	private MPatient mPatient;
+	private MMedecin mMedecin;
+	private MRdv mRdv;
 	private LocalDateTime dateRdv;
 	private Medecin medecin;
 	
@@ -44,9 +55,11 @@ public class CreateRdvDialogCtrl implements Initializable {
     @FXML
     private Label labelMedecin;
 
-    public void setDialogStage(Stage dialogStage, MPatient mPatient, LocalDateTime dateRdv, Medecin medecin) {
+    public void setDialogStage(Stage dialogStage, MPatient mPatient, MRdv mRdv, MMedecin mMedecin, LocalDateTime dateRdv, Medecin medecin) {
 		this.dialogStage = dialogStage;
+		this.mRdv = mRdv;
 		this.mPatient = mPatient;
+		this.mMedecin = mMedecin;
 		this.medecin = medecin;
 		this.dateRdv = dateRdv;
 		
@@ -65,22 +78,38 @@ public class CreateRdvDialogCtrl implements Initializable {
     @FXML
     private void handleCreateRdv(ActionEvent event) {
         if(isValid()){
+        	//TODO : Faire la save en base = decommenté ci-dessous : Maj planning ?
         	System.out.println("Submit !");
-        	/*if(!rdv.getPresentDay().getPresent().equals(dpDate.getValue())){
-				rdv.setPresentDay(new PresentDay(dpDate.getValue(), rdv.getPresentDay().getMedecin()));
+			
+			String cotation = textFCotation.getText();
+			Duration duration = Duration.ofMinutes(spDuree.getValue());
+			TypeRdv typeRdv = cbType.getValue();
+			LocalTime time = LocalTime.of(spHeure.getValue(), spMinute.getValue());
+			Patient patient = cbPatient.getValue();
+			PresentDay presentDay = null;
+			
+			//Vérifie si le présentDay existe pour ce médecin
+			Optional<PresentDay> isPresent = medecin.getPlannings().stream().filter(pDay -> pDay.getPresent().equals(dpDate.getValue())).findFirst();
+			if(isPresent.isPresent()){
+				presentDay = isPresent.get();
+			} else {
+				presentDay = new PresentDay(dpDate.getValue(), medecin);
+				medecin.getPlannings().add(presentDay);
+				
+				try {
+					mMedecin.save(medecin);
+				} catch (DbSaveException e) {
+					e.printStackTrace();
+					AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_SAVE_DB, AlerteUtil.HEADERTEXT_INCORECT_FIELD, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
+				}
 			}
-			rdv.setDuration(Duration.ofMinutes(spDuree.getValue()));
-			rdv.setCotation(textFCotation.getText());
-			rdv.setTime(LocalTime.of(Integer.valueOf(spHeure.getEditor().getText()), Integer.valueOf(spMinute.getEditor().getText())));
-			rdv.setTypeRdv(cbType.getValue());/*
 			
-			
-			//TODO : Faire la save dans la Base
-			/*try {
-				MRdv.save(rdv);
-			} catch (DbSaveException e) {
+        	try {
+        		mRdv.createRdv(cotation, duration, typeRdv, time, patient, presentDay);
+			} catch (DbDuplicateException | DbCreateException e) {
 				e.printStackTrace();
-			}*/
+				AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_SAVE_DB, AlerteUtil.HEADERTEXT_INCORECT_FIELD, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
+			}
         	
         	dialogStage.close();
         }
