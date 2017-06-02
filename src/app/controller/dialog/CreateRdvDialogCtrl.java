@@ -77,10 +77,7 @@ public class CreateRdvDialogCtrl implements Initializable {
     
     @FXML
     private void handleCreateRdv(ActionEvent event) {
-        if(isValid()){
-        	//TODO : Faire la save en base = decommenté ci-dessous : Maj planning ?
-        	System.out.println("Submit !");
-			
+        if(isValid()){			
 			String cotation = textFCotation.getText();
 			Duration duration = Duration.ofMinutes(spDuree.getValue());
 			TypeRdv typeRdv = cbType.getValue();

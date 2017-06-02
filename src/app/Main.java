@@ -322,7 +322,7 @@ public class Main extends Application {
 
             // Set the RdV into the controller.
             EditRdvDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage, rdv, mMedecin, this, patientCtrl);
+            controller.setDialogStage(dialogStage, rdv, mMedecin, mRdv, this, patientCtrl);
             
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

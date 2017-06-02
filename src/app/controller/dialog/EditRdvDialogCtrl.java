@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import metier.action.MMedecin;
+import metier.action.MRdv;
+import metier.hibernate.data.exceptions.DbSaveException;
 import models.Medecin;
 import models.PresentDay;
 import models.Rdv;
@@ -18,6 +20,7 @@ import models.enums.TypeRdv;
 public class EditRdvDialogCtrl {
 	private Stage dialogStage;
 	private MMedecin mMedecin;
+	private MRdv mRdv;
 	private Rdv rdv;
 	private ProfilPatientDialogCtrl patientCtrl;
 	private Main mainApp;
@@ -48,9 +51,10 @@ public class EditRdvDialogCtrl {
     @FXML
     private Button btnPayment;
     
-	public void setDialogStage(Stage dialogStage, Rdv rdv, MMedecin mMedecin, Main mainApp, ProfilPatientDialogCtrl patientCtrl) {
+	public void setDialogStage(Stage dialogStage, Rdv rdv, MMedecin mMedecin, MRdv mRdv, Main mainApp, ProfilPatientDialogCtrl patientCtrl) {
 		this.mMedecin = mMedecin;
 		this.dialogStage = dialogStage;
+		this.mRdv = mRdv;
 		this.rdv = rdv;
 		this.patientCtrl = patientCtrl;
 		this.mainApp = mainApp;
@@ -96,12 +100,12 @@ public class EditRdvDialogCtrl {
 			rdv.setTime(LocalTime.of(Integer.valueOf(spHeure.getEditor().getText()), Integer.valueOf(spMinute.getEditor().getText())));
 			rdv.setTypeRdv(cbType.getValue());
 			
-			//TODO : Faire la save dans la Base
-			/*try {
-				MRdv.save(rdv);
+			try {
+				mRdv.save(rdv);
 			} catch (DbSaveException e) {
 				e.printStackTrace();
-			}*/
+				AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_SAVE_DB, AlerteUtil.HEADERTEXT_CREATE_DB, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
+			}
 			
 			if(patientCtrl != null)
 				patientCtrl.geTableView().refresh();
