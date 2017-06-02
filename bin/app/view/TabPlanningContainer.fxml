@@ -7,11 +7,8 @@
    <top>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <HBox spacing="10.0">
+            <HBox spacing="10.0" alignment="CENTER_RIGHT">
                <children>
-                  <Button fx:id="btnPlanningPrevious" mnemonicParsing="false" text="Précédent" />
-                  <Button fx:id="btnPlanningToday" defaultButton="true" mnemonicParsing="false" text="Ajourd'hui" />
-                  <Button fx:id="btnPlanningNext" mnemonicParsing="false" text="Suivant" />
                   <ComboBox fx:id="listMedecin" editable="true" prefWidth="150.0" />
                   <ToggleButton fx:id="btnPlanningDay" mnemonicParsing="false" onAction="#changeView" text="Jour">
                      <toggleGroup>
