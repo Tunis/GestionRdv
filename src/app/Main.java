@@ -20,6 +20,7 @@ import models.Rdv;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 public class Main extends Application {
@@ -55,20 +56,11 @@ public class Main extends Application {
 		this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Gestion RdV");
         this.primaryStage.setOnCloseRequest(event -> DataBase.close());
+        this.primaryStage.show();
         
-        /*FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("view/dialog/CreateRdvDialog.fxml"));
-        AnchorPane test = null;
-        try {
-            test = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if(test != null)
-        this.primaryStage.setScene(new Scene(test));
-        this.primaryStage.show();*/
+        showCreateRdvDialog(LocalDateTime.now(), new Medecin("Jean-Eric", "Dupont", "05042034", "tot@toto.fr"));
         
-        initRootLayout();
+        //initRootLayout();
 	}
 	
 	//Initializes the root layout.
@@ -229,7 +221,7 @@ public class Main extends Application {
         }
     }
     
-    public void showCreateRdvDialog() {
+    public void showCreateRdvDialog(LocalDateTime dateRdv, Medecin medecin) {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
@@ -238,7 +230,7 @@ public class Main extends Application {
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Cr�er un RdV");
+            dialogStage.setTitle("Créer un RdV");
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
@@ -246,7 +238,7 @@ public class Main extends Application {
 
             // Set the person into the controller.
             CreateRdvDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage);
+            controller.setDialogStage(dialogStage, mPatient, dateRdv, medecin);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

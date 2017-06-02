@@ -11,9 +11,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<BorderPane fx:controller="app.controller.dialog.PaiementDialogCtrl" prefHeight="350.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
-   <center>
+<BorderPane prefHeight="350.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.dialog.PaiementDialogCtrl">
+   <left>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="140.0" minWidth="10.0" prefWidth="88.0" />
@@ -51,10 +50,10 @@
             <CheckBox fx:id="checkBoxPaye" mnemonicParsing="false" text="Payé" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          	<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
                <children>
-                  <Button fx:id="btnSubmit" onAction="#handleUpadte" mnemonicParsing="false" text="Valider" />
+                  <Button fx:id="btnSubmit" mnemonicParsing="false" onAction="#handleUpadte" text="Valider" />
                </children>
             </HBox>
          </children>
       </GridPane>
-   </center>
+   </left>
 </BorderPane>

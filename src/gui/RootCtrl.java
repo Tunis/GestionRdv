@@ -6,8 +6,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import metier.hibernate.data.DataMedecin;
-import metier.hibernate.data.DataPatient;
 import models.Medecin;
 import models.Patient;
 
@@ -29,8 +27,8 @@ public class RootCtrl implements Initializable {
     @FXML
     private ListView<Patient> listPatient;
 
-    private DataPatient dp = new DataPatient();
-    private DataMedecin dm = new DataMedecin();
+    //private DataPatient dp = new DataPatient();
+    //private DataMedecin dm = new DataMedecin();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -41,11 +41,6 @@ public class PaiementDialogCtrl {
 	@FXML
 	private Button btnSubmit;
        
-	/*public void setDialogStage(Stage dialogStage, MPaiement mPaiement, Paiement paiement) {
-        this.dialogStage = dialogStage;
-        this.mPaiement = mPaiement;
-        this.paiement = paiement;
-    }*/
 	public void setDialogStage(Stage dialogStage, MPaiement mPaiement, Rdv rdv) {
         this.dialogStage = dialogStage;
         this.mPaiement = mPaiement;
@@ -101,7 +96,7 @@ public class PaiementDialogCtrl {
 			float cb = Float.valueOf(textFCB.getText());
 			
 			Cheque cheque = null;
-			if(textFCheqMontant.getText() != null || textFCheqMontant.getText().length() != 0){
+			if(textFCheqMontant.getText() != null && textFCheqMontant.getText().length() != 0){
 				cheque = new Cheque();
 				cheque.setMontant(Float.valueOf(textFCheqMontant.getText()));
 				cheque.setBanque(textFCheqBanque.getText());
@@ -127,6 +122,8 @@ public class PaiementDialogCtrl {
 				
 				try {
 					mPaiement.editPaiement(payment);
+					//MAJ du rdv avec le paiement
+					rdv.setPaiement(payment);
 				} catch (DbSaveException e) {
 					e.printStackTrace();
 					AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_SAVE_DB, AlerteUtil.HEADERTEXT_INCORECT_FIELD, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
@@ -137,7 +134,9 @@ public class PaiementDialogCtrl {
 				newTp.setMontant(tp);
 				
 				try {
-					mPaiement.createPaiement(espece, cheque, cb, newTp, prix, payer, LocalDate.now(), rdv.getPresentDay().getMedecin(), rdv);
+					payment = mPaiement.createPaiement(espece, cheque, cb, newTp, prix, payer, LocalDate.now(), rdv.getPresentDay().getMedecin(), rdv);
+					//MAJ du rdv avec le paiement
+					rdv.setPaiement(payment);
 				} catch (DbSaveException e) {
 					e.printStackTrace();
 					AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_SAVE_DB, AlerteUtil.HEADERTEXT_INCORECT_FIELD, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
@@ -152,14 +151,21 @@ public class PaiementDialogCtrl {
 	private boolean isValid(){
 		String errorMessage = "";
 		
-		if(!RegexUtil.validateFloatField(textFCB.getText())){
-			errorMessage += "Montant Carte bancaire non valide\n";
+		if(textFCB.getText() != null && textFTP.getText().length() != 0){
+			if(!RegexUtil.validateFloatField(textFCB.getText())){
+				errorMessage += "Montant Carte bancaire non valide\n";
+			}
 		}
-		if(!RegexUtil.validateFloatField(textFEsp.getText())){
-			errorMessage += "Montant Espèce non valide\n";
+		System.out.println(textFEsp.getText());
+		if(textFEsp.getText() != null && textFEsp.getText().length() != 0){
+			if(!RegexUtil.validateFloatField(textFEsp.getText())){
+				errorMessage += "Montant Espèce non valide\n";
+			}
 		}
-		if(!RegexUtil.validateFloatField(textFCheqMontant.getText())){
-			errorMessage += "Montant Chèque non valide\n";
+		if(textFCheqMontant.getText() != null && textFCheqMontant.getText().length() != 0){
+			if(!RegexUtil.validateFloatField(textFCheqMontant.getText())){
+				errorMessage += "Montant Chèque non valide\n";
+			}
 		}
 		if(textFTP.getText() == null || textFTP.getText().length() == 0 || !RegexUtil.validateFloatField(textFTP.getText())){
 			errorMessage += "Tiers-Payant non renseigné\n";
