@@ -5,10 +5,11 @@
 <hibernate-configuration>
     <session-factory>
         <!--<property name="connection.url">jdbc:mysql://localhost:3306/test?serverTimezone=Europe/Paris</property>-->
-        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.connection.username">test</property>
         <property name="hibernate.connection.password">test</property>
-        <property name="hibernate.connection.release_mode">after_transaction</property>
+        <property name="hibernate.connection.release_mode">after_statement</property>
+        <property name="hibernate.connection.autocommit">true</property>
         <!-- DB schema will be updated if needed -->
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.connection.release_mode">after_statement</property>

@@ -59,7 +59,7 @@ public class Main extends Application {
         this.primaryStage.setTitle("Gestion RdV");
         this.primaryStage.setOnCloseRequest(event -> DataBase.close());
         this.primaryStage.show();
-        
+
         showCreateRdvDialog(LocalDateTime.now(), (Medecin)mMedecin.getList().get(0));
         
         //initRootLayout();
@@ -126,8 +126,11 @@ public class Main extends Application {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/TabComptaOverview.fxml"));
-            return(BorderPane) loader.load();
-         
+
+            BorderPane comptaOverview = (BorderPane) loader.load();
+            //ComptaCtrl controller = loader.getController();
+
+            return comptaOverview;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -323,15 +326,15 @@ public class Main extends Application {
             // Set the RdV into the controller.
             EditRdvDialogCtrl controller = loader.getController();
             controller.setDialogStage(dialogStage, rdv, mMedecin, mRdv, this, patientCtrl);
-            
+
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
     //Show "Payment" Dialog
     public void showPaiementDialog(Rdv rdv){
     	try {

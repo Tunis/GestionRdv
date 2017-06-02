@@ -25,7 +25,7 @@ public class ComptaJournaliere extends Compta{
         this.retrait = retrait;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     public Medecin getMedecin() {
         return medecin;
     }
@@ -49,7 +49,7 @@ public class ComptaJournaliere extends Compta{
         this.date = date;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE)
     public List<Paiement> getPaiementList() {
         return paiementList;
     }
@@ -192,5 +192,14 @@ public class ComptaJournaliere extends Compta{
             case DUI: addDIU(1);
                 break;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "ComptaJournaliere{" +
+                "date=" + date +
+                ", paiementList=" + paiementList +
+                ", soldePrecedent=" + soldePrecedent +
+                '}';
     }
 }

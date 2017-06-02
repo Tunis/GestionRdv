@@ -20,7 +20,7 @@ public class DataCompta extends Data<ComptaJournaliere> implements IDbCompta {
                 "MONTH(date) = :month and " +
                 "YEAR(date) = :year ORDER BY date ASC", ComptaJournaliere.class)
                 .setParameter("medecin", medecin)
-                .setParameter("month", month)
+                .setParameter("month", month.getValue())
                 .setParameter("year", year)
                 .getResultList();
     }
