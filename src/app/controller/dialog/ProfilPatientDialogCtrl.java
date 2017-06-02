@@ -21,7 +21,7 @@ import metier.hibernate.data.exceptions.DbSaveException;
 import models.Medecin;
 import models.Patient;
 import models.Rdv;
-import models.TypeRdv;
+import models.enums.TypeRdv;
 
 public class ProfilPatientDialogCtrl {
 	private Main mainApp;
@@ -117,7 +117,7 @@ public class ProfilPatientDialogCtrl {
 		String errorMessage = "";
 		
 		if(textFPrenom.getText() == null || textFPrenom.getText().length() == 0){
-			errorMessage += "Champ Prénom invalid\n";
+			errorMessage += "Champ Prï¿½nom invalid\n";
 		}
 		
 		if (errorMessage.length() == 0) {

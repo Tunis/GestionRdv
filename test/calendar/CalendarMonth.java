@@ -1,10 +1,15 @@
-package app.view.custom;
+package calendar;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.TextAlignment;
 import models.Medecin;
@@ -106,7 +111,7 @@ public class CalendarMonth extends CalendarView<Medecin> {
                 label.getStyleClass().add("calendar-cell-not-display-month");
             }
 
-            label.getProperties().put("date",dateFind);
+            label.getProperties().put("date",d);
             label.setMaxSize(Integer.MAX_VALUE,Integer.MAX_VALUE);
             label.setTextAlignment(TextAlignment.CENTER);
             label.setAlignment(Pos.CENTER);

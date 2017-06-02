@@ -1,8 +1,6 @@
 package app.controller.dialog;
 
-import java.sql.Time;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 import javafx.collections.FXCollections;
@@ -17,17 +15,11 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
-import javafx.util.converter.LocalTimeStringConverter;
 import metier.action.MMedecin;
-import metier.action.MRdv;
-import metier.hibernate.data.exceptions.DbCreateException;
-import metier.hibernate.data.exceptions.DbDuplicateException;
-import metier.hibernate.data.exceptions.DbSaveException;
-import models.Adresse;
 import models.Medecin;
 import models.Paiement;
 import models.Rdv;
-import models.TypeRdv;
+import models.enums.TypeRdv;
 
 public class EditRdvDialogCtrl {
 	private Stage dialogStage;
@@ -124,7 +116,7 @@ public class EditRdvDialogCtrl {
 		String errorMessage = "";
 		
 		/*if(textFPrenom.getText() == null || textFPrenom.getText().length() == 0){
-			errorMessage += "Champ Prénom invalid\n";
+			errorMessage += "Champ Prï¿½nom invalid\n";
 		}*/
 		if(dpDate.getValue() == null){
 			errorMessage += "Champ Date invalid\n";
@@ -136,7 +128,7 @@ public class EditRdvDialogCtrl {
 			errorMessage += "Champ Minute invalid\n";
 		}
 		if(payment == null){
-			errorMessage += "Paiement non renseigné\n";
+			errorMessage += "Paiement non renseignï¿½\n";
 		}
 		System.out.println(spMinute.getValue());
 		if (errorMessage.length() == 0) {

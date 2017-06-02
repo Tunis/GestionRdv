@@ -8,7 +8,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import models.Medecin;
 import models.Patient;
-import models.TypeRdv;
+import models.enums.TypeRdv;
 
 import java.net.URL;
 import java.util.ResourceBundle;

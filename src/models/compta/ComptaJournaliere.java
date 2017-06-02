@@ -2,7 +2,7 @@ package models.compta;
 
 import models.Medecin;
 import models.Paiement;
-import models.TypeRdv;
+import models.enums.TypeRdv;
 
 import javax.persistence.*;
 import java.time.LocalDate;

@@ -1,5 +1,11 @@
 package models;
 
+import javafx.beans.Observable;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.util.Callback;
+import models.enums.TypeRdv;
+
 import javax.persistence.*;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -11,7 +17,7 @@ public class Rdv {
     private long id;
     private String cotation;
 
-    private Duration duration;
+    private ObjectProperty<Duration> duration = new SimpleObjectProperty<>();
     private TypeRdv typeRdv;
     private LocalTime time;
     private Patient patient;
@@ -22,7 +28,7 @@ public class Rdv {
 
     public Rdv(String cotation, Duration duration, TypeRdv typeRdv, LocalTime time, Patient patient, PresentDay presentDay) {
         this.cotation = cotation;
-        this.duration = duration;
+        this.duration.set(duration);
         this.typeRdv = typeRdv;
         this.time = time;
         this.patient = patient;
@@ -50,10 +56,10 @@ public class Rdv {
     @Basic
     @Column(nullable = false)
     public Duration getDuration() {
-        return duration;
+        return duration.get();
     }
     public void setDuration(Duration duration) {
-        this.duration = duration;
+        this.duration.set(duration);
     }
 
     @Enumerated
@@ -96,5 +102,14 @@ public class Rdv {
     }
     public void setPaiement(Paiement paiement) {
         this.paiement = paiement;
+    }
+
+    @Override
+    public String toString() {
+        return patient.getFirstName() + " " + patient.getMaidenName();
+    }
+
+    public static Callback<Rdv, Observable[]> extractor() {
+        return (Rdv p) -> new Observable[]{p.duration};
     }
 }
