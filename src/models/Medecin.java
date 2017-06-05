@@ -116,8 +116,4 @@ public class Medecin implements Serializable, Comparable<Medecin> {
                 firstName.compareTo(o.getFirstName());
     }
 
-    @Override
-    public String toString() {
-        return firstName + " " + lastName;
-    }
 }

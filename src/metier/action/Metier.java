@@ -1,4 +1,4 @@
-package app.controller.test;
+package metier.action;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;

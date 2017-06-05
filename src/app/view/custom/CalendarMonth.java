@@ -1,11 +1,11 @@
 package app.view.custom;
 
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import models.Medecin;
 import models.PresentDay;
@@ -32,7 +32,6 @@ public class CalendarMonth extends CalendarView<Medecin> {
         super();
         configView();
         this.setCenter(view);
-        draw();
     }
 
     @Override
@@ -50,6 +49,15 @@ public class CalendarMonth extends CalendarView<Medecin> {
     @Override
     protected void configView() {
         view = new GridPane();
+	    BorderPane.setMargin(view, new Insets(10, 10, 5, 10));
+	    for (int i = 0; i < 7; i++) {
+		    ColumnConstraints column = new ColumnConstraints();
+		    column.setPercentWidth((double) 100 / 7);
+		    RowConstraints row = new RowConstraints();
+		    row.setPercentHeight((double) 100 / 6);
+		    view.getColumnConstraints().add(column);
+		    view.getRowConstraints().add(row);
+	    }
     }
 
     private List<PresentDay> getPresentDay(LocalDate dateStart, LocalDate dateEnd){
@@ -110,7 +118,6 @@ public class CalendarMonth extends CalendarView<Medecin> {
             label.setMaxSize(Integer.MAX_VALUE,Integer.MAX_VALUE);
             label.setTextAlignment(TextAlignment.CENTER);
             label.setAlignment(Pos.CENTER);
-            label.setCenterShape(true);
 
 
             GridPane.setVgrow(label, Priority.ALWAYS);

@@ -1,29 +1,27 @@
 package app.controller.dialog;
 
 
-import java.time.LocalDate;
-import java.util.Optional;
-
-
 import app.Main;
 import app.util.AlerteUtil;
 import app.util.RegexUtil;
+import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import metier.action.MPatient;
+import metier.hibernate.data.exceptions.DbGetException;
 import metier.hibernate.data.exceptions.DbSaveException;
 import models.Medecin;
 import models.Patient;
 import models.Rdv;
 import models.enums.TypeRdv;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class ProfilPatientDialogCtrl {
 	private Main mainApp;
@@ -67,7 +65,7 @@ public class ProfilPatientDialogCtrl {
 	@FXML
 	private TableColumn<Rdv, Medecin> ColMed;
 	@FXML
-	private TableColumn<Rdv, Boolean> colPay;
+	private TableColumn<Rdv, String> colPay;
 
 	public TableView<Rdv> geTableView(){
 		return tableRdv;
@@ -101,37 +99,32 @@ public class ProfilPatientDialogCtrl {
 	}
 	
 	//Check form, if is valid save data into DB else show pop-up
-	private boolean isValid(String cp, String nSecu){
+	private boolean isValid(String adresse, String ville, String cp, String mail, String tel, String nSecu) {
 		String errorMessage = "";
-		
-		if(textFPrenom.getText() == null || textFPrenom.getText().length() == 0){
-			errorMessage += "Prénom non renseigné\n";
+
+		if (!adresse.isEmpty() || !ville.isEmpty() || !cp.isEmpty()) {
+			if (adresse.isEmpty())
+				errorMessage += "Rue non renseigné\n";
+			if (ville.isEmpty())
+				errorMessage += "Ville  non renseigné\n";
+			if (cp.isEmpty())
+				errorMessage += "Code Postal non renseigné\n";
+			else {
+				try {
+					int codePostal = Integer.valueOf(cp);
+				} catch (NumberFormatException e) {
+					errorMessage += "Code Postal non renseigné\n";
+				}
+			}
 		}
-		if(textFNom.getText() == null || textFNom.getText().length() == 0){
-			errorMessage += "Nom non renseigné\n";
-		}
-		if(textFNomJF.getText() == null || textFNomJF.getText().length() == 0){
-			errorMessage += "Nom de Jeune Fille non renseigné\n";
-		}
-		if(dpDate.getEditor().getText() == null || dpDate.getEditor().getText().length() == 0){
-			errorMessage += "Date de naissance non renseigné\n";
-		}
-		if(textFAdresse.getText() == null || textFAdresse.getText().length() == 0){
-			errorMessage += "Rue non renseigné\n";
-		}
-		if(textFVille.getText() == null || textFVille.getText().length() == 0){
-			errorMessage += "Ville non renseigné\n";
-		}
-		if(!RegexUtil.validateIntField(cp)){
-			errorMessage += "Code Postal non renseigné\n";
-		}
-		if(!RegexUtil.validateMail(textFMail.getText())){
+
+		if (!mail.isEmpty() && !RegexUtil.validateMail(mail)) {
 			errorMessage += "Mail non valide\n";
 		}
-		if(!RegexUtil.validateTel(textFTel.getText())){
+		if (tel.isEmpty() || !RegexUtil.validateTel(tel)) {
 			errorMessage += "Tel. non valide\n";
 		}
-		if(!RegexUtil.validateIntField(textFNSecu.getText())){
+		if (!nSecu.isEmpty() && !RegexUtil.validateIntField(nSecu)) {
 			errorMessage += "Numéro Sécurité non valide\n";
 		}
 		if (errorMessage.length() == 0) {
@@ -144,27 +137,36 @@ public class ProfilPatientDialogCtrl {
 	}
 	
 	private void listRdv(){
+		tableRdv.itemsProperty().unbind();
 		tableRdv.itemsProperty().bind(new SimpleListProperty<>(FXCollections.observableArrayList(p.getRdvList())));
-		
+
 		colDate.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPresentDay().getPresent()));
 		colCat.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getTypeRdv()));
 		ColMed.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPresentDay().getMedecin()));
-		colPay.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPaiement() != null && cellData.getValue().getPaiement().isPayer()));
+		colPay.setCellValueFactory(cellData -> {
+			if (cellData.getValue().getPaiement() != null && cellData.getValue().getPaiement().getDate() != null) {
+				return new ReadOnlyObjectWrapper<>(cellData.getValue().getPaiement().getDate().format(DateTimeFormatter.ofPattern("dd/MM/uuuu", Locale.getDefault()))).asString();
+			} else {
+				return new ReadOnlyObjectWrapper<>("").asString();
+			}
+		});
+
+		tableRdv.getSortOrder().clear();
+		tableRdv.getSortOrder().add(colDate);
+		colDate.setSortType(TableColumn.SortType.DESCENDING);
+		tableRdv.sort();
 		
 		//Permet d'éditer les rdv
 		tableRdv.setOnMouseClicked(event -> {
-			Rdv selectedRdv = tableRdv.getItems().get(tableRdv.getSelectionModel().getSelectedIndex());
-			Optional<Patient> first = mPatient.getList().stream().filter(p -> p.getId() == selectedRdv.getPatient().getId()).findFirst();
-			System.out.println("present : " + first.isPresent());
-			if(first.isPresent()){
-				System.out.println("rdv liste table : " + selectedRdv);
-				System.out.println("rdv liste mPatient : " + first.get().getRdvList().get(tableRdv.getSelectionModel().getSelectedIndex()));
-			}
+			if (!tableRdv.getSelectionModel().isEmpty() && tableRdv.getSelectionModel().getSelectedIndex() != -1) {
+				Rdv selectedRdv = tableRdv.getItems().get(tableRdv.getSelectionModel().getSelectedIndex());
 
-			if(selectedRdv != null){
-				System.out.println("rdv : " + selectedRdv);
-	        	mainApp.showEditRdvDialog(selectedRdv, this);
-	        }
+
+				if (selectedRdv != null) {
+					mainApp.showEditRdvDialog(selectedRdv, this);
+					updatePatient();
+				}
+			}
 		});
 	}
 	
@@ -173,25 +175,42 @@ public class ProfilPatientDialogCtrl {
 		
 		String cp = textFCP.getText();
 		String nSecu = textFNSecu.getText();
-		
-		if(isValid(cp, nSecu)){
+		String adresse = textFAdresse.getText();
+		String ville = textFVille.getText();
+		String tel = textFTel.getText();
+		String mail = textFMail.getText();
+		int secu = 0;
+
+		if (isValid(adresse, ville, cp, mail, tel, nSecu)) {
+			if (!nSecu.isEmpty())
+				secu = Integer.valueOf(nSecu);
 			p.getAdresse().setRue(textFAdresse.getText());
 			p.getAdresse().setCodePostal(Integer.valueOf(textFCP.getText()));
 			p.getAdresse().setVille(textFVille.getText());
 			p.setEmail(textFMail.getText());
 			p.setLastName(textFNom.getText());
 			p.setNote(textFNote.getText());
-			p.setSecuNumber(Integer.valueOf(textFNSecu.getText()));
+			p.setSecuNumber(secu);
 			p.setTelephone(textFTel.getText());
 			
 			try {
 				mPatient.save(p);
+				mPatient.updateList();
 			} catch (DbSaveException e) {
 				e.printStackTrace();
 				AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_CREATE_DB, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
+			} catch (DbGetException e) {
+				e.printStackTrace();
+				AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_SAVE_DB, AlerteUtil.HEADERTEXT_CREATE_DB, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
 			}
-			
+
 			dialogStage.close();
 		}
     }
+
+	@Subscribe
+	private void updatePatient() {
+		displayProfil();
+		tableRdv.refresh();
+	}
 }

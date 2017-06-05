@@ -1,23 +1,20 @@
 package app.controller.dialog;
 
-import java.time.LocalDate;
-
 import app.util.AlerteUtil;
 import app.util.RegexUtil;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import metier.action.MPaiement;
-import metier.hibernate.data.exceptions.DbSaveException;
 import models.Cheque;
 import models.Paiement;
 import models.Rdv;
 import models.Tp;
 
+import java.time.LocalDate;
+
 public class PaiementDialogCtrl {
 	private Stage dialogStage;
 	private Rdv rdv;
-	private MPaiement mPaiement;
 	private Paiement payment;
 	
 	@FXML
@@ -34,22 +31,14 @@ public class PaiementDialogCtrl {
 	private TextField textFCheqBanque;
 	@FXML
 	private TextField textFCheqNom;
-	
-	@FXML
-	private CheckBox checkBoxPaye;
-	
-	@FXML
-	private Button btnSubmit;
-       
-	public void setDialogStage(Stage dialogStage, MPaiement mPaiement, Rdv rdv) {
-        this.dialogStage = dialogStage;
-        this.mPaiement = mPaiement;
+
+	public void setDialogStage(Stage dialogStage, Rdv rdv) {
+		this.dialogStage = dialogStage;
         this.rdv = rdv;
         this.payment = rdv.getPaiement();
 
-		System.out.println("rdv : " + rdv);
-        displayPayment();
-    }
+		displayPayment();
+	}
 	
 	private void displayPayment(){
 		float cb = 0;
@@ -82,82 +71,54 @@ public class PaiementDialogCtrl {
 			textFTP.setText(String.valueOf(tp.getMontant()));
 		if(prix != 0)
 			textFPrix.setText(String.valueOf(prix));
-		if(payer)
-			checkBoxPaye.setSelected(true);
 	}
 	
 	@FXML
 	public void handleUpadte(){
-		//TODO : Vérifié si date du jour => Si oui alors modifier le paiement actuel + cocher "paye"
-		//								 => Si Non alors créer un nouveau paiement (avec la date du jour)
+		// TODO: 02/06/2017 1 paiement par rdv, la date du paiement correspond a la date ou il a ete regler, on la change seulement si le paiement est payer sinon null.
+		// TODO: 02/06/2017 garder le bool ou non? l'avantage si date null evite liaison pour recup la date du rdv lors de la requete pour la compta
 		
 		LocalDate dateRdv = rdv.getPresentDay().getPresent(); //Date du Rdv
-		
-		if(isValid()){	
-			float cb = Float.valueOf(textFCB.getText());
-			
+
+		if (isValid()) {
+			float cb = 0;
+			float espece = 0;
+			float prix = 0;
+			Tp tp = null;
 			Cheque cheque = null;
-			if(textFCheqMontant.getText() != null && textFCheqMontant.getText().length() != 0){
+
+			if (!textFCB.getText().isEmpty())
+				cb = Float.valueOf(textFCB.getText());
+			if (!textFEsp.getText().isEmpty())
+				espece = Float.valueOf(textFEsp.getText());
+			if (!textFPrix.getText().isEmpty())
+				prix = Float.valueOf(textFPrix.getText());
+
+			if (!textFTP.getText().isEmpty()) {
+				tp = new Tp();
+				tp.setMontant(Float.parseFloat(textFTP.getText()));
+			}
+
+			if (!textFCheqMontant.getText().isEmpty()) {
 				cheque = new Cheque();
 				cheque.setMontant(Float.valueOf(textFCheqMontant.getText()));
 				cheque.setBanque(textFCheqBanque.getText());
 				cheque.setName(textFCheqNom.getText());
 			}
-			
-			float espece = Float.valueOf(textFEsp.getText());
-			float prix = Float.valueOf(textFPrix.getText());
-			float tp = Float.valueOf(textFTP.getText());
-			boolean payer = checkBoxPaye.isSelected();
 
-			if(payment != null && dateRdv.equals(payment.getDate())){
-				if(textFCB.getText() != null)
-					payment.setCb(cb);
-				
-				if(textFEsp.getText() != null)
-					payment.setEspece(espece);
-				
-				payment.setCheque(cheque);
-				payment.getTp().setMontant(tp); //*
-				payment.setPrix(prix); //*
-				payment.setPayer(payer);
-				
-				try {
-					mPaiement.editPaiement(payment);
-					//MAJ du rdv avec le paiement
-					rdv.setPaiement(payment);
-				} catch (DbSaveException e) {
-					e.printStackTrace();
-					AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_SAVE_DB, AlerteUtil.HEADERTEXT_INCORECT_FIELD, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
-				}
-			} else if(payment != null) {
-				Tp newTp = new Tp();
-				newTp.setMontant(tp);
-				payment.setPayer(payer);
-				try {
-					mPaiement.editPaiement(payment);
-					payment = mPaiement.createPaiement(espece, cheque, cb, newTp, prix, payer, LocalDate.now(), rdv.getPresentDay().getMedecin(), rdv);
-					//MAJ du rdv avec le paiement
-					rdv.setPaiement(payment);
-				}catch (DbSaveException e){
-					e.printStackTrace();
-					AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_SAVE_DB, AlerteUtil.HEADERTEXT_INCORECT_FIELD, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
-				}
+
+			if (payment != null) {
+				// modification du paiement :
+				setPayment(espece, cb, prix, cheque, tp);
 			}else{
-				Tp newTp = new Tp();
-
-				newTp.setMontant(tp);
-
-				try {
-					payment = mPaiement.createPaiement(espece, cheque, cb, newTp, prix, payer, LocalDate.now(), rdv.getPresentDay().getMedecin(), rdv);
-					//MAJ du rdv avec le paiement
-					rdv.setPaiement(payment);
-				} catch (DbSaveException e) {
-					e.printStackTrace();
-					AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_SAVE_DB, AlerteUtil.HEADERTEXT_INCORECT_FIELD, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
-				}
+				// nouveau paiement :
+				payment = new Paiement();
+				setPayment(espece, cb, prix, cheque, tp);
+				rdv.setPaiement(payment);
+				payment.setRdv(rdv); // nouveau paiement on le lie au rdv.
+				payment.setMedecin(rdv.getPresentDay().getMedecin());
 			}
-			System.out.println("rdv : " + rdv);
-			
+			// plus de save en bdd ici c'est le rdv qui gere tout seul au retour de la fenetre ca evite des probleme si on ferme la fenetre du rdv sans le save.
 			dialogStage.close();
 		}
 	}
@@ -165,28 +126,38 @@ public class PaiementDialogCtrl {
 	//Check form, if is valid save data into DB else show pop-up
 	private boolean isValid(){
 		String errorMessage = "";
-		
-		if(textFCB.getText() != null && textFTP.getText().length() != 0){
+		// les champs ont le droit d'etre vide mais doivent etre des float :
+
+		if (!textFCB.getText().isEmpty()) {
 			if(!RegexUtil.validateFloatField(textFCB.getText())){
 				errorMessage += "Montant Carte bancaire non valide\n";
 			}
 		}
-		System.out.println(textFEsp.getText());
-		if(textFEsp.getText() != null && textFEsp.getText().length() != 0){
+		if (!textFEsp.getText().isEmpty()) {
 			if(!RegexUtil.validateFloatField(textFEsp.getText())){
 				errorMessage += "Montant Espèce non valide\n";
 			}
 		}
-		if(textFCheqMontant.getText() != null && textFCheqMontant.getText().length() != 0){
-			if(!RegexUtil.validateFloatField(textFCheqMontant.getText())){
+		if (!textFCheqMontant.getText().isEmpty()) {
+			if (!RegexUtil.validateFloatField(textFCheqMontant.getText()))
 				errorMessage += "Montant Chèque non valide\n";
+			if (textFCheqNom.getText().isEmpty())
+				errorMessage += "nom du Chèque non valide\n";
+			if (textFCheqBanque.getText().isEmpty())
+				errorMessage += "banque du Chèque non valide\n";
+		}
+		if (!textFTP.getText().isEmpty()) {
+			if (!RegexUtil.validateFloatField(textFTP.getText())) {
+				errorMessage += "Tiers-Payant non valide\n";
 			}
 		}
-		if(textFTP.getText() == null || textFTP.getText().length() == 0 || !RegexUtil.validateFloatField(textFTP.getText())){
-			errorMessage += "Tiers-Payant non renseigné\n";
-		}
-		if(textFPrix.getText() == null || textFPrix.getText().length() == 0 || !RegexUtil.validateFloatField(textFPrix.getText())){
-			errorMessage += "Prix non renseigné\n";
+
+		// le prix est obligatoire
+		if (textFPrix.getText().isEmpty()) {
+			if (!RegexUtil.validateFloatField(textFPrix.getText())) {
+				errorMessage += "Prix non valide\n";
+			} else
+				errorMessage += "Prix non renseigné\n";
 		}
 		if (errorMessage.length() == 0) {
             return true;
@@ -194,5 +165,17 @@ public class PaiementDialogCtrl {
         	AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_INCORECT_FIELD, errorMessage);
             return false;
         }
+	}
+
+	private void setPayment(float espece, float cb, float prix, Cheque cheque, Tp tp) {
+		payment.setCb(cb);
+		payment.setEspece(espece);
+		payment.setCheque(cheque);
+		payment.setTp(tp); //*
+		payment.setPrix(prix); //*
+		// TODO: 02/06/2017 calcul payer ici, ou edition du boolean
+		// si payer mettre date du jour sinon null.
+		if (payment.isPayer())
+			payment.setDate(LocalDate.now());
 	}
 }

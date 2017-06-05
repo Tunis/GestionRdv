@@ -4,7 +4,6 @@ import metier.hibernate.data.DataCompta;
 import metier.hibernate.data.exceptions.DbCreateException;
 import metier.hibernate.data.exceptions.DbSaveException;
 import models.Medecin;
-import models.Paiement;
 import models.PresentDay;
 import models.Rdv;
 import models.compta.Compta;
@@ -32,15 +31,20 @@ public class MCompta{
 	}
 
 	public void createComptaOfDay(Medecin medecin, LocalDate date, float retrait) throws DbSaveException, DbCreateException {
+		// TODO: 03/06/2017 on recup la liste des rdv du jour et la liste des paiement effectué aujourd'hui on evite les paiement correspondant au rdv
 		Optional<PresentDay> first = medecin.getPlannings().stream().filter(e -> e.getPresent().equals(date)).findFirst();
 		List<Rdv> rdvs = new ArrayList<>();
 		if(first.isPresent()) {
-            rdvs = first.get().getRdvList();
+			// liste des rdv du jour
+			rdvs = first.get().getRdvList();
             for (Rdv rdv : rdvs) {
                 System.out.println("rdv de : " + rdv.getPatient());
                 System.out.println("rdv le : " + rdv.getPresentDay().getPresent());
 
             }
+
+			// TODO: 03/06/2017 recup liste des paiement du jour et filtrage de ceux correspondant a un rdv du jour.
+			// TODO: 05/06/2017 verifier les date des paiement pour mettre en impayer si date rdv != date paiement
 
             ComptaJournaliere cj = new ComptaJournaliere(medecin, date, retrait);
 
@@ -64,8 +68,13 @@ public class MCompta{
                         cj.addNbTp(1);
                         cj.addTp(r.getPaiement().getTp().getMontant());
                     }
-                    cj.addImpayer(r.getPaiement().isPayer() ? 0 : r.getPaiement().getPrix());
-                    cj.getPaiementList().add(r.getPaiement());
+	                cj.addImpayer((r.getPaiement().getDate() != null) ? 0 :
+			                r.getPaiement().getPrix() -
+					                r.getPaiement().getCb() -
+					                r.getPaiement().getEspece() -
+					                ((r.getPaiement().getTp() != null) ? r.getPaiement().getTp().getMontant() : 0) -
+					                ((r.getPaiement().getCheque() != null) ? r.getPaiement().getCheque().getMontant() : 0));
+	                cj.getPaiementList().add(r.getPaiement());
                 }
             });
             System.out.println(cj);

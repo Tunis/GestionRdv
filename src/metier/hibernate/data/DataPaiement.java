@@ -12,13 +12,16 @@ public class DataPaiement extends Data<Paiement> implements IDbPaiement{
 
 	public DataPaiement(){super();}
 
+	// a refaire si date == payer?
+	// pour la page paiement.
 	@Override
 	public List<Paiement> getAllPaiementImpayer() {
 		return session.createQuery("from Paiement where " +
-				"payer = false", Paiement.class)
+				"date = null", Paiement.class)
 				.getResultList();
 	}
 
+	// pour la compta
 	@Override
 	public List<Paiement> getAllPaiementOfDay(Medecin medecin, LocalDate date) {
 		return session.createQuery("from Paiement p " +

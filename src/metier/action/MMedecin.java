@@ -1,11 +1,13 @@
 package metier.action;
 
-import app.controller.test.Metier;
 import javafx.collections.FXCollections;
 import metier.hibernate.data.DataMedecin;
 import metier.hibernate.data.exceptions.*;
 import models.Medecin;
+import models.Tp;
 
+import java.time.YearMonth;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class MMedecin extends Metier<Medecin> {
@@ -66,5 +68,13 @@ public class MMedecin extends Metier<Medecin> {
 	public void delete(Medecin m) throws DbDeleteException {
 		db.delete(m);
 		list.remove(m);
+	}
+
+	public List<Tp> getTp(Medecin m, YearMonth month) {
+		return db.getTp(m, month);
+	}
+
+	public void saveTp(Tp newValue) {
+		db.saveTp(newValue);
 	}
 }

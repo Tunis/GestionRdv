@@ -6,8 +6,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import metier.action.MMedecin;
@@ -25,10 +25,29 @@ import java.time.LocalDateTime;
 
 
 public class Main extends Application {
-	
+	// TODO: 04/06/2017 faire les cell Factory pour les liste / gridPane
+	// TODO: 04/06/2017 faire les css
+	// TODO: 04/06/2017 faire la view tier payant
+	// TODO: 04/06/2017 faire la view compta
+	// TODO: 04/06/2017 faire l'impression des compta (/jour et /mois)
+	// TODO: 04/06/2017 faire l'impresseion des rdv des patient (imprime liste des rdv d'un patient)
+	// TODO: 04/06/2017 faire l'impression du planning de la journée pour le medecin (imprime la view day du medecin)
+
 	private Stage primaryStage;
 	private TabPane rootLayout;
 	private BorderPane planningContainer;
+
+	private TabPaiementOverviewCtrl tabPaiementOverviewCtrl;
+
+	public TabPaiementOverviewCtrl getTabPaiementOverviewCtrl() {
+		return tabPaiementOverviewCtrl;
+	}
+
+	private TabHomeCtrl tabHomeCtrl;
+
+	public TabHomeCtrl getTabHomeCtrl() {
+		return tabHomeCtrl;
+	}
 
 	private MPatient mPatient = new MPatient();
     private MMedecin mMedecin = new MMedecin();
@@ -56,7 +75,9 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Gestion RdV");
+		this.primaryStage.setMinWidth(1000);
+		this.primaryStage.setMinHeight(600);
+		this.primaryStage.setTitle("Gestion RdV");
         this.primaryStage.setOnCloseRequest(event -> DataBase.close());
         this.primaryStage.show();
 
@@ -113,8 +134,11 @@ public class Main extends Application {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/TabPaiementOverview.fxml"));
-            return(BorderPane) loader.load();
-            
+	        BorderPane borderPane = (BorderPane) loader.load();
+	        tabPaiementOverviewCtrl = loader.getController();
+	        tabPaiementOverviewCtrl.initController(this, mPaiement, mRdv);
+	        return borderPane;
+
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -142,8 +166,11 @@ public class Main extends Application {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/TabTiersPayantsOverview.fxml"));
-            return(BorderPane) loader.load();
-         
+	        BorderPane tp = loader.load();
+	        TabTpCtrl tpCtrl = loader.getController();
+	        tpCtrl.initController(mMedecin);
+	        return tp;
+
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -231,7 +258,7 @@ public class Main extends Application {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/dialog/CreateRdvDialog.fxml"));
-            AnchorPane page = (AnchorPane) loader.load();
+	        Pane page = loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
@@ -313,7 +340,7 @@ public class Main extends Application {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/dialog/EditRdvDialog.fxml"));
-            AnchorPane page = (AnchorPane) loader.load();
+		    Pane page = loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
@@ -353,9 +380,9 @@ public class Main extends Application {
 
             // Set the RdV into the controller.
             PaiementDialogCtrl controller = loader.getController();
-            controller.setDialogStage(dialogStage, mPaiement, rdv);
-            
-            // Show the dialog and wait until the user closes it
+		    controller.setDialogStage(dialogStage, rdv);
+
+		    // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
             
         } catch (IOException e) {

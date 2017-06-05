@@ -1,5 +1,6 @@
 package Compta;
 
+import app.util.RegexUtil;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyListWrapper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -8,7 +9,12 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import metier.action.MCompta;
 import metier.action.MMedecin;
 import metier.hibernate.data.exceptions.DbCreateException;
@@ -17,6 +23,7 @@ import models.Medecin;
 import models.compta.ComptaJournaliere;
 import models.compta.ComptaMensuelle;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +37,8 @@ public class ComptaCtrl implements Initializable {
     private Button btnPrec;
     @FXML
     private Button btnSuiv;
+    @FXML
+    private Button btnCreateCompta;
     @FXML
     private Label lblDate;
     @FXML
@@ -99,6 +108,8 @@ public class ComptaCtrl implements Initializable {
     private ObjectProperty<LocalDate> date = new SimpleObjectProperty<>(LocalDate.now());
     private MCompta mCompta;
     private ObjectProperty<ComptaMensuelle> comptaMensuelle = new SimpleObjectProperty<>();
+    private LocalDate dateCompta;
+    private String montantRetrait;
 
     public void initCompta(MMedecin mMedecin, MCompta mCompta){
         this.mCompta = mCompta;
@@ -114,7 +125,10 @@ public class ComptaCtrl implements Initializable {
         btnSuiv.setOnAction(e->date.set(date.get().plusMonths(1)));
 
         comptaMensuelle.addListener((observable, oldValue, newValue) -> showCompta());
+        cbMedecin.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> getCompta());
 
+
+        btnCreateCompta.disableProperty().bind(cbMedecin.getSelectionModel().selectedIndexProperty().lessThanOrEqualTo(-1));
 
 
     }
@@ -152,15 +166,70 @@ public class ComptaCtrl implements Initializable {
         colComptaJRetrait.setCellValueFactory(dataCell->new ReadOnlyObjectWrapper<>(dataCell.getValue().getRetrait()));
     }
 
-    public void createCompta(ActionEvent event) {
-        try {
-            System.out.println(cbMedecin.getItems().get(cbMedecin.getSelectionModel().getSelectedIndex()) + ", " + date.get());
-            mCompta.createComptaOfDay(cbMedecin.getItems().get(cbMedecin.getSelectionModel().getSelectedIndex()), date.get(), 0);
-        } catch (DbSaveException e) {
-            e.printStackTrace();
-        } catch (DbCreateException e) {
-            e.printStackTrace();
+    public void createCompta(ActionEvent event) throws IOException {
+        // TODO: 05/06/2017 fenetre pour choisir la date et le montant du retrait
+        Stage dialog = new Stage();
+        dialog.setScene(new Scene(new CreateComptaCtrl()));
+        dialog.showAndWait();
+
+        String errorMessage = "";
+        float retrait = 0;
+
+        if (!montantRetrait.isEmpty() && RegexUtil.validateFloatField(montantRetrait)) {
+            retrait = Float.parseFloat(montantRetrait);
+        } else {
+            errorMessage += "le montant du retrait est incorrect.\n";
         }
-        getCompta();
+        if (dateCompta == null) {
+            errorMessage += "La date est incorrecte.\n";
+        }
+        Medecin medecin = cbMedecin.getItems().get(cbMedecin.getSelectionModel().getSelectedIndex());
+
+        if (errorMessage.isEmpty()) {
+            try {
+                mCompta.createComptaOfDay(medecin, dateCompta, retrait);
+            } catch (DbSaveException e) {
+                e.printStackTrace();
+            } catch (DbCreateException e) {
+                e.printStackTrace();
+            }
+            getCompta();
+        }
+    }
+
+    public class CreateComptaCtrl extends VBox {
+
+        private DatePicker dpDate;
+        private TextField textFMontant;
+
+
+        public void initialize() {
+            dpDate.editorProperty().get().textProperty().addListener((observable, oldValue, newValue) -> {
+                try {
+                    dateCompta = dpDate.getValue();
+                } catch (Exception ignored) {
+                }
+            });
+            textFMontant.textProperty().addListener((observable, oldValue, newValue) -> {
+                montantRetrait = newValue;
+            });
+        }
+
+        public CreateComptaCtrl() {
+            Label lblDate = new Label("date :");
+            dpDate = new DatePicker();
+            dpDate.setPromptText("Date de la compta");
+            dpDate.setEditable(false);
+            textFMontant = new TextField();
+            textFMontant.setPromptText("montant du retrait");
+            VBox.setMargin(lblDate, new Insets(10, 10, 5, 10));
+            VBox.setMargin(dpDate, new Insets(5, 10, 10, 10));
+            VBox.setMargin(textFMontant, new Insets(10));
+            this.setFillWidth(true);
+            this.setAlignment(Pos.CENTER);
+            this.setSpacing(10);
+            this.getChildren().addAll(lblDate, dpDate, textFMontant);
+            initialize();
+        }
     }
 }

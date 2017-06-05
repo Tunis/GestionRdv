@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.SingleSelectionModel;
+import metier.action.Metier;
 
 public class ComboBoxAC<T> extends ComboBox<T> {
 

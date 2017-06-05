@@ -1,10 +1,10 @@
 package metier.action;
 
-import app.controller.test.Metier;
 import javafx.collections.FXCollections;
 import metier.hibernate.data.DataPaiement;
 import metier.hibernate.data.exceptions.DbSaveException;
-import models.*;
+import models.Medecin;
+import models.Paiement;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,27 +24,25 @@ public class MPaiement extends Metier<Paiement> {
 
     public MPaiement(){
         this.db = new DataPaiement();
-        list.set(FXCollections.observableArrayList(db.getAllPaiementImpayer()));
-        list.sort(Paiement::compareTo);
-    }
-
-	public Paiement createPaiement(float espece, Cheque cheque, float cb, Tp tp, float prix, boolean payer, LocalDate date, Medecin medecin, Rdv rdv) throws DbSaveException {
-        Paiement p = new Paiement(espece, cheque, cb, tp, prix, payer, date, medecin, rdv);
-        db.save(p);
-        if(!p.isPayer())
-            list.add(p);
-        return p;
-    }
-
-    public void editPaiement(Paiement p) throws DbSaveException {
-        db.save(p);
-        if(p.isPayer())
-            list.remove(p);
+	    setPaiementImpayer();
     }
 
     public List<Paiement> getPaiementOfDay(Medecin medecin, LocalDate date){
         return db.getAllPaiementOfDay(medecin, date);
     }
 
+	public void setPaiementImpayer() {
+		listProperty().clear();
+		listProperty().set(FXCollections.observableArrayList(db.getAllPaiementImpayer()));
+		listProperty().sort(Paiement::compareTo);
+	}
 
+
+	public void remove(Paiement newValue) {
+		list.remove(newValue);
+	}
+
+	public void save(Paiement newValue) throws DbSaveException {
+		db.save(newValue);
+	}
 }

@@ -1,39 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane fx:controller="app.controller.dialog.CreateMedecinDialogCtrl" prefHeight="250.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="app.controller.dialog.CreateMedecinDialogCtrl">
    <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="TOP_CENTER">
+       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <GridPane>
+             <GridPane hgap="5.0">
               <columnConstraints>
-                <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="10.0"/>
+                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="10.0"/>
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
               </rowConstraints>
                <children>
-                  <Label text="Nom" />
-                  <Label text="Prenom" GridPane.rowIndex="1" />
-                  <Label text="Tel." GridPane.rowIndex="2" />
-                  <Label text="Mail" GridPane.rowIndex="3" />
-                  <TextField fx:id="textFNom" GridPane.columnIndex="1" />
-                  <TextField fx:id="textFPrenom" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="textFTel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <TextField fx:id="textFMail" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                   <Label text="Nom">
+                       <GridPane.margin>
+                           <Insets bottom="5.0" top="5.0"/>
+                       </GridPane.margin>
+                   </Label>
+                   <Label text="Prenom" GridPane.rowIndex="1">
+                       <GridPane.margin>
+                           <Insets bottom="5.0" top="5.0"/>
+                       </GridPane.margin>
+                   </Label>
+                   <Label text="Tel." GridPane.rowIndex="2">
+                       <GridPane.margin>
+                           <Insets bottom="5.0" top="5.0"/>
+                       </GridPane.margin>
+                   </Label>
+                   <Label text="Mail" GridPane.rowIndex="3">
+                       <GridPane.margin>
+                           <Insets bottom="5.0" top="5.0"/>
+                       </GridPane.margin>
+                   </Label>
+                   <TextField fx:id="textFNom" minWidth="200.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+                       <GridPane.margin>
+                           <Insets bottom="5.0" top="5.0"/>
+                       </GridPane.margin>
+                   </TextField>
+                   <TextField fx:id="textFPrenom" minWidth="200.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS"
+                              GridPane.rowIndex="1">
+                       <GridPane.margin>
+                           <Insets bottom="5.0" top="5.0"/>
+                       </GridPane.margin>
+                   </TextField>
+                   <TextField fx:id="textFTel" minWidth="200.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS"
+                              GridPane.rowIndex="2">
+                       <GridPane.margin>
+                           <Insets bottom="5.0" top="5.0"/>
+                       </GridPane.margin>
+                   </TextField>
+                   <TextField fx:id="textFMail" minWidth="200.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS"
+                              GridPane.rowIndex="3">
+                       <GridPane.margin>
+                           <Insets bottom="5.0" top="5.0"/>
+                       </GridPane.margin>
+                   </TextField>
                </children>
-               <padding>
-                  <Insets bottom="10.0" />
-               </padding>
+                 <VBox.margin>
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                 </VBox.margin>
             </GridPane>
-            <Button fx:id="btnSubmit" onAction="#handleSubmit" mnemonicParsing="false" text="Valider" />
+             <Button fx:id="btnSubmit" mnemonicParsing="false" onAction="#handleSubmit" text="Valider"/>
          </children>
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

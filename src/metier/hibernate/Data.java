@@ -18,8 +18,8 @@ public abstract class Data<T> implements IDb<T> {
         // TODO: 24/05/2017 verifier le retour de save si echoue
         try {
             session.beginTransaction();
-            session.save(e);
-            session.getTransaction().commit();
+	        session.saveOrUpdate(e);
+	        session.getTransaction().commit();
         }catch (Exception ex){
         	ex.printStackTrace();
             //throw new DbSaveException("erreur sql");

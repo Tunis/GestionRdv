@@ -4,6 +4,7 @@ import com.sun.javafx.scene.control.skin.LabeledText;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventTarget;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -104,13 +105,14 @@ public abstract class CalendarView<T> extends BorderPane {
 
         top = new VBox(navBar, todayBtn);
         top.setAlignment(Pos.CENTER);
+	    BorderPane.setMargin(top, new Insets(10, 10, 5, 10));
 
         this.setTop(top);
         BorderPane.setAlignment(top, Pos.CENTER);
     }
 
-    protected void draw() {
-        // TODO: 01/06/2017 juste use the abstract setter method
+	public void draw() {
+		// TODO: 01/06/2017 juste use the abstract setter method
         clearView();
 
         setHeader();
@@ -124,13 +126,9 @@ public abstract class CalendarView<T> extends BorderPane {
             if(oldValue != null && newValue != null){
                 if(!oldValue.equals(newValue)){
                     dateLbl.setText(getDateFormatted());
-                    draw();
                 }
             }
         });
-
-        // listener on item change to redraw the view
-        item.addListener((observable, oldValue, newValue) -> draw());
 
         // listener on locale :
         locale.addListener((observable, oldValue, newValue) -> draw());

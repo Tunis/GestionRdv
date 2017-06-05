@@ -14,23 +14,20 @@ public class Paiement implements Serializable, Comparable<Paiement>{
     private float cb;
     private Tp tp;
     private float prix;
-    private boolean payer;
     private LocalDate date;
     private Rdv rdv;
     private Medecin medecin;
 
     public Paiement() {}
 
-    public Paiement(float espece, Cheque cheque, float cb, Tp tp, float prix, boolean payer, LocalDate date, Medecin medecin, Rdv rdv) {
-        this.espece = espece;
+	public Paiement(float espece, Cheque cheque, float cb, Tp tp, float prix, LocalDate date, Rdv rdv) {
+		this.espece = espece;
         this.cheque = cheque;
         this.cb = cb;
         this.tp = tp;
         this.prix = prix;
-        this.payer = payer;
         this.date = date;
         this.rdv = rdv;
-        this.medecin = medecin;
     }
 
     @Id
@@ -50,9 +47,8 @@ public class Paiement implements Serializable, Comparable<Paiement>{
         this.espece = espece;
     }
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
-    public Cheque getCheque() {
+	@OneToOne(cascade = CascadeType.ALL)
+	public Cheque getCheque() {
         return cheque;
     }
     public void setCheque(Cheque cheque) {
@@ -67,9 +63,8 @@ public class Paiement implements Serializable, Comparable<Paiement>{
         this.cb = cb;
     }
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
-    public Tp getTp() {
+	@OneToOne(cascade = CascadeType.ALL)
+	public Tp getTp() {
         return tp;
     }
     public void setTp(Tp tp) {
@@ -85,14 +80,6 @@ public class Paiement implements Serializable, Comparable<Paiement>{
     }
 
     @Basic
-    public boolean isPayer() {
-        return payer;
-    }
-    public void setPayer(boolean payer) {
-        this.payer = payer;
-    }
-
-    @Basic
     public LocalDate getDate() {
         return date;
     }
@@ -100,39 +87,40 @@ public class Paiement implements Serializable, Comparable<Paiement>{
         this.date = date;
     }
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    public Rdv getRdv() {
+	@OneToOne(cascade = CascadeType.ALL)
+	public Rdv getRdv() {
         return rdv;
     }
     public void setRdv(Rdv rdv) {
         this.rdv = rdv;
     }
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    private Medecin getMedecin() {
-        return medecin;
+	@OneToOne(cascade = CascadeType.ALL)
+	public Medecin getMedecin() {
+		return medecin;
     }
-	private void setMedecin(Medecin medecin) {
-        this.medecin = medecin;
+
+	public void setMedecin(Medecin medecin) {
+		this.medecin = medecin;
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	    if (!(o instanceof Paiement)) return false;
 
         Paiement paiement = (Paiement) o;
 
-        if (Float.compare(paiement.getEspece(), getEspece()) != 0) return false;
-        if (Float.compare(paiement.getCb(), getCb()) != 0) return false;
-        if (Float.compare(paiement.getPrix(), getPrix()) != 0) return false;
-        if (isPayer() != paiement.isPayer()) return false;
-        if (getCheque() != null ? !getCheque().equals(paiement.getCheque()) : paiement.getCheque() != null)
-            return false;
-        if (getTp() != null ? !getTp().equals(paiement.getTp()) : paiement.getTp() != null) return false;
-        if (!getDate().equals(paiement.getDate())) return false;
-        if (!getRdv().equals(paiement.getRdv())) return false;
-        return getMedecin().equals(paiement.getMedecin());
+	    if (id != paiement.id) return false;
+	    if (Float.compare(paiement.espece, espece) != 0) return false;
+	    if (Float.compare(paiement.cb, cb) != 0) return false;
+	    if (Float.compare(paiement.prix, prix) != 0) return false;
+	    if (cheque != null ? !cheque.equals(paiement.cheque) : paiement.cheque != null) return false;
+	    if (tp != null ? !tp.equals(paiement.tp) : paiement.tp != null) return false;
+	    if (date != null ? !date.equals(paiement.date) : paiement.date != null) return false;
+	    if (!medecin.equals(paiement.rdv)) return false;
+	    return rdv.equals(paiement.rdv);
     }
 
     @Override
@@ -143,8 +131,8 @@ public class Paiement implements Serializable, Comparable<Paiement>{
         result = 31 * result + (getTp() != null ? getTp().hashCode() : 0);
         result = 31 * result + (getPrix() != +0.0f ? Float.floatToIntBits(getPrix()) : 0);
         result = 31 * result + (isPayer() ? 1 : 0);
-        result = 31 * result + getDate().hashCode();
-        result = 31 * result + getRdv().hashCode();
+	    result = 31 * result + (getDate() != null ? getDate().hashCode() : 0);
+	    result = 31 * result + getRdv().hashCode();
         result = 31 * result + getMedecin().hashCode();
         return result;
     }
@@ -154,4 +142,10 @@ public class Paiement implements Serializable, Comparable<Paiement>{
     public int compareTo(Paiement o) {
         return rdv.getPresentDay().getPresent().compareTo(o.getRdv().getPresentDay().getPresent());
     }
+
+	@Transient
+	public boolean isPayer() {
+		return (espece + cb + ((cheque != null) ? cheque.getMontant() : 0) +
+				((tp != null) ? tp.getMontant() : 0)) == prix;
+	}
 }

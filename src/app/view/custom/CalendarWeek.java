@@ -1,8 +1,12 @@
 package app.view.custom;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.TextAlignment;
@@ -15,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -34,7 +39,6 @@ public class CalendarWeek extends CalendarView<Medecin> {
 
     public CalendarWeek(){
         super();
-        draw();
     }
 
 
@@ -61,7 +65,17 @@ public class CalendarWeek extends CalendarView<Medecin> {
         scroll.setContent(view);
         scroll.setFitToWidth(true);
         scroll.setFitToHeight(true);
-        this.setCenter(scroll);
+	    view.setAlignment(Pos.CENTER);
+	    this.setCenter(scroll);
+	    BorderPane.setMargin(scroll, new Insets(10, 10, 5, 10));
+	    ColumnConstraints columnH = new ColumnConstraints();
+	    view.getColumnConstraints().add(columnH);
+	    for (int i = 0; i < 7; i++) {
+		    ColumnConstraints column = new ColumnConstraints();
+		    column.setPercentWidth((double) 100 / 8);
+		    view.getColumnConstraints().add(column);
+	    }
+	    view.setOnScroll(new ScrollHandler());
     }
 
     @Override
@@ -86,6 +100,7 @@ public class CalendarWeek extends CalendarView<Medecin> {
             Map<LocalDate, PresentDay> presentDay = getPresentDay();
             int i = 1;
             Rdv rdv = null;
+	        long until = 0;
 
             for(int h = 9; h <= 20; h++) {
 
@@ -116,8 +131,9 @@ public class CalendarWeek extends CalendarView<Medecin> {
                             GridPane.setVgrow(cell, Priority.ALWAYS);
 
                             if (rdv != null) {
-                                GridPane.setRowSpan(cell, (int) (rdv.getDuration().toMinutes() / 15));
-                                cell.getProperties().put("rdv", rdv);
+	                            until = time.until(rdv.getTime().plusMinutes(rdv.getDuration().toMinutes()), ChronoUnit.MINUTES);
+	                            GridPane.setRowSpan(cell, (int) (until / 15));
+	                            cell.getProperties().put("rdv", rdv);
                                 cell.getStyleClass().add(rdv.getTypeRdv().name());
                             }
 
@@ -126,12 +142,13 @@ public class CalendarWeek extends CalendarView<Medecin> {
                             GridPane.setVgrow(cell, Priority.ALWAYS);
                             view.add(cell, j.getDayOfWeek().getValue(), i);
 
-                            if (rdv != null && rdv.getDuration().toMinutes() / 15 == 1)
-                                rdv = null;
+	                        if (rdv != null && until / 15 == 1)
+		                        rdv = null;
 
                         } else {
-                            if (!rdv.getTime().plus(rdv.getDuration()).isBefore(time))
-                                rdv = null;
+	                        if (time.until(rdv.getTime().plusMinutes(rdv.getDuration().toMinutes()), ChronoUnit.MINUTES) <= 15) {
+		                        rdv = null;
+	                        }
                         }
                     }
                     i++;
@@ -148,7 +165,9 @@ public class CalendarWeek extends CalendarView<Medecin> {
                 if((h == 19 && m == 0) || h < 19) {
                     LocalTime time = LocalTime.of(h, m);
                     Label labelHeader = new Label(time.format(DateTimeFormatter.ofPattern("H:mm")));
-                    labelHeader.setMinSize(50,50);
+	                GridPane.setValignment(labelHeader, VPos.TOP);
+	                labelHeader.setAlignment(Pos.TOP_CENTER);
+	                labelHeader.setMinSize(50,50);
                     labelHeader.setMaxSize(50,50);
                     labelHeader.getStyleClass().add("calendar-day-header");
                     view.add(labelHeader, 0, i);

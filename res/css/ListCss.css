@@ -1,0 +1,31 @@
+.CS {
+    -fx-background-color: rgba(255, 235, 83, 0.5);
+}
+
+.C2 {
+    -fx-background-color: rgba(51, 176, 72, 0.5);
+}
+
+.DIU {
+    -fx-background-color: rgba(134, 166, 255, 0.5);
+}
+
+.ECHO {
+    -fx-background-color: rgba(255, 152, 227, 0.5);
+}
+
+.CS:hover {
+    -fx-background-color: #ffeb53;
+}
+
+.C2:hover {
+    -fx-background-color: #32ae47;
+}
+
+.DIU:hover {
+    -fx-background-color: #86a6ff;
+}
+
+.ECHO:hover {
+    -fx-background-color: #ff98e3;
+}

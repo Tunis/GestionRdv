@@ -1,10 +1,15 @@
 package app.controller;
 
 import app.Main;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
 
-public class RootLayoutCtrl {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class RootLayoutCtrl implements Initializable {
 	
 	private Main mainApp;
 	
@@ -35,4 +40,14 @@ public class RootLayoutCtrl {
 		TabPlanning.setContent(mainApp.planningContainer());
 		TabTP.setContent(mainApp.tiersPayantOverview());
 	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		TabPaiement.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+			if (newValue)
+				mainApp.getTabPaiementOverviewCtrl().updateData();
+		});
+	}
+
+
 }

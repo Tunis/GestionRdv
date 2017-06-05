@@ -1,6 +1,5 @@
 package metier.action;
 
-import app.controller.test.Metier;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import metier.hibernate.data.DataPatient;
@@ -76,5 +75,11 @@ public class MPatient extends Metier<Patient>{
 	public void delete(Patient p) throws DbDeleteException{
 		db.delete(p);
 		list.remove(p);
+	}
+
+	public void updateList() throws DbGetException {
+		listProperty().clear();
+		listProperty().set(FXCollections.observableArrayList(db.getAll()));
+		listProperty().sort(Patient::compareTo);
 	}
 }

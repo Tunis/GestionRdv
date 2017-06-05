@@ -32,9 +32,9 @@ out/
 /need.xml
 /test2.iml
 /build.fxbuild
-/.gitignore
 /.classpath
 /crebas.sql
 /.project
 /test_medecin.sql
 /test_patient.sql
+/src/hibernate.cfg.xml

@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import app.controller.test.ComboBoxAC?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <BorderPane prefHeight="450.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.TabHomeCtrl">
    <top>
-      <Button mnemonicParsing="false" text="Planning du Jour" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets top="50.0" />
-         </BorderPane.margin>
-      </Button>
    </top>
    <right>
-      <VBox BorderPane.alignment="CENTER">
+       <VBox BorderPane.alignment="CENTER" alignment="CENTER">
          <children>
             <Label text="Patients" />
             <ComboBox fx:id="cbBoxPatient" editable="true" prefWidth="150.0" />
@@ -32,7 +26,7 @@
       </VBox>
    </right>
    <left>
-      <VBox prefHeight="82.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+       <VBox prefHeight="82.0" prefWidth="200.0" BorderPane.alignment="CENTER" alignment="CENTER">
          <children>
             <Label text="Médecins" />
             <ComboBox fx:id="cbBoxMedecin" editable="true" prefWidth="150.0" />

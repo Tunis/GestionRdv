@@ -23,6 +23,7 @@ public class Adresse {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }

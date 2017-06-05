@@ -1,5 +1,6 @@
 package app.controller.dialog;
 
+import app.util.AlerteUtil;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,8 +15,9 @@ import metier.hibernate.data.exceptions.DbDuplicateException;
 import metier.hibernate.data.exceptions.DbSaveException;
 import models.Medecin;
 import models.Patient;
-import models.enums.TypeRdv;
 import models.PresentDay;
+import models.Rdv;
+import models.enums.TypeRdv;
 
 import java.net.URL;
 import java.time.Duration;
@@ -23,8 +25,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-import app.util.AlerteUtil;
 
 public class CreateRdvDialogCtrl implements Initializable {
 	private Stage dialogStage;
@@ -100,7 +100,16 @@ public class CreateRdvDialogCtrl implements Initializable {
 					AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_SAVE_DB, AlerteUtil.HEADERTEXT_INCORECT_FIELD, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
 				}
 			}
-			
+	        Optional<Rdv> alreadyUse = presentDay.getRdvList().stream().filter(r ->
+			        !(LocalTime.of(spHeure.getValue(), spMinute.getValue()).plusMinutes(spDuree.getValue()).isBefore(r.getTime().plusMinutes(1)) ||
+					        LocalTime.of(spHeure.getValue(), spMinute.getValue()).isAfter(r.getTime().plusMinutes(r.getDuration().toMinutes()).minusMinutes(1)))
+	        ).findAny();
+	        if (alreadyUse.isPresent()) {
+		        // TODO: 05/06/2017 date deja prise
+		        // TODO: 05/06/2017 a reporter a chaque endroit ou la date peut etre modifier pour un rdv !
+		        AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_INCORECT_FIELD, "La date est deja prise.");
+		        return;
+	        }
         	try {
         		mRdv.createRdv(cotation, duration, typeRdv, time, patient, presentDay);
 			} catch (DbDuplicateException | DbCreateException e) {

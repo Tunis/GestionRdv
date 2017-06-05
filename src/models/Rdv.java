@@ -7,12 +7,13 @@ import javafx.util.Callback;
 import models.enums.TypeRdv;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalTime;
 
 @Entity
 @Table(name = "Rdv")
-public class Rdv {
+public class Rdv implements Serializable, Comparable<Rdv> {
 
     private long id;
     private String cotation;
@@ -96,15 +97,30 @@ public class Rdv {
         this.presentDay = presentDay;
     }
 
-    @OneToOne(cascade = CascadeType.REFRESH)
-    public Paiement getPaiement() {
+	@OneToOne(cascade = CascadeType.ALL)
+	public Paiement getPaiement() {
         return paiement;
     }
     public void setPaiement(Paiement paiement) {
         this.paiement = paiement;
     }
 
-//    @Override
+	@Override
+	public int compareTo(Rdv o) {
+		return presentDay.getPresent().compareTo(o.getPresentDay().getPresent()) != 0 ?
+				presentDay.getPresent().compareTo(o.getPresentDay().getPresent()) :
+				time.compareTo(o.getTime()) != 0 ?
+						time.compareTo(o.getTime()) :
+						patient.getMaidenName().compareTo(o.getPatient().getMaidenName()) != 0 ?
+								patient.getMaidenName().compareTo(o.getPatient().getMaidenName()) :
+								patient.getFirstName().compareTo(o.getPatient().getFirstName()) != 0 ?
+										patient.getFirstName().compareTo(o.getPatient().getFirstName()) :
+										patient.getBornDate().compareTo(o.getPatient().getBornDate()) != 0 ?
+												patient.getBornDate().compareTo(o.getPatient().getBornDate()) :
+												0;
+	}
+
+	//    @Override
 //    public String toString() {
 //        return patient.getFirstName() + " " + patient.getMaidenName();
 //    }

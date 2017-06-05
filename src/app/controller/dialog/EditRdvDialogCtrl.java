@@ -1,8 +1,5 @@
 package app.controller.dialog;
 
-import java.time.Duration;
-import java.time.LocalTime;
-
 import app.Main;
 import app.util.AlerteUtil;
 import javafx.collections.FXCollections;
@@ -16,6 +13,10 @@ import models.Medecin;
 import models.PresentDay;
 import models.Rdv;
 import models.enums.TypeRdv;
+
+import java.time.Duration;
+import java.time.LocalTime;
+import java.util.Optional;
 
 public class EditRdvDialogCtrl {
 	private Stage dialogStage;
@@ -59,7 +60,8 @@ public class EditRdvDialogCtrl {
 		this.patientCtrl = patientCtrl;
 		this.mainApp = mainApp;
 
-		System.out.println("rdv : " + rdv);
+		if (rdv.getPaiement() != null && rdv.getPaiement().getDate() != null)
+			btnPayment.setDisable(true);
 		displayRdv();
     }
 	
@@ -73,7 +75,7 @@ public class EditRdvDialogCtrl {
 		cbMedecin.setValue(rdv.getPresentDay().getMedecin());
 		
 		spDuree.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(15,120,30,15));
-		spDuree.getValueFactory().setValue(rdv.getDuration().getNano());
+		spDuree.getValueFactory().setValue((int) rdv.getDuration().toMinutes());
 		
         spHeure.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,23,8,1));
         spHeure.getValueFactory().setValue(rdv.getTime().getHour());
@@ -93,11 +95,41 @@ public class EditRdvDialogCtrl {
 		
 		if(isValid()){
 
-			System.out.println("rdv : " + rdv);
 			//update Object Rdv
 			if(!rdv.getPresentDay().getPresent().equals(dpDate.getValue())){
-				rdv.setPresentDay(new PresentDay(dpDate.getValue(), rdv.getPresentDay().getMedecin()));
+				// TODO: 03/06/2017 changement de date, aller voir si le medecin est dispo se jour la sinon cree le presentDay et l'ajouter a tout le monde.
+				Optional<PresentDay> present = rdv.getPresentDay().getMedecin().getPlannings().stream().filter(p -> p.getPresent().equals(dpDate.getValue())).findFirst();
+				if (present.isPresent()) {
+					Optional<Rdv> alreadyUse = present.get().getRdvList().stream().filter(r ->
+							!(LocalTime.of(spHeure.getValue(), spMinute.getValue()).plusMinutes(spDuree.getValue()).isBefore(r.getTime().plusMinutes(1)) ||
+									LocalTime.of(spHeure.getValue(), spMinute.getValue()).isAfter(r.getTime().plusMinutes(r.getDuration().toMinutes()).minusMinutes(1))) && !rdv.equals(r)
+					).findAny();
+					if (!alreadyUse.isPresent()) {
+						rdv.getPresentDay().getRdvList().remove(rdv);
+						rdv.setPresentDay(present.get());
+						present.get().getRdvList().add(rdv);
+					} else {
+						// TODO: 05/06/2017 date deja prise
+						AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_INCORECT_FIELD, "La date est deja prise.");
+						return;
+					}
+				} else {
+					rdv.setPresentDay(new PresentDay(dpDate.getValue(), rdv.getPresentDay().getMedecin()));
+					rdv.getPresentDay().getMedecin().getPlannings().add(rdv.getPresentDay());
+				}
 			}
+			Optional<Rdv> alreadyUse = rdv.getPresentDay().getRdvList().stream().filter(r ->
+					!(LocalTime.of(spHeure.getValue(), spMinute.getValue()).plusMinutes(spDuree.getValue()).isBefore(r.getTime().plusMinutes(1)) ||
+							LocalTime.of(spHeure.getValue(), spMinute.getValue()).isAfter(r.getTime().plusMinutes(r.getDuration().toMinutes()).minusMinutes(1))) && !rdv.equals(r)
+			).findAny();
+			System.out.println("already in use : " + alreadyUse.isPresent());
+			if (alreadyUse.isPresent()) {
+				// TODO: 05/06/2017 date deja prise
+				// TODO: 05/06/2017 a reporter a chaque endroit ou la date peut etre modifier pour un rdv ! 
+				AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_INCORECT_FIELD, "La date est deja prise.");
+				return;
+			}
+
 			rdv.setDuration(Duration.ofMinutes(spDuree.getValue()));
 			rdv.setCotation(textFCotation.getText());
 			rdv.setTime(LocalTime.of(Integer.valueOf(spHeure.getEditor().getText()), Integer.valueOf(spMinute.getEditor().getText())));
@@ -121,8 +153,11 @@ public class EditRdvDialogCtrl {
 		//TODO : Affiche le pop-up pour renseigner le paiement
 		//Besoin d'un retour paiement??
 		mainApp.showPaiementDialog(rdv);
-		System.out.println("rdv : " + rdv);
-		//payment = ??;
+		try {
+			mRdv.save(rdv);
+		} catch (DbSaveException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//Check form, if is valid save data into DB else show pop-up

@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.BorderPane?>
-
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Compta.ComptaCtrl">
    <center>
-      <TableView fx:id="tblComptaJ" maxWidth="1550.0" minHeight="50.0" BorderPane.alignment="CENTER">
+       <TableView fx:id="tblComptaJ" maxWidth="1.7976931348623157E308" minHeight="50.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="colComptaJDate" editable="false" prefWidth="75.0" resizable="false" sortable="false" text="Date" />
-          <TableColumn fx:id="colComptaJCS" editable="false" prefWidth="75.0" resizable="false" sortable="false" text="CS" />
-            <TableColumn fx:id="colComptaJC2" editable="false" prefWidth="75.0" resizable="false" sortable="false" text="C2" />
-            <TableColumn fx:id="colComptaJECHO" editable="false" prefWidth="75.0" resizable="false" sortable="false" text="ECHO" />
-            <TableColumn fx:id="colComptaJDIU" editable="false" prefWidth="75.0" resizable="false" sortable="false" text="DIU" />
+            <TableColumn fx:id="colComptaJDate" editable="false" prefWidth="150.0" resizable="false" sortable="false"
+                         text="Date"/>
+            <TableColumn fx:id="colComptaJCS" editable="false" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0"
+                         resizable="false" sortable="false" text="CS"/>
+            <TableColumn fx:id="colComptaJC2" editable="false" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0"
+                         resizable="false" sortable="false" text="C2"/>
+            <TableColumn fx:id="colComptaJECHO" editable="false" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0"
+                         resizable="false" sortable="false" text="ECHO"/>
+            <TableColumn fx:id="colComptaJDIU" editable="false" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0"
+                         resizable="false" sortable="false" text="DIU"/>
             <TableColumn editable="false" prefWidth="75.0" resizable="false" sortable="false" text="TP">
                <columns>
                   <TableColumn fx:id="colComptaJNbTP" editable="false" prefWidth="75.0" sortable="false" text="Nombres" />
@@ -78,7 +77,8 @@
             <Button fx:id="btnSuiv" mnemonicParsing="false" text="&gt;" />
             <Label fx:id="lblDate" alignment="CENTER" contentDisplay="CENTER" />
             <ComboBox fx:id="cbMedecin" prefWidth="150.0" />
-            <Button mnemonicParsing="false" onAction="#createCompta" text="Create Compta Of Day" />
+             <Button fx:id="btnCreateCompta" mnemonicParsing="false" onAction="#createCompta"
+                     text="Create Compta Of Day"/>
          </buttons>
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

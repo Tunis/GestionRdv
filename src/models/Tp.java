@@ -1,6 +1,7 @@
 package models;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "Tp")
@@ -8,7 +9,8 @@ public class Tp {
 
     private long id;
     private float montant;
-    private boolean payer;
+	private LocalDate payer;
+	private Paiement paiement;
 
     public Tp() {}
 
@@ -31,10 +33,20 @@ public class Tp {
     }
 
     @Basic
-    public boolean isPayer() {
+    public LocalDate getPayer() {
         return payer;
     }
-    public void setPayer(boolean payer) {
-        this.payer = payer;
+
+	public void setPayer(LocalDate payer) {
+		this.payer = payer;
     }
+
+	@OneToOne(cascade = CascadeType.ALL)
+	public Paiement getPaiement() {
+		return paiement;
+	}
+
+	private void setPaiement(Paiement paiement) {
+		this.paiement = paiement;
+	}
 }
