@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<TabPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="autoCompletion.AcCtrl">
+    <tabs>
+        <Tab>
+            <content>
+                <GridPane alignment="CENTER" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity"
+                          minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="TextField simple" textAlignment="CENTER"
+                               GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER"
+                               GridPane.vgrow="NEVER"/>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="ComboBox" textAlignment="CENTER"
+                               GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
+                               GridPane.valignment="CENTER" GridPane.vgrow="NEVER"/>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="choiceBox" textAlignment="CENTER"
+                               GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
+                               GridPane.valignment="CENTER" GridPane.vgrow="NEVER"/>
+                        <ComboBox fx:id="cbBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                                  GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
+                        <ChoiceBox fx:id="choiceBox" prefWidth="150.0" GridPane.columnIndex="2"
+                                   GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
+                        <TextField fx:id="textField" GridPane.halignment="CENTER" GridPane.rowIndex="1"
+                                   GridPane.valignment="CENTER"/>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0"
+                              GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"
+                              GridPane.valignment="CENTER">
+                            <children>
+                                <Label alignment="CENTER" contentDisplay="CENTER" text="element selectionner :"
+                                       textAlignment="CENTER"/>
+                                <Label fx:id="textFChoice"/>
+                            </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0"
+                              GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
+                              GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                            <children>
+                                <Label alignment="CENTER" contentDisplay="CENTER" text="element selectionner :"
+                                       textAlignment="CENTER"/>
+                                <Label fx:id="cbBoxChoice"/>
+                            </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0"
+                              GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
+                              GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                            <children>
+                                <Label alignment="CENTER" contentDisplay="CENTER" text="element selectionner :"
+                                       textAlignment="CENTER"/>
+                                <Label fx:id="choiceBoxChoice"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </GridPane>
+            </content>
+        </Tab>
+    </tabs>
+</TabPane>
