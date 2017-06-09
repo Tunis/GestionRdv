@@ -27,7 +27,6 @@ public class Cheque {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -36,7 +35,6 @@ public class Cheque {
     public String getBanque() {
         return banque;
     }
-
     public void setBanque(String banque) {
         this.banque = banque;
     }
@@ -45,7 +43,6 @@ public class Cheque {
     public float getMontant() {
         return montant;
     }
-
     public void setMontant(float montant) {
         this.montant = montant;
     }

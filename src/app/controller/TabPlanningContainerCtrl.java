@@ -12,17 +12,22 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import metier.action.MMedecin;
 import models.Medecin;
 import models.Rdv;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ResourceBundle;
 
-public class TabPlanningContainerCtrl {
-	private Main mainApp;
+public class TabPlanningContainerCtrl implements Initializable {
+    private Main mainApp;
 	
 	private CalendarDay planningJour;
 	private CalendarMonth planningMois;
@@ -38,12 +43,11 @@ public class TabPlanningContainerCtrl {
 
 	
 	@FXML
-	private ComboBox<Medecin> listMedecin;
-	@FXML
+    private TextField listMedecin;
+    @FXML
 	private ToggleGroup planningToggleGroup;
 	private MMedecin mMedecin;
 	private ObjectProperty<LocalDate> date = new SimpleObjectProperty<>(LocalDate.now());
-	private ObjectProperty<Medecin> medecin = new SimpleObjectProperty<>();
 
 	public LocalDate getDate() {
 		return date.get();
@@ -55,14 +59,19 @@ public class TabPlanningContainerCtrl {
 		this.date.set(date);
 	}
 
+    private AutoCompletionBinding<Medecin> mAC;
+
 	public void setMainApp(Main mainApp, MMedecin mMedecin) {
         this.mainApp = mainApp;
         this.mMedecin = mMedecin;
+
+        planningJour.itemProperty().bind(mainApp.medecinProperty());
+        planningSemaine.itemProperty().bind(mainApp.medecinProperty());
+        planningMois.itemProperty().bind(mainApp.medecinProperty());
         
         //planning first view
         mainApp.getPlanningContainer().setCenter(planningMois);
 
-	    listMedecin.itemsProperty().bind(mMedecin.listProperty());
 	    //TextFields.bindAutoCompletion(listMedecin.getEditor(), listMedecin.getItems());
 	    
 	    //Disable ToggleButton when clikOn
@@ -72,15 +81,30 @@ public class TabPlanningContainerCtrl {
 			draw();
 		});
 
-		medecin.addListener((observable, oldValue, newValue) -> {
-			if (newValue != null) {
-				draw();
-			}
+        mainApp.medecinProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                listMedecin.setText(mainApp.getMedecin().toString());
+                draw();
+                System.out.println("draw medecin changed");
+            }
 		});
+        mAC = TextFields.bindAutoCompletion(listMedecin, mMedecin.getList());
+        mAC.setOnAutoCompleted(e -> {
+            listMedecin.setText(e.getCompletion().toString());
+            mainApp.medecinProperty().set(e.getCompletion());
+        });
+        mMedecin.listProperty().addListener((observable, oldValue, newValue) -> {
+            mAC.dispose();
+            mAC = TextFields.bindAutoCompletion(listMedecin, mMedecin.getList());
+            mAC.setOnAutoCompleted(e -> {
+                listMedecin.setText(e.getCompletion().toString());
+                mainApp.medecinProperty().set(e.getCompletion());
+            });
+        });
     }
 
-	private void draw() {
-		ToggleButton actionBtn = (ToggleButton) planningToggleGroup.getSelectedToggle();
+    public void draw() {
+        ToggleButton actionBtn = (ToggleButton) planningToggleGroup.getSelectedToggle();
 		if (actionBtn != null) {
 			switch (actionBtn.getId()) {
 				case "btnPlanningMonth":
@@ -98,18 +122,52 @@ public class TabPlanningContainerCtrl {
 		}
 	}
 
-	@FXML
-    private void initialize() {
-		listMedecin.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-			medecin.set(listMedecin.getItems().get((Integer) newValue));
-		});
-		planningJour = new CalendarDay();
+    private void clickListener(Label l) {
+        if (l.getProperties().get("rdv") != null) {
+            Rdv rdv = (Rdv) l.getProperties().get("rdv");
+            mainApp.showEditRdvDialog(rdv, null);
+            changeView();
+        } else {
+            LocalDateTime dateCliked = (LocalDateTime) l.getProperties().get("date");
+            if (mainApp.medecinProperty().isNull().get()) {
+                // TODO: 02/06/2017 alert
+            } else {
+                mainApp.showCreateRdvDialog(dateCliked, mainApp.medecinProperty().get());
+                changeView();
+            }
+        }
+    }
+
+    /*
+        function to switch between view and update change
+     */
+    @FXML
+    private void changeView() {
+        ToggleButton actionBtn = (ToggleButton) planningToggleGroup.getSelectedToggle();
+        draw();
+
+        if (actionBtn != null) {
+            switch (actionBtn.getId()) {
+                case "btnPlanningMonth":
+                    mainApp.getPlanningContainer().setCenter(planningMois);
+                    break;
+                case "btnPlanningDay":
+                    mainApp.getPlanningContainer().setCenter(planningJour);
+                    break;
+                case "btnPlanningWeek":
+                    mainApp.getPlanningContainer().setCenter(planningSemaine);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        planningJour = new CalendarDay();
 		planningSemaine = new CalendarWeek();
 		planningMois = new CalendarMonth();
-
-		planningJour.itemProperty().bind(medecin);
-		planningSemaine.itemProperty().bind(medecin);
-		planningMois.itemProperty().bind(medecin);
 
 		planningJour.dateProperty().bindBidirectional(dateProperty());
 		planningSemaine.dateProperty().bindBidirectional(dateProperty());
@@ -194,46 +252,5 @@ public class TabPlanningContainerCtrl {
 				}
 			}
 		});
-	}
-
-	private void clickListener(Label l) {
-		if (l.getProperties().get("rdv") != null) {
-			Rdv rdv = (Rdv) l.getProperties().get("rdv");
-			mainApp.showEditRdvDialog(rdv, null);
-			changeView();
-		} else {
-			LocalDateTime dateCliked = (LocalDateTime) l.getProperties().get("date");
-			if (listMedecin.getSelectionModel().isEmpty()) {
-				// TODO: 02/06/2017 alert
-			} else {
-				mainApp.showCreateRdvDialog(dateCliked, listMedecin.getItems().get(listMedecin.getSelectionModel().getSelectedIndex()));
-				changeView();
-			}
-		}
-	}
-
-	/*
-		function to switch between view and update change
-	 */
-	@FXML
-	private void changeView(){
-		ToggleButton actionBtn = (ToggleButton) planningToggleGroup.getSelectedToggle();
-		draw();
-
-		if (actionBtn != null) {
-			switch (actionBtn.getId()) {
-				case "btnPlanningMonth":
-					mainApp.getPlanningContainer().setCenter(planningMois);
-					break;
-				case "btnPlanningDay":
-					mainApp.getPlanningContainer().setCenter(planningJour);
-					break;
-				case "btnPlanningWeek":
-					mainApp.getPlanningContainer().setCenter(planningSemaine);
-					break;
-				default:
-					break;
-			}
-		}
 	}
 }

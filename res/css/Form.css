@@ -1,0 +1,4 @@
+.Obligatoire {
+    -fx-background-color: rgba(195, 115, 28, 0.99), white, white;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+}

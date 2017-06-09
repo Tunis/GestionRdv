@@ -2,35 +2,26 @@ package models.compta;
 
 import models.Medecin;
 
-import java.time.Month;
+import java.time.YearMonth;
 import java.util.List;
 
 public class ComptaMensuelle extends Compta {
 
-    private Month month;
-    private int year;
+    private YearMonth date;
     private List<ComptaJournaliere> comptaJournaliere;
+    private float solde;
 
-    public ComptaMensuelle(Medecin medecin, Month month, int year) {
+    public ComptaMensuelle(Medecin medecin, YearMonth date) {
         super(medecin);
-        this.month = month;
-        this.year = year;
+        this.date = date;
     }
 
-    public Month getMonth() {
-        return month;
+    public YearMonth getDate() {
+        return date;
     }
 
-    public void setMonth(Month month) {
-        this.month = month;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
+    public void setDate(YearMonth date) {
+        this.date = date;
     }
 
     public List<ComptaJournaliere> getComptaJournaliere() {
@@ -41,22 +32,11 @@ public class ComptaMensuelle extends Compta {
         this.comptaJournaliere = comptaJournaliere;
     }
 
-    protected void calculCompta() {
-        for (ComptaJournaliere compta : comptaJournaliere) {
-            nbC2 += compta.getNbC2();
-            nbCS += compta.getNbCS();
-            nbDIU += compta.getNbDIU();
-            nbEcho += compta.getNbEcho();
-            Tp += compta.getTp();
-            CB += compta.getCB();
-            retrait += compta.getRetrait();
-            espece += (compta.getEspece() - compta.getRetrait());
-            cheque += compta.getCheque();
-            impayer += compta.getImpayer();
-        }
-        espece -= retrait;
+    public void setSolde() {
+        solde = espece - retrait;
     }
 
-
-
+    public float getsolde() {
+        return solde;
+    }
 }

@@ -3,6 +3,7 @@ package app.controller.dialog;
 import app.Main;
 import app.util.AlerteUtil;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -13,6 +14,8 @@ import models.Medecin;
 import models.PresentDay;
 import models.Rdv;
 import models.enums.TypeRdv;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -25,32 +28,28 @@ public class EditRdvDialogCtrl {
 	private Rdv rdv;
 	private ProfilPatientDialogCtrl patientCtrl;
 	private Main mainApp;
-	
-	@FXML
-    private DatePicker dpDate;
+    private Medecin medecin;
 
-	@FXML
-    private Label labNamePatient;
-	
     @FXML
-    private ComboBox<Medecin> cbMedecin;
+    private DatePicker dpDate;
+	@FXML
+    private Button labNamePatient;
+    @FXML
+    private TextField cbMedecin;
     @FXML
     private ComboBox<TypeRdv> cbType;
-    
     @FXML
     private Spinner<Integer> spHeure;
     @FXML
     private Spinner<Integer> spMinute;
     @FXML
     private Spinner<Integer> spDuree;
-    
     @FXML
     private TextField textFCotation;
-    
-    @FXML
-    private Button btnSubmit;
     @FXML
     private Button btnPayment;
+
+    private AutoCompletionBinding<Medecin> mAC;
     
 	public void setDialogStage(Stage dialogStage, Rdv rdv, MMedecin mMedecin, MRdv mRdv, Main mainApp, ProfilPatientDialogCtrl patientCtrl) {
 		this.mMedecin = mMedecin;
@@ -60,21 +59,39 @@ public class EditRdvDialogCtrl {
 		this.patientCtrl = patientCtrl;
 		this.mainApp = mainApp;
 
-		if (rdv.getPaiement() != null && rdv.getPaiement().getDate() != null)
-			btnPayment.setDisable(true);
-		displayRdv();
+        if (rdv.getPaiement() != null && rdv.getPaiement().getDate() != null) {
+            btnPayment.setDisable(true);
+            btnPayment.setTooltip(new Tooltip(rdv.getPaiement() != null ? "" + rdv.getPaiement().getPrix() : ""));
+        } else {
+            btnPayment.setTooltip(new Tooltip(rdv.getPaiement() != null ? "" + rdv.getPaiement().getPrix() : ""));
+        }
+        displayRdv();
     }
 	
 	//Affiche le RdV
 	private void displayRdv(){
 		
 		dpDate.setValue(rdv.getPresentDay().getPresent());
-		labNamePatient.setText(rdv.getPatient().getMaidenName());
-		
-		cbMedecin.itemsProperty().bind(mMedecin.listProperty());
-		cbMedecin.setValue(rdv.getPresentDay().getMedecin());
-		
-		spDuree.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(15,120,30,15));
+        labNamePatient.setText(rdv.getPatient().toString());
+
+        cbMedecin.setText(rdv.getPresentDay().getMedecin().toString());
+        medecin = rdv.getPresentDay().getMedecin();
+
+        mAC = TextFields.bindAutoCompletion(cbMedecin, mMedecin.getList());
+        mAC.setOnAutoCompleted(e -> {
+            cbMedecin.setText(e.getCompletion().toString());
+            medecin = e.getCompletion();
+        });
+        mMedecin.listProperty().addListener((observable, oldValue, newValue) -> {
+            mAC.dispose();
+            mAC = TextFields.bindAutoCompletion(cbMedecin, mMedecin.getList());
+            mAC.setOnAutoCompleted(e -> {
+                cbMedecin.setText(e.getCompletion().toString());
+                medecin = e.getCompletion();
+            });
+        });
+
+        spDuree.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(15,120,30,15));
 		spDuree.getValueFactory().setValue((int) rdv.getDuration().toMinutes());
 		
         spHeure.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,23,8,1));
@@ -95,11 +112,33 @@ public class EditRdvDialogCtrl {
 		
 		if(isValid()){
 
-			//update Object Rdv
-			if(!rdv.getPresentDay().getPresent().equals(dpDate.getValue())){
-				// TODO: 03/06/2017 changement de date, aller voir si le medecin est dispo se jour la sinon cree le presentDay et l'ajouter a tout le monde.
-				Optional<PresentDay> present = rdv.getPresentDay().getMedecin().getPlannings().stream().filter(p -> p.getPresent().equals(dpDate.getValue())).findFirst();
-				if (present.isPresent()) {
+            PresentDay presentDay;
+            //changement de medecin ou non?
+            if (!rdv.getPresentDay().getMedecin().equals(medecin)) {
+                // changement du medecin pour le rdv :
+                // verif si medecin a deja ce present day
+                Optional<PresentDay> isPresent = medecin.getPlannings().stream().filter(pDay -> pDay.getPresent().equals(dpDate.getValue())).findFirst();
+                if (isPresent.isPresent()) {
+                    // deja present on le recupere
+                    presentDay = isPresent.get();
+                } else {
+                    // pas present donc on cree le present day et l'ajoute au medecin
+                    presentDay = new PresentDay(dpDate.getValue(), medecin);
+                    medecin.getPlannings().add(presentDay);
+                    try {
+                        mMedecin.save(medecin);
+                    } catch (DbSaveException e) {
+                        e.printStackTrace();
+                        AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_SAVE_DB, AlerteUtil.HEADERTEXT_INCORECT_FIELD, AlerteUtil.ERROR_MESSAGE_SAVE_DB);
+                    }
+                }
+            } else {
+                // pas de changement.
+                presentDay = rdv.getPresentDay();
+            }
+            // verifier si la nouvelle date est dispo
+            Optional<PresentDay> present = presentDay.getMedecin().getPlannings().stream().filter(p -> p.getPresent().equals(dpDate.getValue())).findFirst();
+            if (present.isPresent()) {
 					Optional<Rdv> alreadyUse = present.get().getRdvList().stream().filter(r ->
 							!(LocalTime.of(spHeure.getValue(), spMinute.getValue()).plusMinutes(spDuree.getValue()).isBefore(r.getTime().plusMinutes(1)) ||
 									LocalTime.of(spHeure.getValue(), spMinute.getValue()).isAfter(r.getTime().plusMinutes(r.getDuration().toMinutes()).minusMinutes(1))) && !rdv.equals(r)
@@ -109,33 +148,24 @@ public class EditRdvDialogCtrl {
 						rdv.setPresentDay(present.get());
 						present.get().getRdvList().add(rdv);
 					} else {
-						// TODO: 05/06/2017 date deja prise
 						AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_INCORECT_FIELD, "La date est deja prise.");
 						return;
 					}
 				} else {
-					rdv.setPresentDay(new PresentDay(dpDate.getValue(), rdv.getPresentDay().getMedecin()));
-					rdv.getPresentDay().getMedecin().getPlannings().add(rdv.getPresentDay());
+                    rdv.setPresentDay(new PresentDay(dpDate.getValue(), presentDay.getMedecin()));
+                rdv.getPresentDay().getMedecin().getPlannings().add(rdv.getPresentDay());
 				}
-			}
-			Optional<Rdv> alreadyUse = rdv.getPresentDay().getRdvList().stream().filter(r ->
-					!(LocalTime.of(spHeure.getValue(), spMinute.getValue()).plusMinutes(spDuree.getValue()).isBefore(r.getTime().plusMinutes(1)) ||
-							LocalTime.of(spHeure.getValue(), spMinute.getValue()).isAfter(r.getTime().plusMinutes(r.getDuration().toMinutes()).minusMinutes(1))) && !rdv.equals(r)
-			).findAny();
-			System.out.println("already in use : " + alreadyUse.isPresent());
-			if (alreadyUse.isPresent()) {
-				// TODO: 05/06/2017 date deja prise
-				// TODO: 05/06/2017 a reporter a chaque endroit ou la date peut etre modifier pour un rdv ! 
-				AlerteUtil.showAlerte(dialogStage, AlerteUtil.TITLE_INCORECT_FIELD, AlerteUtil.HEADERTEXT_INCORECT_FIELD, "La date est deja prise.");
-				return;
-			}
 
 			rdv.setDuration(Duration.ofMinutes(spDuree.getValue()));
 			rdv.setCotation(textFCotation.getText());
 			rdv.setTime(LocalTime.of(Integer.valueOf(spHeure.getEditor().getText()), Integer.valueOf(spMinute.getEditor().getText())));
 			rdv.setTypeRdv(cbType.getValue());
-			
-			try {
+
+            if (rdv.getPaiement() != null) {
+                rdv.getPaiement().setMedecin(rdv.getPresentDay().getMedecin());
+            }
+
+            try {
 				mRdv.save(rdv);
 			} catch (DbSaveException e) {
 				e.printStackTrace();
@@ -191,4 +221,24 @@ public class EditRdvDialogCtrl {
             return false;
         }
 	}
+
+    public void handleDelRdv(ActionEvent event) {
+        // TODO: 07/06/2017 a faire
+        try {
+            PresentDay presentDay = rdv.getPresentDay();
+            presentDay.getRdvList().remove(rdv);
+            rdv.setPresentDay(null);
+            rdv.getPatient().getRdvList().remove(rdv);
+            rdv.setPatient(null);
+            mMedecin.save(presentDay.getMedecin());
+            //mRdv.delete(rdv);
+            dialogStage.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showPatient(ActionEvent event) {
+        mainApp.showProfilPatientDialog(rdv.getPatient());
+    }
 }

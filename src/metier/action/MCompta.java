@@ -2,6 +2,7 @@ package metier.action;
 
 import metier.hibernate.data.DataCompta;
 import metier.hibernate.data.exceptions.DbCreateException;
+import metier.hibernate.data.exceptions.DbGetException;
 import metier.hibernate.data.exceptions.DbSaveException;
 import models.Medecin;
 import models.PresentDay;
@@ -11,12 +12,12 @@ import models.compta.ComptaJournaliere;
 import models.compta.ComptaMensuelle;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 
 public class MCompta{
-// TODO: 25/05/2017 a faire
+    // TODO: 25/05/2017 a faire
 
 	private DataCompta db;
 
@@ -26,32 +27,28 @@ public class MCompta{
 
 	public void save(ComptaJournaliere entity) {}
 
-	public ComptaJournaliere getComptaOfDay(Medecin medecin, LocalDate date) {
-		return db.getComptaOfDay(medecin, date);
+    public ComptaJournaliere getComptaOfDay(Medecin medecin, LocalDate date) throws DbGetException {
+        return db.getComptaOfDay(medecin, date);
 	}
 
 	public void createComptaOfDay(Medecin medecin, LocalDate date, float retrait) throws DbSaveException, DbCreateException {
-		// TODO: 03/06/2017 on recup la liste des rdv du jour et la liste des paiement effectué aujourd'hui on evite les paiement correspondant au rdv
-		Optional<PresentDay> first = medecin.getPlannings().stream().filter(e -> e.getPresent().equals(date)).findFirst();
-		List<Rdv> rdvs = new ArrayList<>();
-		if(first.isPresent()) {
-			// liste des rdv du jour
-			rdvs = first.get().getRdvList();
-            for (Rdv rdv : rdvs) {
-                System.out.println("rdv de : " + rdv.getPatient());
-                System.out.println("rdv le : " + rdv.getPresentDay().getPresent());
-
+        // recuperation des rdv du jour :
+        Optional<PresentDay> day = medecin.getPlannings().stream().filter(e -> e.getPresent().equals(date)).findFirst();
+        if (day.isPresent()) {
+            Optional<PresentDay> lastDay = medecin.getPlannings().stream().filter(e -> e.getPresent().isBefore(date)).sorted(PresentDay::compareTo).findFirst();
+            List<Rdv> paiements;
+            if (lastDay.isPresent()) {
+                paiements = db.getPaiementUntil(medecin, date, lastDay.get().getPresent());
+            } else {
+                paiements = db.getPaiementUntil(medecin, date, null);
             }
-
-			// TODO: 03/06/2017 recup liste des paiement du jour et filtrage de ceux correspondant a un rdv du jour.
-			// TODO: 05/06/2017 verifier les date des paiement pour mettre en impayer si date rdv != date paiement
 
             ComptaJournaliere cj = new ComptaJournaliere(medecin, date, retrait);
 
-            rdvs.forEach(r -> {
+            paiements.forEach(r -> {
                 cj.addTypeRdv(r.getTypeRdv());
 
-                if(r.getPaiement() != null) {
+                if (r.getPaiement() != null) {
                     if (r.getPaiement().getCb() != 0) {
                         cj.addNbCB(1);
                         cj.addCB(r.getPaiement().getCb());
@@ -68,25 +65,26 @@ public class MCompta{
                         cj.addNbTp(1);
                         cj.addTp(r.getPaiement().getTp().getMontant());
                     }
-	                cj.addImpayer((r.getPaiement().getDate() != null) ? 0 :
-			                r.getPaiement().getPrix() -
-					                r.getPaiement().getCb() -
-					                r.getPaiement().getEspece() -
-					                ((r.getPaiement().getTp() != null) ? r.getPaiement().getTp().getMontant() : 0) -
-					                ((r.getPaiement().getCheque() != null) ? r.getPaiement().getCheque().getMontant() : 0));
-	                cj.getPaiementList().add(r.getPaiement());
+                    cj.addImpayer((r.getPaiement().getDate() != null) ? 0 :
+                            r.getPaiement().getPrix() -
+                                    r.getPaiement().getCb() -
+                                    r.getPaiement().getEspece() -
+                                    ((r.getPaiement().getTp() != null) ? r.getPaiement().getTp().getMontant() : 0) -
+                                    ((r.getPaiement().getCheque() != null) ? r.getPaiement().getCheque().getMontant() : 0));
+
+                    cj.getPaiementList().add(r.getPaiement().clone());
                 }
             });
-            System.out.println(cj);
+            //db.saveComptaJPaiement(cj.getPaiementList());
             db.save(cj);
-        }else throw new DbCreateException("medecin non present ce jour.");
-	}
+        } else throw new DbCreateException("medecin non present ce jour.");
+    }
 
 	public ComptaMensuelle loadComptaOfMonth(Medecin medecin, LocalDate date){
 		if(medecin != null) {
 			List<ComptaJournaliere> content = db.loadComptaOfMonth(medecin, date.getMonth(), date.getYear());
-			ComptaMensuelle cm = new ComptaMensuelle(medecin, date.getMonth(), date.getYear());
-			cm.setComptaJournaliere(content);
+            ComptaMensuelle cm = new ComptaMensuelle(medecin, YearMonth.of(date.getYear(), date.getMonth()));
+            cm.setComptaJournaliere(content);
 
 			float soldePrecedent = 0f;
 			for (ComptaJournaliere cj : cm.getComptaJournaliere()) {
@@ -98,8 +96,8 @@ public class MCompta{
 				cm.addImpayer(cj.getImpayer());
 				cm.addCheque(cj.getCheque());
 				cm.addCB(cj.getCB());
-				cm.addEspece(cj.getEspece() - cj.getRetrait());
-				cm.addTp(cj.getTp());
+                cm.addEspece(cj.getEspece());
+                cm.addTp(cj.getTp());
 				cm.addRetrait(cj.getRetrait());
 
 				cm.addNbCB(cj.getNbCB());
@@ -108,9 +106,10 @@ public class MCompta{
 				cm.addNbTp(cj.getNbTp());
 
 				cj.setSoldePrecedent(soldePrecedent);
-				soldePrecedent = cj.getEspece() - cj.getRetrait();
-			}
-			return cm;
+                soldePrecedent = soldePrecedent + (cj.getEspece() - cj.getRetrait());
+            }
+            cm.setSolde();
+            return cm;
 		}else{
 			return null;
 		}
@@ -119,7 +118,16 @@ public class MCompta{
 	public void print(Compta compta){
 		// TODO: 29/05/2017 a faire
 	}
-	/*
+
+    public boolean doesNotExist(Medecin medecin, LocalDate dateCompta) {
+        try {
+            ComptaJournaliere comptaOfDay = getComptaOfDay(medecin, dateCompta);
+            return false;
+        } catch (DbGetException e) {
+            return true;
+        }
+    }
+    /*
 	creer compta journaliere
 	calculer compta journaliere
 

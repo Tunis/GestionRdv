@@ -16,5 +16,11 @@
         <property name="serverTimezone" value="GMT" />
       </driver-properties>
     </data-source>
+    <data-source source="LOCAL" name="bdd" uuid="7ef336cb-1beb-40f6-a70d-bce0cb538c26">
+      <driver-ref>derby.embedded</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.apache.derby.jdbc.EmbeddedDriver</jdbc-driver>
+      <jdbc-url>jdbc:derby:$PROJECT_DIR$/bdd</jdbc-url>
+    </data-source>
   </component>
 </project>

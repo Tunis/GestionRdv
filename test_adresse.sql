@@ -1,5 +1,3 @@
-INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (0, 0, 'm0', 'm0');
-INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (53, 11111, 'p1', 'p1');
 INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (54, 70844, 'Appartement 708-5032 Lacus. Rd.', 'Bedford');
 INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (55, 66329, 'Appartement 197-5840 Nunc Av.', 'Seborga');
 INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (56, 60713, 'Appartement 628-5903 Mi Rue', 'Limburg a.d. Lahn');
@@ -46,7 +44,8 @@ INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (96, 71391, 'CP 637
 INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (97, 41601, '9868 Nec Route', 'Purral');
 INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (98, 1289, '4160 Nec Rue', 'Mesoraca');
 INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (99, 63773, '210-4207 Nec Avenue', 'Midlands');
-INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (100, 14762, 'Appartement 595-7927 Ultrices, Avenue', 'Bowling Green');
+INSERT INTO test.adresse (id, codePostal, rue, ville)
+VALUES (53, 14762, 'Appartement 595-7927 Ultrices, Avenue', 'Bowling Green');
 INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (1, 8239, 'CP 975, 1741 Sed Ave', 'Lamont');
 INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (2, 7047, 'Appartement 930-4558 Sed Route', 'Poitiers');
 INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (3, 3603, '1676 Ultrices Rue', 'Boise');
@@ -99,4 +98,4 @@ INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (49, 0, 'CP 761, 88
 INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (50, 9, '289-5210 Sapien, Rue', 'Campagna');
 INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (51, 275193, 'CP 197, 8333 Parturient Avenue', 'Santa Vittoria in Matenano');
 INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (52, 67851, 'CP 175, 337 Tellus Rd.', 'McCallum');
-INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (101, 36978, 'Appartement 622-1330 Ac Ave', 'Burdinne');
+INSERT INTO test.adresse (id, codePostal, rue, ville) VALUES (0, 36978, 'Appartement 622-1330 Ac Ave', 'Burdinne');

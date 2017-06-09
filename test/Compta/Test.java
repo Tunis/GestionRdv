@@ -1,6 +1,5 @@
 package Compta;
 
-import app.Main;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,7 +13,7 @@ import java.io.IOException;
 
 public class Test extends Application {
     BorderPane comptaOverview;
-    ComptaCtrl controller;
+    TabComptaCtrl controller;
     @Override
     public void start(Stage primaryStage) throws Exception {
         MMedecin mMedecin = new MMedecin();
@@ -23,9 +22,9 @@ public class Test extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("compta.fxml"));
+            loader.setLocation(getClass().getResource("TabComptaOverview.fxml"));
 
-            comptaOverview = (BorderPane) loader.load();
+            comptaOverview = loader.load();
             controller = loader.getController();
             controller.initCompta(mMedecin, mCompta);
 

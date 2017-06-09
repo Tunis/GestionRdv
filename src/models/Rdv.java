@@ -1,9 +1,7 @@
 package models;
 
-import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.util.Callback;
 import models.enums.TypeRdv;
 
 import javax.persistence.*;
@@ -79,7 +77,7 @@ public class Rdv implements Serializable, Comparable<Rdv> {
         this.time = time;
     }
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @PrimaryKeyJoinColumn
     public Patient getPatient() {
         return patient;
@@ -88,7 +86,7 @@ public class Rdv implements Serializable, Comparable<Rdv> {
         this.patient = patient;
     }
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @PrimaryKeyJoinColumn
     public PresentDay getPresentDay() {
         return presentDay;
@@ -119,12 +117,4 @@ public class Rdv implements Serializable, Comparable<Rdv> {
 												patient.getBornDate().compareTo(o.getPatient().getBornDate()) :
 												0;
 	}
-
-	//    @Override
-//    public String toString() {
-//        return patient.getFirstName() + " " + patient.getMaidenName();
-//    }
-    public static Callback<Rdv, Observable[]> extractor() {
-        return (Rdv p) -> new Observable[]{p.duration};
-    }
 }

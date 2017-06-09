@@ -120,7 +120,7 @@ public class Patient implements Serializable, Comparable<Patient>{
     public Adresse getAdresse(){return adresse;}
     public void setAdresse(Adresse adresse){ this.adresse = adresse;}
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "patient", orphanRemoval = true, cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.EXTRA)
     public List<Rdv> getRdvList() {
         return rdvList;
@@ -132,7 +132,7 @@ public class Patient implements Serializable, Comparable<Patient>{
 
     @Override
     public String toString() {
-        return lastName + " " + firstName + " " + maidenName;
+        return "Mme" + (lastName == null ? "" : " " + lastName) + " " + firstName + " " + maidenName + ".";
     }
 
     @Override
@@ -173,5 +173,9 @@ public class Patient implements Serializable, Comparable<Patient>{
                 }
             }else return firstName.compareTo(o.getFirstName());
         }else return maidenName.compareTo(o.getMaidenName());
+    }
+
+    public String showName() {
+        return "Mme " + (lastName == null || lastName.isEmpty() ? maidenName : lastName) + " " + firstName + ".";
     }
 }

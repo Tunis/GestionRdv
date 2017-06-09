@@ -67,7 +67,7 @@ public abstract class CalendarView<T> extends BorderPane {
         locale.set(Locale.getDefault());
 
         // define css stylesheet :
-        this.getStylesheets().add(getClass().getResource("calendar.css").toExternalForm());
+        this.getStylesheets().add(getClass().getResource("/css/calendar.css").toExternalForm());
 
         // create Top Elements :
         configNavBar();

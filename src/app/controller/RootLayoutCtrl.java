@@ -47,7 +47,14 @@ public class RootLayoutCtrl implements Initializable {
 			if (newValue)
 				mainApp.getTabPaiementOverviewCtrl().updateData();
 		});
-	}
+        TabTP.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (newValue)
+                mainApp.getTabTpCtrl().updateData();
+        });
+        TabPlanning.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            mainApp.getTabPlanningCtrl().draw();
+        });
+    }
 
 
 }

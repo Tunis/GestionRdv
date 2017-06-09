@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane prefHeight="450.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.111"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.TabHomeCtrl">
+    <top>
+    </top>
+    <right>
+        <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets right="50.0"/>
+            </BorderPane.margin>
+            <Label text="Patients"/>
+            <TextField fx:id="cbBoxPatient" prefWidth="150.0" promptText="Patient">
+                <tooltip>
+                    <Tooltip text="Patient"/>
+                </tooltip>
+            </TextField>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+                <Button fx:id="btnCreatePatient" mnemonicParsing="false" onAction="#handleNewPatient" text="Creer"/>
+                <Button fx:id="btnUpdatePatient" mnemonicParsing="false" onAction="#handleUpdatePatient"
+                        text="Modifier"/>
+                <Button fx:id="btnDeletePatient" mnemonicParsing="false" onAction="#handleDeletePatient"
+                        text="Supprimer"/>
+            </HBox>
+            <Label fx:id="testPatient"/>
+        </VBox>
+    </right>
+    <left>
+        <VBox alignment="CENTER" prefHeight="82.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets left="50.0"/>
+            </BorderPane.margin>
+            <Label text="Médecins"/>
+            <TextField fx:id="cbBoxMedecin" prefWidth="150.0" promptText="Medecin">
+                <tooltip>
+                    <Tooltip text="Medecin"/>
+                </tooltip>
+            </TextField>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+                <Button fx:id="btnCreateMedecin" mnemonicParsing="false" onAction="#handleNewMedecin" text="Creer"/>
+                <Button fx:id="btnUpdateMedecin" mnemonicParsing="false" onAction="#handleUpdateMedecin"
+                        text="Modifier"/>
+                <Button fx:id="btnDeleteMedecin" mnemonicParsing="false" onAction="#handleDeleteMedecin"
+                        text="Supprimer"/>
+            </HBox>
+        </VBox>
+    </left>
+</BorderPane>

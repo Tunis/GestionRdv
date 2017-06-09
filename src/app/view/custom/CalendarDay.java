@@ -157,8 +157,8 @@ public class CalendarDay extends CalendarView<Medecin> {
 				rdv = rdvTime.get();
 			}
 		}
-		Label cell = new Label(rdv != null ? rdv.toString() : "");
-		cell.setMinHeight(50);
+        Label cell = new Label(rdv != null ? rdv.getPatient().showName() : "");
+        cell.setMinHeight(50);
 
 		cell.getStyleClass().add("calendar-cell");
 		cell.setMaxWidth(Integer.MAX_VALUE);

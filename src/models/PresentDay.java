@@ -4,13 +4,14 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "PresentDay")
-public class PresentDay {
+public class PresentDay implements Serializable, Comparable<PresentDay> {
 
     private long id;
     private LocalDate date;
@@ -43,17 +44,22 @@ public class PresentDay {
         this.date = present;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @PrimaryKeyJoinColumn
     public Medecin getMedecin(){return medecin;}
     public void setMedecin(Medecin medecin){ this.medecin = medecin;}
 
-    @OneToMany(mappedBy = "presentDay", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "presentDay", orphanRemoval = true, cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.EXTRA)
     public List<Rdv> getRdvList() {
         return rdvList;
     }
     public void setRdvList(List<Rdv> rdvList) {
         this.rdvList = rdvList;
+    }
+
+    @Override
+    public int compareTo(PresentDay o) {
+        return o.getPresent().compareTo(this.getPresent());
     }
 }

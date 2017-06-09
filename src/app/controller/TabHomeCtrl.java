@@ -1,18 +1,22 @@
 package app.controller;
 
 import app.Main;
-import javafx.collections.ListChangeListener;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import metier.action.MMedecin;
 import metier.action.MPatient;
 import metier.hibernate.data.exceptions.DbDeleteException;
+import metier.hibernate.data.exceptions.DbGetException;
 import models.Medecin;
 import models.Patient;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
 
 
 public class TabHomeCtrl {
@@ -22,11 +26,11 @@ public class TabHomeCtrl {
 	private MMedecin mMedecin;
 	
 	@FXML
-    private ComboBox<Medecin> cbBoxMedecin;
-	@FXML
-    private ComboBox<Patient> cbBoxPatient;
-	
-	//Button
+    private TextField cbBoxMedecin;
+    @FXML
+    private TextField cbBoxPatient;
+
+    //Button
     //-----------------------------------
     @FXML
     private Button btnCreatePatient;
@@ -43,6 +47,10 @@ public class TabHomeCtrl {
     @FXML
     private Label testPatient;
 
+    private ObjectProperty<Patient> patient = new SimpleObjectProperty<>();
+    private AutoCompletionBinding<Medecin> mAC;
+    private AutoCompletionBinding<Patient> pAC;
+
     //Main methods
     //-----------------------------------
     public void setMainApp(Main mainApp, MPatient mPatient, MMedecin mMedecin) {
@@ -50,24 +58,39 @@ public class TabHomeCtrl {
         this.mMedecin = mMedecin;
         this.mainApp = mainApp;
 
-        cbBoxMedecin.itemsProperty().bind(mMedecin.listProperty());
-
-        // pour l'autocompletion :
-        //cbBoxPatient.setMetier(mPatient);
-        cbBoxPatient.itemsProperty().bind(mPatient.listProperty());
-        //TextFields.bindAutoCompletion(cbBoxPatient.getEditor(), cbBoxPatient.getItems());
-        cbBoxPatient.itemsProperty().get().addListener(new ListChangeListener<Patient>() {
-            @Override
-            public void onChanged(Change<? extends Patient> c) {
-                // mise a jour de l'autocompletion a chaque changement de la liste.
-                //AutoCompletionBinding<Patient> ac = TextFields.bindAutoCompletion(cbBoxPatient.getEditor(), cbBoxPatient.getItems());
-            }
+        mAC = TextFields.bindAutoCompletion(cbBoxMedecin, mMedecin.getList());
+        mAC.setOnAutoCompleted(e -> {
+            cbBoxMedecin.setText(e.getCompletion().toString());
+            mainApp.medecinProperty().set(e.getCompletion());
+        });
+        mMedecin.listProperty().addListener((observable, oldValue, newValue) -> {
+            mAC.dispose();
+            mAC = TextFields.bindAutoCompletion(cbBoxMedecin, mMedecin.getList());
+            mAC.setOnAutoCompleted(e -> {
+                cbBoxMedecin.setText(e.getCompletion().toString());
+                mainApp.medecinProperty().set(e.getCompletion());
+            });
         });
 
-//        cbBoxPatient.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-//            // test pour voir la selection
-//            testPatient.setText((newValue == null ? "" : newValue.toString()));
-//        });
+        // pour l'autocompletion :
+        pAC = TextFields.bindAutoCompletion(cbBoxPatient, mPatient.getList());
+        pAC.setOnAutoCompleted(e -> {
+            cbBoxPatient.setText(e.getCompletion().toString());
+            patient.set(e.getCompletion());
+        });
+        mPatient.listProperty().addListener((observable, oldValue, newValue) -> {
+            pAC.dispose();
+            pAC = TextFields.bindAutoCompletion(cbBoxPatient, mPatient.getList());
+            pAC.setOnAutoCompleted(e -> {
+                cbBoxPatient.setText(e.getCompletion().toString());
+                patient.set(e.getCompletion());
+            });
+        });
+
+        mainApp.medecinProperty().addListener((observable, oldValue, newValue) -> {
+            cbBoxMedecin.setText(mainApp.getMedecin().toString());
+        });
+
     }
     
     //Calls when buttons are click
@@ -79,31 +102,32 @@ public class TabHomeCtrl {
 
     @FXML
     private void handleUpdatePatient() {
-    	int selectedIndex = cbBoxPatient.getSelectionModel().getSelectedIndex();
-        
-        if(selectedIndex != -1){
-        	mainApp.showProfilPatientDialog(cbBoxPatient.getItems().get(selectedIndex));
+        if (patient.isNotNull().get()) {
+            mainApp.showProfilPatientDialog(patient.get());
         }
     }
     
     @FXML
     private void handleDeletePatient() {
-        int selectedIndex = cbBoxPatient.getSelectionModel().getSelectedIndex();
-        
-        if(selectedIndex != -1){
-        	Patient patient = cbBoxPatient.getItems().get(selectedIndex);
-        	
+        if (patient.isNotNull().get()) {
+
 	        try {
-	            mPatient.delete(patient);
-	        } catch (DbDeleteException e) {
+                patient.get().getRdvList().forEach(r -> r.getPresentDay().getRdvList().remove(r));
+                mPatient.delete(patient.get());
+                patient.set(mPatient.getList().get(0));
+                mMedecin.updateList();
+                mPatient.updateList();
+            } catch (DbDeleteException e) {
 	            Alert alert = new Alert(AlertType.ERROR);
 	            alert.initOwner(mainApp.getPrimaryStage());
 	            alert.setTitle("Maintenance");
 	            alert.setHeaderText("Demande de Suppression du Patient");
 	            alert.setContentText("erreur de suppression du patient");
-	
+
 	            alert.showAndWait();
-	        }
+            } catch (DbGetException e) {
+                e.printStackTrace();
+            }
         }
     }
     
@@ -114,31 +138,29 @@ public class TabHomeCtrl {
 
     @FXML
     private void handleUpdateMedecin() {
-    	int selectedIndex = cbBoxMedecin.getSelectionModel().getSelectedIndex();
-        
-        if(selectedIndex != -1){
-        	mainApp.showProfilMedecinDialog(cbBoxMedecin.getItems().get(selectedIndex));
+        if (mainApp.medecinProperty().isNotNull().get()) {
+            mainApp.showProfilMedecinDialog(mainApp.medecinProperty().get());
         }
     }
     
     @FXML
     private void handleDeleteMedecin() {
-    	int selectedIndex = cbBoxMedecin.getSelectionModel().getSelectedIndex();
-    	
-        if(selectedIndex != -1){
-        	Medecin selectedItem = cbBoxMedecin.getItems().get(selectedIndex);
-        	
-        	try{
-	            mMedecin.delete(selectedItem);
-	        } catch (DbDeleteException e) {
+        if (mainApp.medecinProperty().isNotNull().get()) {
+            try{
+                mMedecin.delete(mainApp.medecinProperty().get());
+                mainApp.medecinProperty().set(mMedecin.getList().get(0));
+                mMedecin.updateList();
+                mPatient.updateList();
+            } catch (DbDeleteException e) {
 	            Alert alert = new Alert(AlertType.ERROR);
 	            alert.initOwner(mainApp.getPrimaryStage());
 	            alert.setTitle("Maintenance");
 	            alert.setHeaderText("Demande de Suppression du Medecin");
 	            alert.setContentText("SUPPRIME");
-	
 	            alert.showAndWait();
-	        }
+            } catch (DbGetException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

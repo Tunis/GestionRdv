@@ -173,7 +173,9 @@ public class PaiementDialogCtrl {
 		payment.setCheque(cheque);
 		payment.setTp(tp); //*
 		payment.setPrix(prix); //*
-		// TODO: 02/06/2017 calcul payer ici, ou edition du boolean
+        if (tp != null)
+            tp.setPaiement(payment);
+        // TODO: 02/06/2017 calcul payer ici, ou edition du boolean
 		// si payer mettre date du jour sinon null.
 		if (payment.isPayer())
 			payment.setDate(LocalDate.now());

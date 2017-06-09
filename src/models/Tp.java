@@ -41,12 +41,12 @@ public class Tp {
 		this.payer = payer;
     }
 
-	@OneToOne(cascade = CascadeType.ALL)
-	public Paiement getPaiement() {
+    @OneToOne
+    public Paiement getPaiement() {
 		return paiement;
 	}
 
-	private void setPaiement(Paiement paiement) {
-		this.paiement = paiement;
+    public void setPaiement(Paiement paiement) {
+        this.paiement = paiement;
 	}
 }

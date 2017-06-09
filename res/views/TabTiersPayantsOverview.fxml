@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<BorderPane prefHeight="450.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.111"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.TabTpCtrl">
+   <top>
+      <HBox spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+             <Button fx:id="btnPrec" mnemonicParsing="false" text="&lt;">
+                 <tooltip>
+                     <Tooltip text="Mois Precedent"/>
+                 </tooltip>
+             </Button>
+             <Label fx:id="lblDate"/>
+             <Button fx:id="btnSuiv" mnemonicParsing="false" text="&gt;">
+                 <tooltip>
+                     <Tooltip text="Mois Suivant"/>
+                 </tooltip>
+             </Button>
+             <TextField fx:id="cbMedecin" editable="true" prefWidth="150.0" promptText="Medecin">
+                 <tooltip>
+                     <Tooltip text="Medecin"/>
+                 </tooltip>
+             </TextField>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+   </top>
+   <center>
+       <TableView fx:id="tblTp" BorderPane.alignment="CENTER">
+        <columns>
+            <TableColumn fx:id="colDate" editable="false" prefWidth="75.0" text="Date"/>
+            <TableColumn fx:id="colNom" editable="false" prefWidth="75.0" text="Nom"/>
+            <TableColumn fx:id="colPrenom" editable="false" prefWidth="75.0" text="Prenom"/>
+            <TableColumn fx:id="colMontant" editable="false" prefWidth="75.0" text="Montant"/>
+            <TableColumn fx:id="colRegler" editable="false" prefWidth="75.0" text="Réglé"/>
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </center>
+</BorderPane>

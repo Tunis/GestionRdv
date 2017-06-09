@@ -5,8 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import java.util.TimeZone;
-
 public class DataBase {
     private static final SessionFactory sessionFactory;
 	private static Session SESSION;
@@ -15,7 +13,9 @@ public class DataBase {
         try {
             Configuration configuration = new Configuration();
             configuration.configure();
-	        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localHost:3306/test?serverTimezone=" + TimeZone.getDefault().getID());
+            // "jdbc:mysql://mysql.hostinger.fr/u508684160_gesti?serverTimezone=" + TimeZone.getDefault().getID()
+            // jdbc:derby:bdd;create=true
+            configuration.setProperty("hibernate.connection.url", "jdbc:derby:bdd");
 
             sessionFactory = configuration.buildSessionFactory();
 	        SESSION = sessionFactory.openSession();

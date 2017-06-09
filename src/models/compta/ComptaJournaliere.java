@@ -1,7 +1,6 @@
 package models.compta;
 
 import models.Medecin;
-import models.Paiement;
 import models.enums.TypeRdv;
 
 import javax.persistence.*;
@@ -15,7 +14,7 @@ public class ComptaJournaliere extends Compta{
 
     protected long id;
     private LocalDate date;
-    private List<Paiement> paiementList = new ArrayList<>();
+    private List<ComptaJPaiement> paiementList = new ArrayList<>();
     private float soldePrecedent;
 
     public ComptaJournaliere(){}
@@ -35,6 +34,7 @@ public class ComptaJournaliere extends Compta{
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public long getId() {
         return id;
     }
@@ -50,11 +50,12 @@ public class ComptaJournaliere extends Compta{
         this.date = date;
     }
 
-    @OneToMany(cascade = CascadeType.MERGE)
-    public List<Paiement> getPaiementList() {
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+    public List<ComptaJPaiement> getPaiementList() {
         return paiementList;
     }
-    public void setPaiementList(List<Paiement> paiementList) {
+
+    public void setPaiementList(List<ComptaJPaiement> paiementList) {
         this.paiementList = paiementList;
     }
 
@@ -190,7 +191,8 @@ public class ComptaJournaliere extends Compta{
                 break;
             case ECHO: addEcho(1);
                 break;
-            case DUI: addDIU(1);
+            case DIU:
+                addDIU(1);
                 break;
         }
     }

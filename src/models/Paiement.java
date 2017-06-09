@@ -1,5 +1,7 @@
 package models;
 
+import models.compta.ComptaJPaiement;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -87,19 +89,18 @@ public class Paiement implements Serializable, Comparable<Paiement>{
         this.date = date;
     }
 
-	@OneToOne(cascade = CascadeType.ALL)
-	public Rdv getRdv() {
+    @OneToOne
+    public Rdv getRdv() {
         return rdv;
     }
     public void setRdv(Rdv rdv) {
         this.rdv = rdv;
     }
 
-	@OneToOne(cascade = CascadeType.ALL)
-	public Medecin getMedecin() {
+    @OneToOne
+    public Medecin getMedecin() {
 		return medecin;
     }
-
 	public void setMedecin(Medecin medecin) {
 		this.medecin = medecin;
     }
@@ -148,4 +149,8 @@ public class Paiement implements Serializable, Comparable<Paiement>{
 		return (espece + cb + ((cheque != null) ? cheque.getMontant() : 0) +
 				((tp != null) ? tp.getMontant() : 0)) == prix;
 	}
+
+    public ComptaJPaiement clone() {
+        return new ComptaJPaiement(espece, cheque, cb, tp, prix, date, rdv);
+    }
 }

@@ -4,7 +4,6 @@ package app.controller.dialog;
 import app.Main;
 import app.util.AlerteUtil;
 import app.util.RegexUtil;
-import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
@@ -90,9 +89,9 @@ public class ProfilPatientDialogCtrl {
 		textFNomJF.setText(p.getMaidenName());
 		dpDate.setValue(p.getBornDate());
 		textFAdresse.setText(p.getAdresse().getRue());
-		textFCP.setText(String.valueOf(p.getAdresse().getCodePostal()));;
-		textFVille.setText(p.getAdresse().getVille());
-		textFMail.setText(p.getEmail());
+        textFCP.setText(String.valueOf(p.getAdresse().getCodePostal()));
+        textFVille.setText(p.getAdresse().getVille());
+        textFMail.setText(p.getEmail());
 		textFTel.setText(p.getTelephone());
 		textFNSecu.setText(String.valueOf(p.getSecuNumber()));
 		textFNote.setText(p.getNote());
@@ -208,7 +207,6 @@ public class ProfilPatientDialogCtrl {
 		}
     }
 
-	@Subscribe
 	private void updatePatient() {
 		displayProfil();
 		tableRdv.refresh();

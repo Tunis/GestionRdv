@@ -18,6 +18,8 @@ import models.Patient;
 import models.PresentDay;
 import models.Rdv;
 import models.enums.TypeRdv;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.net.URL;
 import java.time.Duration;
@@ -33,27 +35,26 @@ public class CreateRdvDialogCtrl implements Initializable {
 	private MRdv mRdv;
 	private LocalDateTime dateRdv;
 	private Medecin medecin;
-	
+    private Patient patient;
+
     @FXML
     private DatePicker dpDate;
-    
     @FXML
-    private ComboBox<Patient> cbPatient;
+    private TextField cbPatient;
     @FXML
     private ComboBox<TypeRdv> cbType;
-    
     @FXML
     private Spinner<Integer> spHeure;
     @FXML
     private Spinner<Integer> spMinute;
     @FXML
     private Spinner<Integer> spDuree;
-    
     @FXML
     private TextField textFCotation;
-    
     @FXML
     private Label labelMedecin;
+
+    private AutoCompletionBinding<Patient> pAC;
 
     public void setDialogStage(Stage dialogStage, MPatient mPatient, MRdv mRdv, MMedecin mMedecin, LocalDateTime dateRdv, Medecin medecin) {
 		this.dialogStage = dialogStage;
@@ -82,7 +83,6 @@ public class CreateRdvDialogCtrl implements Initializable {
 			Duration duration = Duration.ofMinutes(spDuree.getValue());
 			TypeRdv typeRdv = cbType.getValue();
 			LocalTime time = LocalTime.of(spHeure.getValue(), spMinute.getValue());
-			Patient patient = cbPatient.getValue();
 			PresentDay presentDay = null;
 			
 			//Vérifie si le présentDay existe pour ce médecin
@@ -90,7 +90,8 @@ public class CreateRdvDialogCtrl implements Initializable {
 			if(isPresent.isPresent()){
 				presentDay = isPresent.get();
 			} else {
-				presentDay = new PresentDay(dpDate.getValue(), medecin);
+                System.out.println("save medecin without present day");
+                presentDay = new PresentDay(dpDate.getValue(), medecin);
 				medecin.getPlannings().add(presentDay);
 				
 				try {
@@ -122,11 +123,24 @@ public class CreateRdvDialogCtrl implements Initializable {
     }
 
     private void displayRdv(){
-    	cbPatient.setItems(FXCollections.observableArrayList(mPatient.listProperty()));
 		labelMedecin.setText(medecin.getFirstName() + " " + medecin.getLastName());
 		dpDate.setValue(dateRdv.toLocalDate());
 		spHeure.getValueFactory().setValue(dateRdv.getHour());
 		spMinute.getValueFactory().setValue(dateRdv.getMinute());
+
+        pAC = TextFields.bindAutoCompletion(cbPatient, mPatient.getList());
+        pAC.setOnAutoCompleted(e -> {
+            cbPatient.setText(e.getCompletion().toString());
+            patient = e.getCompletion();
+        });
+        mPatient.listProperty().addListener((observable, oldValue, newValue) -> {
+            pAC.dispose();
+            pAC = TextFields.bindAutoCompletion(cbPatient, mPatient.getList());
+            pAC.setOnAutoCompleted(e -> {
+                cbPatient.setText(e.getCompletion().toString());
+                patient = e.getCompletion();
+            });
+        });
     }
     
     //Check form, if is valid save data into DB else show pop-up
@@ -152,8 +166,8 @@ public class CreateRdvDialogCtrl implements Initializable {
 		if(dpDate.getEditor().getText() == null || dpDate.getEditor().getText().length() == 0){
 			errorMessage += "Date RdV invalide\n";
 		}
-		if(cbPatient.getValue() == null){
-			errorMessage += "Patient non séléctionné\n";
+        if (patient == null) {
+            errorMessage += "Patient non séléctionné\n";
 		}
 		if(textFCotation.getText() == null || textFCotation.getText().length() == 0){
 			errorMessage += "Cotation non renseigné\n";

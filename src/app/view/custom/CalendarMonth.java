@@ -107,7 +107,7 @@ public class CalendarMonth extends CalendarView<Medecin> {
             }else{
                 label = new Label(String.valueOf(d.getDayOfMonth()));
             }
-            label.getStylesheets().add(getClass().getResource("calendar.css").toExternalForm());
+            label.getStylesheets().add(getClass().getResource("/css/calendar.css").toExternalForm());
             if(d.getMonth().equals(date.get().getMonth())){
                 label.getStyleClass().add("calendar-cell");
             }else{

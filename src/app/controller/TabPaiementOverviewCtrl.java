@@ -1,23 +1,24 @@
 package app.controller;
 
 import app.Main;
+import app.view.cellFactory.PaiementCell;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.util.Callback;
 import metier.action.MPaiement;
 import metier.action.MRdv;
 import metier.hibernate.data.exceptions.DbGetException;
 import metier.hibernate.data.exceptions.DbSaveException;
-import models.Medecin;
 import models.Paiement;
-import models.Patient;
 import models.Rdv;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -28,27 +29,12 @@ import java.util.stream.Collectors;
 public class TabPaiementOverviewCtrl implements Initializable {
 	@FXML
 	private Label lblDate;
-
 	@FXML
 	private ListView<Rdv> listRdvDay;
-
 	@FXML
 	private TextField searchField;
-
 	@FXML
 	private ListView<Paiement> listPaiement;
-
-	@FXML
-	private TableView<Paiement> tblPaiement;
-
-	@FXML
-	private TableColumn<Paiement, LocalDateTime> colDate;
-
-	@FXML
-	private TableColumn<Paiement, Patient> colPatient;
-
-	@FXML
-	private TableColumn<Paiement, Medecin> colMedecin;
 	private MRdv mRdv;
 	private MPaiement mPaiement;
 	private Main mainApp;
@@ -110,12 +96,12 @@ public class TabPaiementOverviewCtrl implements Initializable {
 			if (!newValue.isEmpty()) {
 				listPaiement.itemsProperty().unbind();
 				List<Paiement> collect = mPaiement.getList().stream().filter(p ->
-						p.getRdv().getPatient().getLastName().contains(newValue) ||
-								p.getRdv().getPatient().getFirstName().contains(newValue) ||
-								p.getRdv().getPatient().getMaidenName().contains(newValue) ||
-								p.getMedecin().getFirstName().contains(newValue) ||
-								p.getMedecin().getLastName().contains(newValue) ||
-								p.getRdv().getPresentDay().getPresent().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")).contains(newValue)
+                        p.getRdv().getPatient().getLastName().toLowerCase().contains(newValue.toLowerCase()) ||
+                                p.getRdv().getPatient().getFirstName().toLowerCase().contains(newValue.toLowerCase()) ||
+                                p.getRdv().getPatient().getMaidenName().toLowerCase().contains(newValue.toLowerCase()) ||
+                                p.getMedecin().getFirstName().toLowerCase().contains(newValue.toLowerCase()) ||
+                                p.getMedecin().getLastName().toLowerCase().contains(newValue.toLowerCase()) ||
+                                p.getRdv().getPresentDay().getPresent().format(DateTimeFormatter.ofPattern("dd/MM/YYYY")).contains(newValue)
 				).collect(Collectors.toList());
 				listPaiement.setItems(FXCollections.observableArrayList(collect));
 			} else {
@@ -136,9 +122,10 @@ public class TabPaiementOverviewCtrl implements Initializable {
 					protected void updateItem(Paiement item, boolean empty) {
 						super.updateItem(item, empty);
 						if (item != null) {
-							setText(item.toString());
-						} else {
-							setText("");
+                            setGraphic(new PaiementCell(item));
+                        } else {
+                            setGraphic(null);
+                            setText("");
 						}
 					}
 				};
@@ -149,7 +136,6 @@ public class TabPaiementOverviewCtrl implements Initializable {
 		listPaiement.setOnMouseClicked(e -> {
 			Paiement selectedItem = listPaiement.getSelectionModel().getSelectedItem();
 			if (selectedItem != null) {
-				System.out.println("item selectionner : " + selectedItem);
 				mainApp.showPaiementDialog(selectedItem.getRdv());
 				try {
 					mRdv.save(selectedItem.getRdv());

@@ -56,12 +56,12 @@ public class CreateMedecinDialogCtrl {
 	//Check form, if is valid save data into DB else show pop-up
 	private boolean isValid(String tel, String mail){
 		String errorMessage = "";
-		
-		if(!RegexUtil.validateTel(tel)){
-			errorMessage += "Tél. invalide\n";
+
+        if (!mail.isEmpty() && !RegexUtil.validateTel(tel)) {
+            errorMessage += "Tél. invalide\n";
 		}
-		if(!RegexUtil.validateMail(mail)){
-			errorMessage += "Mail invalide\n";
+        if (!tel.isEmpty() && !RegexUtil.validateMail(mail)) {
+            errorMessage += "Mail invalide\n";
 		}
 		if(textFPrenom.getText() == null || textFPrenom.getText().length() == 0){
 			errorMessage += "Prénom non renseigné\n";

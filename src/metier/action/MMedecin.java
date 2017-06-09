@@ -77,4 +77,10 @@ public class MMedecin extends Metier<Medecin> {
 	public void saveTp(Tp newValue) {
 		db.saveTp(newValue);
 	}
+
+    public void updateList() throws DbGetException {
+        listProperty().clear();
+        listProperty().set(FXCollections.observableArrayList(db.getAll()));
+        listProperty().sort(Medecin::compareTo);
+    }
 }

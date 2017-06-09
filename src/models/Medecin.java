@@ -77,7 +77,7 @@ public class Medecin implements Serializable, Comparable<Medecin> {
         this.email = email;
     }
 
-    @OneToMany(mappedBy = "medecin", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "medecin", orphanRemoval = true, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.EXTRA)
     public List<PresentDay> getPlannings() {
         return plannings;
@@ -116,4 +116,12 @@ public class Medecin implements Serializable, Comparable<Medecin> {
                 firstName.compareTo(o.getFirstName());
     }
 
+    public String showName() {
+        return "Dr " + lastName + ".";
+    }
+
+    @Override
+    public String toString() {
+        return "Dr " + lastName + " " + firstName + ".";
+    }
 }

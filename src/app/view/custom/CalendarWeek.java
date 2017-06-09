@@ -36,6 +36,8 @@ public class CalendarWeek extends CalendarView<Medecin> {
     public GridPane getView(){return view;}
 
     private ScrollPane scroll;
+    private int minH = 8;
+    private int maxH = 20;
 
     public CalendarWeek(){
         super();
@@ -102,11 +104,9 @@ public class CalendarWeek extends CalendarView<Medecin> {
             Rdv rdv = null;
 	        long until = 0;
 
-            for(int h = 9; h <= 20; h++) {
+            for (int h = minH; h < maxH; h++) {
 
                 for (int m = 0; m < 46; m += 15) {
-
-                    if ((h == 19 && m == 0) || h < 19) {
 
                         LocalTime time = LocalTime.of(h, m);
                         LocalDate dateDay = j;
@@ -121,7 +121,8 @@ public class CalendarWeek extends CalendarView<Medecin> {
                                     rdv = rdvTime.get();
                                 }
                             }
-                            Label cell = new Label(rdv != null ? rdv.toString() : "");
+                            Label cell = new Label(rdv != null ? rdv.getPatient().showName() : "");
+                            cell.setWrapText(false);
                             cell.setMinHeight(50);
 
                             cell.getStyleClass().add("calendar-cell");
@@ -150,7 +151,6 @@ public class CalendarWeek extends CalendarView<Medecin> {
 		                        rdv = null;
 	                        }
                         }
-                    }
                     i++;
                 }
             }
@@ -160,9 +160,8 @@ public class CalendarWeek extends CalendarView<Medecin> {
     @Override
     protected void setHeader() {
         int i = 1;
-        for(int h = 9; h <= 20; h++){
+        for (int h = minH; h < maxH; h++) {
             for(int m = 0; m < 46; m += 15){
-                if((h == 19 && m == 0) || h < 19) {
                     LocalTime time = LocalTime.of(h, m);
                     Label labelHeader = new Label(time.format(DateTimeFormatter.ofPattern("H:mm")));
 	                GridPane.setValignment(labelHeader, VPos.TOP);
@@ -171,7 +170,6 @@ public class CalendarWeek extends CalendarView<Medecin> {
                     labelHeader.setMaxSize(50,50);
                     labelHeader.getStyleClass().add("calendar-day-header");
                     view.add(labelHeader, 0, i);
-                }
                 i++;
             }
         }

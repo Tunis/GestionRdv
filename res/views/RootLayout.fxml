@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?scenebuilder-stylesheet /css/ListCss.css?>
+<?scenebuilder-stylesheet /css/Form.css?>
+<?scenebuilder-stylesheet /css/calendar.css?>
+
+<?import javafx.scene.control.*?>
+<?import java.net.URL?>
+<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="1000.0"
+         prefHeight="600.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.111"
+         xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.RootLayoutCtrl">
+   <tabs>
+      <Tab fx:id="TabHome" closable="false" text="Home" />
+      <Tab fx:id="TabPlanning" closable="false" text="Planning" />
+      <Tab fx:id="TabPaiement" closable="false" text="Paiement" />
+      <Tab fx:id="TabTP" closable="false" text="Tiers-Payants" />
+      <Tab fx:id="TabCompta" closable="false" text="Comptabilité" />
+   </tabs>
+    <stylesheets>
+        <URL value="@/css/ListCss.css"/>
+        <URL value="@/css/Form.css"/>
+        <URL value="@/css/calendar.css"/>
+    </stylesheets>
+</TabPane>

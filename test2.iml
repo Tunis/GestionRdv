@@ -27,5 +27,6 @@
     <orderEntry type="library" name="org.hibernate:hibernate-java8:5.2.10.Final" level="project" />
     <orderEntry type="library" name="org.controlsfx:controlsfx:8.40.12" level="project" />
     <orderEntry type="library" name="org.hibernate:hibernate-c3p0:5.2.10.Final" level="project" />
+    <orderEntry type="library" name="org.apache.derby:derby:10.13.1.1" level="project" />
   </component>
 </module>

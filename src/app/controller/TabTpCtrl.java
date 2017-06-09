@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.Main;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -11,6 +12,8 @@ import javafx.scene.control.*;
 import metier.action.MMedecin;
 import models.Medecin;
 import models.Tp;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -28,8 +31,8 @@ public class TabTpCtrl implements Initializable {
 	@FXML
 	private Button btnSuiv;
 	@FXML
-	private ComboBox<Medecin> cbMedecin;
-	@FXML
+    private TextField cbMedecin;
+    @FXML
 	private TableView<Tp> tblTp;
 	@FXML
 	private TableColumn<Tp, String> colDate;
@@ -44,20 +47,31 @@ public class TabTpCtrl implements Initializable {
 
 	private ObjectProperty<YearMonth> dateProperty = new SimpleObjectProperty<>(YearMonth.now());
 	private MMedecin mMedecin;
-	private ObjectProperty<Medecin> medecin = new SimpleObjectProperty<>();
+    private Main mainApp;
+    private AutoCompletionBinding<Medecin> mAC;
 
-	public void initController(MMedecin mMedecin) {
-		this.mMedecin = mMedecin;
-		cbMedecin.itemsProperty().bind(mMedecin.listProperty());
-
-		setListiner();
+    public void initController(Main mainApp, MMedecin mMedecin) {
+        this.mMedecin = mMedecin;
+        this.mainApp = mainApp;
+        mAC = TextFields.bindAutoCompletion(cbMedecin, mMedecin.getList());
+        mAC.setOnAutoCompleted(e -> {
+            cbMedecin.setText(e.getCompletion().toString());
+            mainApp.medecinProperty().set(e.getCompletion());
+        });
+        mMedecin.listProperty().addListener((observable, oldValue, newValue) -> {
+            mAC.dispose();
+            mAC = TextFields.bindAutoCompletion(cbMedecin, mMedecin.getList());
+            mAC.setOnAutoCompleted(e -> {
+                cbMedecin.setText(e.getCompletion().toString());
+                mainApp.medecinProperty().set(e.getCompletion());
+            });
+        });
+        setListiner();
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		cbMedecin.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-			medecin.set(cbMedecin.getItems().get((Integer) newValue));
-		});
+
 		lblDate.setText(dateProperty.get().format(DateTimeFormatter.ofPattern("MM/uuuu")));
 
 		colDate.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getPaiement().getRdv().getPresentDay().getPresent().format(DateTimeFormatter.ofPattern("dd/MM/uuuu"))));
@@ -85,22 +99,26 @@ public class TabTpCtrl implements Initializable {
 	}
 
 	private void setListiner() {
-		medecin.addListener((observable, oldValue, newValue) -> {
-			tblTp.setItems(FXCollections.observableArrayList(mMedecin.getTp(medecin.get(), dateProperty.get())));
-		});
+        mainApp.medecinProperty().addListener((observable, oldValue, newValue) -> {
+            cbMedecin.setText(mainApp.getMedecin().toString());
+            tblTp.setItems(FXCollections.observableArrayList(mMedecin.getTp(mainApp.medecinProperty().get(), dateProperty.get())));
+        });
 
 		dateProperty.addListener((observable, oldValue, newValue) -> {
 			lblDate.setText(newValue.format(DateTimeFormatter.ofPattern("MM/uuuu")));
-			if (medecin.get() != null) {
-				tblTp.setItems(FXCollections.observableArrayList(mMedecin.getTp(getSelectedMedecin(), newValue)));
-			}
+            if (mainApp.medecinProperty().get() != null) {
+                tblTp.setItems(FXCollections.observableArrayList(mMedecin.getTp(mainApp.medecinProperty().get(), newValue)));
+            }
 		});
 
 		btnPrec.setOnAction(e -> dateProperty.set(dateProperty.get().minusMonths(1)));
 		btnSuiv.setOnAction(e -> dateProperty.set(dateProperty.get().plusMonths(1)));
 	}
 
-	private Medecin getSelectedMedecin() {
-		return cbMedecin.getItems().get(cbMedecin.getSelectionModel().getSelectedIndex());
-	}
+    public void updateData() {
+        if (mainApp.medecinProperty().isNotNull().get()) {
+            cbMedecin.setText(mainApp.getMedecin().toString());
+            tblTp.setItems(FXCollections.observableArrayList(mMedecin.getTp(mainApp.medecinProperty().get(), dateProperty.get())));
+        }
+    }
 }

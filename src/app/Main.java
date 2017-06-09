@@ -3,6 +3,8 @@ package app;
 import app.controller.*;
 import app.controller.dialog.*;
 import javafx.application.Application;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
@@ -10,10 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import metier.action.MMedecin;
-import metier.action.MPaiement;
-import metier.action.MPatient;
-import metier.action.MRdv;
+import metier.action.*;
 import metier.hibernate.DataBase;
 import models.Medecin;
 import models.Patient;
@@ -38,28 +37,54 @@ public class Main extends Application {
 	private BorderPane planningContainer;
 
 	private TabPaiementOverviewCtrl tabPaiementOverviewCtrl;
-
 	public TabPaiementOverviewCtrl getTabPaiementOverviewCtrl() {
 		return tabPaiementOverviewCtrl;
 	}
 
 	private TabHomeCtrl tabHomeCtrl;
-
 	public TabHomeCtrl getTabHomeCtrl() {
 		return tabHomeCtrl;
 	}
 
+    private TabTpCtrl tabTpCtrl;
+
+    public TabTpCtrl getTabTpCtrl() {
+        return tabTpCtrl;
+    }
+
+    private TabPlanningContainerCtrl tabPlanningCtrl;
+
+    public TabPlanningContainerCtrl getTabPlanningCtrl() {
+        return tabPlanningCtrl;
+    }
+
 	private MPatient mPatient = new MPatient();
     private MMedecin mMedecin = new MMedecin();
     private MPaiement mPaiement = new MPaiement();
+    private MCompta mCompta = new MCompta();
     private MRdv mRdv = new MRdv();
     private LocalDate date;
 
     public LocalDate getDate(){ return date;}
     public void changeDate(LocalDate date){ this.date = date;}
-	
-	//Construct
-	public Main(){
+
+
+    private ObjectProperty<Medecin> medecin = new SimpleObjectProperty<>();
+
+    public Medecin getMedecin() {
+        return medecin.get();
+    }
+
+    public ObjectProperty<Medecin> medecinProperty() {
+        return medecin;
+    }
+
+    public void setMedecin(Medecin medecin) {
+        this.medecin.set(medecin);
+    }
+
+    //Construct
+    public Main(){
 		
 	}
 	
@@ -79,6 +104,11 @@ public class Main extends Application {
 		this.primaryStage.setMinHeight(600);
 		this.primaryStage.setTitle("Gestion RdV");
         this.primaryStage.setOnCloseRequest(event -> DataBase.close());
+
+        medecin.addListener((observable, oldValue, newValue) -> {
+            primaryStage.setTitle("Gestion de Rdv " + medecin.get().showName());
+        });
+
         this.primaryStage.show();
 
         //showCreateRdvDialog(LocalDateTime.now(), (Medecin)mMedecin.getList().get(0));
@@ -91,8 +121,8 @@ public class Main extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/RootLayout.fxml"));
-            rootLayout = (TabPane) loader.load();
+            loader.setLocation(Main.class.getResource("/views/RootLayout.fxml"));
+            rootLayout = loader.load();
 
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
@@ -115,8 +145,8 @@ public class Main extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/TabHomeOverview.fxml"));
-            BorderPane borderPane = (BorderPane) loader.load();
+            loader.setLocation(Main.class.getResource("/views/TabHomeOverview.fxml"));
+            BorderPane borderPane = loader.load();
             
             //Give the controller access to the main app.
             TabHomeCtrl controller = loader.getController();
@@ -133,9 +163,9 @@ public class Main extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/TabPaiementOverview.fxml"));
-	        BorderPane borderPane = (BorderPane) loader.load();
-	        tabPaiementOverviewCtrl = loader.getController();
+            loader.setLocation(Main.class.getResource("/views/TabPaiementOverview.fxml"));
+            BorderPane borderPane = loader.load();
+            tabPaiementOverviewCtrl = loader.getController();
 	        tabPaiementOverviewCtrl.initController(this, mPaiement, mRdv);
 	        return borderPane;
 
@@ -149,10 +179,11 @@ public class Main extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/TabComptaOverview.fxml"));
+            loader.setLocation(Main.class.getResource("/views/TabComptaOverview.fxml"));
 
-            BorderPane comptaOverview = (BorderPane) loader.load();
-            //ComptaCtrl controller = loader.getController();
+            BorderPane comptaOverview = loader.load();
+            TabComptaCtrl controller = loader.getController();
+            controller.initCompta(this, mMedecin, mCompta);
 
             return comptaOverview;
         } catch (IOException e) {
@@ -165,11 +196,11 @@ public class Main extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/TabTiersPayantsOverview.fxml"));
-	        BorderPane tp = loader.load();
-	        TabTpCtrl tpCtrl = loader.getController();
-	        tpCtrl.initController(mMedecin);
-	        return tp;
+            loader.setLocation(Main.class.getResource("/views/TabTiersPayantsOverview.fxml"));
+            BorderPane tp = loader.load();
+            tabTpCtrl = loader.getController();
+            tabTpCtrl.initController(this, mMedecin);
+            return tp;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -181,12 +212,12 @@ public class Main extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/TabPlanningContainer.fxml"));
-            planningContainer = (BorderPane) loader.load();
+            loader.setLocation(Main.class.getResource("/views/TabPlanningContainer.fxml"));
+            planningContainer = loader.load();
             
             //Give the controller access to the main app.
-            TabPlanningContainerCtrl controller = loader.getController();
-            controller.setMainApp(this, mMedecin);
+            tabPlanningCtrl = loader.getController();
+            tabPlanningCtrl.setMainApp(this, mMedecin);
             
             
             return planningContainer;
@@ -203,8 +234,8 @@ public class Main extends Application {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/dialog/CreatePatientDialog.fxml"));
-            BorderPane page = (BorderPane) loader.load();
+            loader.setLocation(Main.class.getResource("/views/dialog/CreatePatientDialog.fxml"));
+            BorderPane page = loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
@@ -230,8 +261,8 @@ public class Main extends Application {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/dialog/CreateMedecinDialog.fxml"));
-            BorderPane page = (BorderPane) loader.load();
+            loader.setLocation(Main.class.getResource("/views/dialog/CreateMedecinDialog.fxml"));
+            BorderPane page = loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
@@ -257,8 +288,8 @@ public class Main extends Application {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/dialog/CreateRdvDialog.fxml"));
-	        Pane page = loader.load();
+            loader.setLocation(Main.class.getResource("/views/dialog/CreateRdvDialog.fxml"));
+            Pane page = loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
@@ -285,8 +316,8 @@ public class Main extends Application {
     	try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/dialog/ProfilPatientDialog.fxml"));
-            BorderPane page = (BorderPane) loader.load();
+            loader.setLocation(Main.class.getResource("/views/dialog/ProfilPatientDialog.fxml"));
+            BorderPane page = loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
@@ -312,8 +343,8 @@ public class Main extends Application {
     	try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/dialog/ProfilMedecinDialog.fxml"));
-            BorderPane page = (BorderPane) loader.load();
+            loader.setLocation(Main.class.getResource("/views/dialog/ProfilMedecinDialog.fxml"));
+            BorderPane page = loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
@@ -339,8 +370,8 @@ public class Main extends Application {
     	try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/dialog/EditRdvDialog.fxml"));
-		    Pane page = loader.load();
+            loader.setLocation(Main.class.getResource("/views/dialog/EditRdvDialog.fxml"));
+            Pane page = loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
@@ -367,8 +398,8 @@ public class Main extends Application {
     	try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/dialog/PaiementDialog.fxml"));
-            BorderPane page = (BorderPane) loader.load();
+            loader.setLocation(Main.class.getResource("/views/dialog/PaiementDialog.fxml"));
+            BorderPane page = loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
