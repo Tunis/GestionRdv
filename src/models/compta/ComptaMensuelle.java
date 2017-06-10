@@ -16,10 +16,17 @@ public class ComptaMensuelle extends Compta {
         this.date = date;
     }
 
+	public Medecin getMedecin() {
+		return medecin;
+	}
+
+	public void setMedecin(Medecin m) {
+		medecin = m;
+	}
+
     public YearMonth getDate() {
         return date;
     }
-
     public void setDate(YearMonth date) {
         this.date = date;
     }
@@ -27,7 +34,6 @@ public class ComptaMensuelle extends Compta {
     public List<ComptaJournaliere> getComptaJournaliere() {
         return comptaJournaliere;
     }
-
     public void setComptaJournaliere(List<ComptaJournaliere> comptaJournaliere) {
         this.comptaJournaliere = comptaJournaliere;
     }
@@ -35,7 +41,6 @@ public class ComptaMensuelle extends Compta {
     public void setSolde() {
         solde = espece - retrait;
     }
-
     public float getsolde() {
         return solde;
     }

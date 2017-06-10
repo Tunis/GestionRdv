@@ -29,6 +29,14 @@ public abstract class Compta {
         this.medecin = medecin;
     }
 
+	private Medecin getMedecin() {
+		return medecin;
+	}
+
+	private void setMedecin(Medecin medecin) {
+		this.medecin = medecin;
+	}
+
     public int getNbCS() {
         return nbCS;
     }

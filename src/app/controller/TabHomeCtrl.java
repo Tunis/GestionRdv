@@ -1,9 +1,13 @@
 package app.controller;
 
 import app.Main;
+import app.util.AlerteUtil;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.print.PageOrientation;
+import javafx.print.PrinterJob;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -13,10 +17,15 @@ import metier.action.MMedecin;
 import metier.action.MPatient;
 import metier.hibernate.data.exceptions.DbDeleteException;
 import metier.hibernate.data.exceptions.DbGetException;
+import metier.print.Printable;
 import models.Medecin;
 import models.Patient;
+import models.PresentDay;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
+
+import java.time.LocalDate;
+import java.util.Optional;
 
 
 public class TabHomeCtrl {
@@ -161,6 +170,22 @@ public class TabHomeCtrl {
             } catch (DbGetException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @FXML
+    private void printPlannings(ActionEvent actionEvent) {
+        try {
+            PrinterJob job = PrinterJob.createPrinterJob();
+            job.showPrintDialog(mainApp.getPrimaryStage());
+
+            for (Medecin medecin : mMedecin.getList()) {
+                Optional<PresentDay> present = medecin.getPlannings().stream().filter(p -> p.getPresent().equals(LocalDate.now())).findFirst();
+                if (present.isPresent())
+                    Printable.print(job, Printable.createPlanning(present.get()), PageOrientation.PORTRAIT);
+            }
+        } catch (Exception ex) {
+            AlerteUtil.showAlerte(mainApp.getPrimaryStage(), "Erreur d'impression", "Probleme lors de l'impression", "une erreur est survenu empechant l'impression de s'effectué.\n Veuillez reessayer, si le probleme persiste contacter l'administrateur.");
         }
     }
 }

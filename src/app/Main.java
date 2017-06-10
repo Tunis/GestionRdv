@@ -83,11 +83,6 @@ public class Main extends Application {
         this.medecin.set(medecin);
     }
 
-    //Construct
-    public Main(){
-		
-	}
-	
 	//Getter
 	public Stage getPrimaryStage(){
 		return this.primaryStage;
@@ -108,7 +103,7 @@ public class Main extends Application {
         medecin.addListener((observable, oldValue, newValue) -> {
             primaryStage.setTitle("Gestion de Rdv " + medecin.get().showName());
         });
-
+        this.primaryStage.setMaximized(true);
         this.primaryStage.show();
 
         //showCreateRdvDialog(LocalDateTime.now(), (Medecin)mMedecin.getList().get(0));

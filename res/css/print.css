@@ -1,68 +1,32 @@
+.region {
+    -fx-background-color: white;
+}
+
 .root {
     -fx-background-color: white;
-    -fx-font-size: 8px;
 }
 
-.table-view {
-    -fx-background-color: white;
-    -fx-font-size: 8px;
+/* order : top right bottom left */
+.leftRow {
+    -fx-border-color: black black black black;
+    -fx-border-width: 1 0 1 1;
+    -fx-border-style: solid solid solid solid;
 }
 
-.table-view:focused {
-    -fx-background-color: white;
+.rightRow {
+    -fx-border-color: black black black black;
+    -fx-border-width: 1 1 1 0;
+    -fx-border-style: solid solid solid solid;
 }
 
-.table-view .column-header-background {
-    -fx-background-color: white;
+.middleRow {
+    -fx-border-color: black black black black;
+    -fx-border-width: 1 0 1 0;
+    -fx-border-style: solid solid solid solid;
 }
 
-.table-view .column-header-background .label {
-    -fx-background-color: white;
-    -fx-text-fill: black;
-}
-
-.table-view .column-header {
-    -fx-background-color: white;
-}
-
-.table-view .table-cell {
-    -fx-text-fill: black;
-}
-
-.table-row-cell {
-    -fx-background-color: white;
-    -fx-background-insets: 0, 0 0 1 0;
-    -fx-padding: 0.0em; /* 0 */
-}
-
-.table-row-cell:odd {
-    -fx-background-color: -fx-table-cell-border-color, white;
-    -fx-background-insets: 0, 0 0 1 0;
-    -fx-padding: 0.0em; /* 0 */
-}
-
-.table-row-cell:even {
-    -fx-background-color: -fx-table-cell-border-color, white;
-    -fx-background-insets: 0, 0 0 1 0;
-    -fx-padding: 0.0em; /* 0 */
-}
-
-.table-row-cell:selected {
-    -fx-background-color: white;
-    -fx-background-insets: 0;
-    -fx-background-radius: 1;
-}
-
-.table-view > .virtual-flow > .scroll-bar:vertical,
-.table-view > .virtual-flow > .scroll-bar:vertical > .track,
-.table-view > .virtual-flow > .scroll-bar:vertical > .track-background,
-.table-view > .virtual-flow > .scroll-bar:horizontal,
-.table-view > .virtual-flow > .scroll-bar:horizontal > .track,
-.table-view > .virtual-flow > .scroll-bar:horizontal > .track-background {
-    -fx-background-color: white;
-}
-
-.table-view > .virtual-flow > .scroll-bar > .increment-button,
-.table-view > .virtual-flow > .scroll-bar > .decrement-button {
-    -fx-opacity: 0;
+.header {
+    -fx-border-color: black black black black;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-style: solid solid solid solid;
 }

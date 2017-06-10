@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?scenebuilder-stylesheet /css/print.css?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<BorderPane focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+            minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.111"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.printable.ComptaJCtrl">
+    <top>
+        <VBox alignment="TOP_CENTER" spacing="5.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="lblMedecin" text="Label"/>
+                <HBox alignment="TOP_CENTER" fillHeight="false" spacing="10.0">
+                    <children>
+                        <Label text="Compta du :"/>
+                        <Label fx:id="lblDate" text="Label"/>
+                    </children>
+                </HBox>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </BorderPane.margin>
+        </VBox>
+    </top>
+    <bottom>
+        <GridPane alignment="TOP_CENTER" focusTraversable="true" hgap="50.0" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="ALWAYS" minWidth="10.0"/>
+                <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="ALWAYS" minWidth="10.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <GridPane alignment="CENTER" focusTraversable="true" gridLinesVisible="true"
+                          GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints fillHeight="false" vgrow="NEVER"/>
+                        <RowConstraints fillHeight="false" vgrow="NEVER"/>
+                        <RowConstraints fillHeight="false" vgrow="NEVER"/>
+                        <RowConstraints fillHeight="false" vgrow="NEVER"/>
+                    </rowConstraints>
+                    <children>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="CS"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="C2" GridPane.rowIndex="1"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="ECHO" GridPane.rowIndex="2"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="DIU" GridPane.rowIndex="3"/>
+                        <Label fx:id="nbCS" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" styleClass="header" GridPane.columnIndex="1"/>
+                        <Label fx:id="nbC2" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" styleClass="header" GridPane.columnIndex="1"
+                               GridPane.rowIndex="1"/>
+                        <Label fx:id="nbECHO" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" styleClass="header" GridPane.columnIndex="1"
+                               GridPane.rowIndex="2"/>
+                        <Label fx:id="nbDIU" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" styleClass="header" GridPane.columnIndex="1"
+                               GridPane.rowIndex="3"/>
+                    </children>
+                </GridPane>
+                <GridPane GridPane.columnIndex="1">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="100.0" prefWidth="100.0"/>
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="75.0"/>
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="75.0" prefWidth="75.0"/>
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="75.0" prefWidth="75.0"/>
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="75.0" prefWidth="75.0"/>
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="75.0" prefWidth="75.0"/>
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="75.0" prefWidth="75.0"/>
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="75.0" prefWidth="75.0"/>
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="75.0" prefWidth="75.0"/>
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="75.0" prefWidth="75.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="Date" GridPane.rowSpan="2"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="TP" GridPane.columnIndex="1" GridPane.columnSpan="2"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="Nb" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="Montant" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="Especes" GridPane.columnIndex="3" GridPane.columnSpan="2"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="Nb" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="Montant" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="CB" GridPane.columnIndex="5" GridPane.columnSpan="2"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="Nb" GridPane.columnIndex="5" GridPane.rowIndex="1"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="Montant" GridPane.columnIndex="6" GridPane.rowIndex="1"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="Cheques" GridPane.columnIndex="7" GridPane.columnSpan="2"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="Nb" GridPane.columnIndex="7" GridPane.rowIndex="1"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="Montant" GridPane.columnIndex="8" GridPane.rowIndex="1"/>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               styleClass="header" text="Impayer" GridPane.columnIndex="9" GridPane.rowSpan="2"/>
+                        <Label fx:id="lblTotalDate" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" styleClass="leftRow" GridPane.rowIndex="2"/>
+                        <Label fx:id="lblTpNb" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" styleClass="middleRow" GridPane.columnIndex="1"
+                               GridPane.rowIndex="2"/>
+                        <Label fx:id="lblTpMontant" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" styleClass="middleRow" GridPane.columnIndex="2"
+                               GridPane.rowIndex="2"/>
+                        <Label fx:id="lblEspeceNb" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" styleClass="middleRow" GridPane.columnIndex="3"
+                               GridPane.rowIndex="2"/>
+                        <Label fx:id="lblEspeceMontant" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" styleClass="middleRow" GridPane.columnIndex="4"
+                               GridPane.rowIndex="2"/>
+                        <Label fx:id="lblCbNb" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" styleClass="middleRow" GridPane.columnIndex="5"
+                               GridPane.rowIndex="2"/>
+                        <Label fx:id="lblCbMontant" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" styleClass="middleRow" GridPane.columnIndex="6"
+                               GridPane.rowIndex="2"/>
+                        <Label fx:id="lblChequeNb" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" styleClass="middleRow" GridPane.columnIndex="7"
+                               GridPane.rowIndex="2"/>
+                        <Label fx:id="lblChequeMontant" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" styleClass="middleRow" GridPane.columnIndex="8"
+                               GridPane.rowIndex="2"/>
+                        <Label fx:id="lblImpayer" alignment="CENTER" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" styleClass="rightRow" GridPane.columnIndex="9"
+                               GridPane.rowIndex="2"/>
+                    </children>
+                </GridPane>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </BorderPane.margin>
+        </GridPane>
+    </bottom>
+    <center>
+        <GridPane fx:id="cj" alignment="CENTER" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0"
+                                   prefWidth="50.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="150.0" prefWidth="150.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="150.0" prefWidth="150.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="150.0" prefWidth="150.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="75.0" prefWidth="75.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="50.0" prefWidth="75.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="50.0" prefWidth="75.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="50.0" prefWidth="75.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="50.0" prefWidth="75.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="75.0" prefWidth="75.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="Heure" GridPane.rowSpan="2"/>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="Patient" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="Nom" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="Nom de JF" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="Prenom" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="Type Rdv" GridPane.columnIndex="4" GridPane.rowSpan="2"/>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="Cotation" GridPane.columnIndex="5" GridPane.rowSpan="2"/>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="TP" GridPane.columnIndex="6" GridPane.rowSpan="2"/>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="Especes" GridPane.columnIndex="7" GridPane.rowSpan="2"/>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="CB" GridPane.columnIndex="8" GridPane.rowSpan="2"/>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="Cheque" GridPane.columnIndex="9" GridPane.columnSpan="3"/>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="Montant" GridPane.columnIndex="9" GridPane.rowIndex="1"/>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="Nom" GridPane.columnIndex="10" GridPane.rowIndex="1"/>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="Banque" GridPane.columnIndex="11" GridPane.rowIndex="1"/>
+                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       styleClass="header" text="Impayer" GridPane.columnIndex="12" GridPane.rowSpan="2"/>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </BorderPane.margin>
+        </GridPane>
+    </center>
+
+    <stylesheets>
+        <URL value="@/css/print.css"/>
+    </stylesheets>
+</BorderPane>

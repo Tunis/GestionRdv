@@ -48,4 +48,11 @@
             </HBox>
         </VBox>
     </left>
+    <top>
+        <VBox alignment="CENTER" minHeight="100.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button mnemonicParsing="false" onAction="#printPlannings" text="Imprimez les planning du jours"/>
+            </children>
+        </VBox>
+    </top>
 </BorderPane>

@@ -1,7 +1,9 @@
 package app.controller;
 
 import app.Main;
+import app.util.AlerteUtil;
 import app.util.RegexUtil;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyListWrapper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -12,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.print.PageOrientation;
+import javafx.print.PrinterJob;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -21,6 +25,7 @@ import metier.action.MCompta;
 import metier.action.MMedecin;
 import metier.hibernate.data.exceptions.DbCreateException;
 import metier.hibernate.data.exceptions.DbSaveException;
+import metier.print.Printable;
 import models.Medecin;
 import models.compta.ComptaJournaliere;
 import models.compta.ComptaMensuelle;
@@ -182,10 +187,34 @@ public class TabComptaCtrl implements Initializable {
         btnSuiv.setOnAction(e -> date.set(date.get().plusMonths(1)));
 
         comptaMensuelle.addListener((observable, oldValue, newValue) -> showCompta());
+
+        tblComptaJ.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                try {
+                    PrinterJob job = PrinterJob.createPrinterJob();
+                    job.showPrintDialog(mainApp.getPrimaryStage());
+                    Printable.print(job, Printable.createComptaJ(newValue), PageOrientation.LANDSCAPE);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    Platform.runLater(() -> AlerteUtil.showAlerte(mainApp.getPrimaryStage(), "Erreur d'impression", "Probleme lors de l'impression", "une erreur est survenu empechant l'impression de s'effectué.\n Veuillez reessayer, si le probleme persiste contacter l'administrateur."));
+                }
+            }
+        });
+        tblComptaJ.setOnMouseClicked(e -> tblComptaJ.getSelectionModel().clearSelection());
+
+        tblComptaM.setOnMouseClicked(e -> {
+            try {
+                PrinterJob job = PrinterJob.createPrinterJob();
+                job.showPrintDialog(mainApp.getPrimaryStage());
+                Printable.print(job, Printable.createComptaM(comptaMensuelle.get()), PageOrientation.PORTRAIT);
+            } catch (Exception ex) {
+                AlerteUtil.showAlerte(mainApp.getPrimaryStage(), "Erreur d'impression", "Probleme lors de l'impression", "une erreur est survenu empechant l'impression de s'effectué.\n Veuillez reessayer, si le probleme persiste contacter l'administrateur.");
+            }
+            tblComptaM.getSelectionModel().clearSelection();
+        });
     }
 
     public void getCompta() {
-        // TODO: 02/06/2017
         lblDate.setText(date.get().format(DateTimeFormatter.ofPattern("MMMM y", Locale.getDefault())));
 
         if (mainApp.medecinProperty().isNotNull().get()) {
@@ -240,7 +269,6 @@ public class TabComptaCtrl implements Initializable {
     }
 
     public void createCompta(ActionEvent event) throws IOException {
-        // TODO: 05/06/2017 fenetre pour choisir la date et le montant du retrait
         Stage dialog = new Stage();
         dialog.setScene(new Scene(new CreateComptaCtrl()));
         dialog.showAndWait();
@@ -248,7 +276,6 @@ public class TabComptaCtrl implements Initializable {
         String errorMessage = "";
         float retrait = 0;
 
-        System.out.println("montant : " + montantRetrait);
         if (montantRetrait != null) {
             if (!montantRetrait.isEmpty() && RegexUtil.validateFloatField(montantRetrait)) {
                 retrait = Float.parseFloat(montantRetrait);
@@ -259,7 +286,6 @@ public class TabComptaCtrl implements Initializable {
         if (dateCompta == null) {
             errorMessage += "La date est incorrecte.\n";
         }
-        System.out.println("ici : " + errorMessage);
 
         if (errorMessage.isEmpty()) {
             if (mCompta.doesNotExist(mainApp.medecinProperty().get(), dateCompta)) {
