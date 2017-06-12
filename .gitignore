@@ -11,7 +11,7 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
+
 *.war
 *.ear
 *.tar.gz
@@ -33,4 +33,8 @@ out/
 /.idea/
 /bin/
 /bdd/
-lib/
+/lib/controlsfx-8.40.12-sources.jar
+/lib/derbyclient-10.13.1.1.jar
+/lib/controlsfx-8.40.12-javadoc.jar
+/lib/hibernate-commons-annotations-5.0.1.Final-sources.jar
+/lib/hibernate-c3p0-5.2.10.Final-sources.jar
