@@ -1,1 +1,0 @@
-INSERT INTO test.comptajournaliere (id, CB, cheque, date, espece, impayer, nbC2, nbCB, nbCS, nbCheque, nbDIU, nbEcho, nbEspece, nbTp, retrait, soldePrecedent, tp, medecin_id) VALUES (0, 20, 0, '2017-06-01', 0, 50, 2, 2, 1, 0, 0, 0, 0, 0, 50, 0, 0, 1);

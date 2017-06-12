@@ -1,7 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Java template
-# Compiled class file
-*.class
 
 # Log file
 *.log
@@ -16,7 +14,6 @@
 *.jar
 *.war
 *.ear
-*.zip
 *.tar.gz
 *.rar
 
@@ -24,17 +21,16 @@
 hs_err_pid*
 
 .gitignore
-.idea/dataSources.local.xml
-.idea/dataSources/6b582bde-9de2-468a-b754-01756895f49d/_src_/
-.idea/dataSources/6b582bde-9de2-468a-b754-01756895f49d/_staging_/
-.idea/workspace.xml
 out/
 /need.xml
 /test2.iml
-/build.fxbuild
 /.classpath
 /crebas.sql
 /.project
 /test_medecin.sql
 /test_patient.sql
 /src/hibernate.cfg.xml
+/.idea/
+/bin/
+/bdd/
+lib/

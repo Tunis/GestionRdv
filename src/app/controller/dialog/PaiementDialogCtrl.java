@@ -4,6 +4,7 @@ import app.util.AlerteUtil;
 import app.util.RegexUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import models.Cheque;
 import models.Paiement;
@@ -37,6 +38,12 @@ public class PaiementDialogCtrl {
         this.rdv = rdv;
         this.payment = rdv.getPaiement();
 
+        dialogStage.getScene().setOnKeyReleased(ke -> {
+            if (ke.getCode().equals(KeyCode.ENTER)) {
+                handleUpadte();
+            }
+        });
+
 		displayPayment();
 	}
 	
@@ -54,7 +61,6 @@ public class PaiementDialogCtrl {
 			espece = payment.getEspece();
 			prix = payment.getPrix();
 			tp = payment.getTp();
-			payer = payment.isPayer();
 		} catch (Exception ignore) {}
 		
 		
@@ -75,19 +81,21 @@ public class PaiementDialogCtrl {
 	
 	@FXML
 	public void handleUpadte(){
-		// TODO: 02/06/2017 1 paiement par rdv, la date du paiement correspond a la date ou il a ete regler, on la change seulement si le paiement est payer sinon null.
-		// TODO: 02/06/2017 garder le bool ou non? l'avantage si date null evite liaison pour recup la date du rdv lors de la requete pour la compta
-		
-		LocalDate dateRdv = rdv.getPresentDay().getPresent(); //Date du Rdv
 
 		if (isValid()) {
 			float cb = 0;
 			float espece = 0;
 			float prix = 0;
-			Tp tp = null;
-			Cheque cheque = null;
-
-			if (!textFCB.getText().isEmpty())
+            Cheque cheque;
+            Tp tp;
+            if (rdv.getPaiement() != null) {
+                tp = rdv.getPaiement().getTp() != null ? rdv.getPaiement().getTp() : null;
+                cheque = rdv.getPaiement().getCheque() != null ? rdv.getPaiement().getCheque() : null;
+            } else {
+                tp = null;
+                cheque = null;
+            }
+            if (!textFCB.getText().isEmpty())
 				cb = Float.valueOf(textFCB.getText());
 			if (!textFEsp.getText().isEmpty())
 				espece = Float.valueOf(textFEsp.getText());
@@ -95,13 +103,15 @@ public class PaiementDialogCtrl {
 				prix = Float.valueOf(textFPrix.getText());
 
 			if (!textFTP.getText().isEmpty()) {
-				tp = new Tp();
-				tp.setMontant(Float.parseFloat(textFTP.getText()));
+                if (tp == null)
+                    tp = new Tp();
+                tp.setMontant(Float.parseFloat(textFTP.getText()));
 			}
 
 			if (!textFCheqMontant.getText().isEmpty()) {
-				cheque = new Cheque();
-				cheque.setMontant(Float.valueOf(textFCheqMontant.getText()));
+                if (cheque == null)
+                    cheque = new Cheque();
+                cheque.setMontant(Float.valueOf(textFCheqMontant.getText()));
 				cheque.setBanque(textFCheqBanque.getText());
 				cheque.setName(textFCheqNom.getText());
 			}
@@ -175,8 +185,6 @@ public class PaiementDialogCtrl {
 		payment.setPrix(prix); //*
         if (tp != null)
             tp.setPaiement(payment);
-        // TODO: 02/06/2017 calcul payer ici, ou edition du boolean
-		// si payer mettre date du jour sinon null.
 		if (payment.isPayer())
 			payment.setDate(LocalDate.now());
 	}

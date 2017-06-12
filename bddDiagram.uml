@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>7ef336cb-1beb-40f6-a70d-bce0cb538c26</OriginalElement>
+  <nodes>
+    <node x="642.0" y="190.0">7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.COMPTAJOURNALIERE</node>
+    <node x="300.0" y="355.0">7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.PRESENTDAY</node>
+    <node x="264.78" y="922.0">7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.PAIEMENT</node>
+    <node x="335.9" y="1200.0">7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.TP</node>
+    <node x="68.5" y="11.0">7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.ADRESSE</node>
+    <node x="0.0" y="278.0">7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.PATIENT</node>
+    <node x="142.37" y="666.0">7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.RDV</node>
+    <node x="506.15" y="1646.0">7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.COMPTAJOURNALIERE_COMPTAJPAIEMENT</node>
+    <node x="461.0" y="710.0">7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.CHEQUE</node>
+    <node x="349.75" y="1368.0">7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.COMPTAJPAIEMENT</node>
+    <node x="460.47" y="0.0">7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.MEDECIN</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.COMPTAJOURNALIERE_COMPTAJPAIEMENT" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.COMPTAJOURNALIERE">
+      <point x="67.74999999999999" y="-36.5" />
+      <point x="709.4" y="1621.0" />
+      <point x="862.0" y="1621.0" />
+      <point x="0.0" y="213.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.PATIENT" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.ADRESSE">
+      <point x="0.0" y="-125.0" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.PAIEMENT" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.RDV">
+      <point x="-97.5" y="-114.0" />
+      <point x="297.28" y="897.0" />
+      <point x="262.37" y="897.0" />
+      <point x="0.0" y="103.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.RDV" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.PAIEMENT">
+      <point x="80.0" y="103.0" />
+      <point x="342.37" y="897.0" />
+      <point x="362.28" y="897.0" />
+      <point x="-32.5" y="-114.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.COMPTAJPAIEMENT" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.RDV">
+      <point x="-97.5" y="-114.0" />
+      <point x="382.25" y="1348.0" />
+      <point x="200.87" y="1348.0" />
+      <point x="200.87" y="897.0" />
+      <point x="182.37" y="897.0" />
+      <point x="-80.0" y="103.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.PAIEMENT" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.MEDECIN">
+      <point x="32.5" y="-114.0" />
+      <point x="427.28" y="897.0" />
+      <point x="450.5" y="897.0" />
+      <point x="450.5" y="170.0" />
+      <point x="527.97" y="170.0" />
+      <point x="-22.5" y="70.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.RDV" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.PRESENTDAY">
+      <point x="60.0" y="-103.0" />
+      <point x="322.37" y="641.0" />
+      <point x="370.0" y="641.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.PRESENTDAY" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.MEDECIN">
+      <point x="0.0" y="-48.0" />
+      <point x="370.0" y="160.0" />
+      <point x="482.97" y="160.0" />
+      <point x="-67.5" y="70.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.COMPTAJPAIEMENT" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.TP">
+      <point x="-32.5" y="-114.0" />
+      <point x="447.25" y="1348.0" />
+      <point x="415.9" y="1348.0" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.TP" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.PAIEMENT">
+      <point x="-40.0" y="-59.0" />
+      <point x="375.9" y="1175.0" />
+      <point x="329.78" y="1175.0" />
+      <point x="-65.0" y="114.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.COMPTAJPAIEMENT" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.CHEQUE">
+      <point x="32.5" y="-114.0" />
+      <point x="512.25" y="1338.0" />
+      <point x="581.0" y="1338.0" />
+      <point x="40.0" y="59.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.PAIEMENT" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.TP">
+      <point x="65.0" y="114.0" />
+      <point x="459.78" y="1175.0" />
+      <point x="455.9" y="1175.0" />
+      <point x="40.0" y="-59.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.COMPTAJPAIEMENT" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.MEDECIN">
+      <point x="97.5" y="-114.0" />
+      <point x="577.25" y="1348.0" />
+      <point x="631.5" y="1348.0" />
+      <point x="631.5" y="170.0" />
+      <point x="572.97" y="170.0" />
+      <point x="22.5" y="70.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.PAIEMENT" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.CHEQUE">
+      <point x="97.5" y="-114.0" />
+      <point x="492.28" y="897.0" />
+      <point x="501.0" y="897.0" />
+      <point x="-40.0" y="59.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.COMPTAJOURNALIERE" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.MEDECIN">
+      <point x="0.0" y="-213.0" />
+      <point x="862.0" y="160.0" />
+      <point x="617.97" y="160.0" />
+      <point x="67.5" y="70.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.COMPTAJOURNALIERE_COMPTAJPAIEMENT" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.COMPTAJPAIEMENT">
+      <point x="-67.75" y="-36.5" />
+      <point x="573.9" y="1621.0" />
+      <point x="479.75" y="1621.0" />
+      <point x="0.0" y="114.0" />
+    </edge>
+    <edge source="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.RDV" target="7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.PATIENT">
+      <point x="-60.0" y="-103.0" />
+      <point x="202.37" y="641.0" />
+      <point x="140.0" y="641.0" />
+      <point x="0.0" y="125.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.4956296722254169" x="856.6626058707508" y="578.0665970530224" />
+  <SelectedNodes>
+    <node>7ef336cb-1beb-40f6-a70d-bce0cb538c26.TABLE:APP.MEDECIN</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Key columns</Category>
+  </Categories>
+</Diagram>
+

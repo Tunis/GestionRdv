@@ -103,7 +103,8 @@ public class Main extends Application {
         medecin.addListener((observable, oldValue, newValue) -> {
             primaryStage.setTitle("Gestion de Rdv " + medecin.get().showName());
         });
-        this.primaryStage.setMaximized(true);
+        // bug don't take all screen ...
+        //this.primaryStage.setMaximized(true);
         this.primaryStage.show();
 
         //showCreateRdvDialog(LocalDateTime.now(), (Medecin)mMedecin.getList().get(0));

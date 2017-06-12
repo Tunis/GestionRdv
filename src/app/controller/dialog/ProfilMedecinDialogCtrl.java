@@ -3,7 +3,9 @@ package app.controller.dialog;
 import app.util.AlerteUtil;
 import app.util.RegexUtil;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import metier.action.MMedecin;
 import metier.hibernate.data.exceptions.DbSaveException;
@@ -30,6 +32,12 @@ public class ProfilMedecinDialogCtrl {
         this.dialogStage = dialogStage;
         this.mMedecin = mMedecin;
         this.medecin = m;
+
+        dialogStage.getScene().setOnKeyReleased(ke -> {
+            if (ke.getCode().equals(KeyCode.ENTER)) {
+                handleSubmit();
+            }
+        });
         
         displayMedecin();
     }
@@ -64,11 +72,11 @@ public class ProfilMedecinDialogCtrl {
 	//Check form, if is valid save data into DB else show pop-up
 	private boolean isValid(String mail, String tel){
 		String errorMessage = "";
-		if(!RegexUtil.validateMail(mail)){
-			errorMessage += "Mail invalide\n";
+        if (!mail.isEmpty() && !RegexUtil.validateMail(mail)) {
+            errorMessage += "Mail invalide\n";
 		}
-		if(tel == null || tel.length() == 0 || !RegexUtil.validateTel(tel)){
-			errorMessage += "Tél. invalide\n";
+        if (!tel.isEmpty() && !RegexUtil.validateTel(tel)) {
+            errorMessage += "Tél. invalide\n";
 		}
 		if (errorMessage.length() == 0) {
             return true;

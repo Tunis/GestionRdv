@@ -20,7 +20,7 @@
                      <Tooltip text="Mois Suivant"/>
                  </tooltip>
              </Button>
-             <TextField fx:id="cbMedecin" editable="true" prefWidth="150.0" promptText="Medecin">
+             <TextField fx:id="cbMedecin" prefWidth="150.0" promptText="Medecin">
                  <tooltip>
                      <Tooltip text="Medecin"/>
                  </tooltip>

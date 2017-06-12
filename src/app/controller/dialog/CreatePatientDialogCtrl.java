@@ -1,9 +1,11 @@
 package app.controller.dialog;
 
+import app.util.AlerteUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import metier.action.MPatient;
 import metier.hibernate.data.exceptions.DbCreateException;
@@ -11,8 +13,6 @@ import metier.hibernate.data.exceptions.DbDuplicateException;
 import models.Adresse;
 
 import java.time.LocalDate;
-
-import app.util.AlerteUtil;
 
 public class CreatePatientDialogCtrl {
 	
@@ -49,6 +49,11 @@ public class CreatePatientDialogCtrl {
 	public void setDialogStage(Stage dialogStage, MPatient mPatient) {
         this.mPatient = mPatient;
 		this.dialogStage = dialogStage;
+        dialogStage.getScene().setOnKeyReleased(ke -> {
+            if (ke.getCode().equals(KeyCode.ENTER)) {
+                handleSubmit();
+            }
+        });
     }
 	
 	@FXML

@@ -2,49 +2,52 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
             minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="app.controller.TabComptaCtrl">
     <center>
-        <TableView fx:id="tblComptaJ" maxWidth="1.7976931348623157E308" minHeight="50.0" BorderPane.alignment="CENTER">
+        <TableView fx:id="tblComptaJ" minHeight="50.0">
             <columns>
                 <TableColumn fx:id="colComptaJDate" editable="false" maxWidth="100.0" minWidth="50.0" prefWidth="100.0"
                              resizable="false" sortable="false" text="Date"/>
-                <TableColumn fx:id="colComptaJCS" editable="false" maxWidth="1.7976931348623157E308" minWidth="50.0"
-                             prefWidth="-1.0" resizable="false" sortable="false" text="CS"/>
-                <TableColumn fx:id="colComptaJC2" editable="false" maxWidth="1.7976931348623157E308" minWidth="50.0"
-                             prefWidth="-1.0" resizable="false" sortable="false" text="C2"/>
-                <TableColumn fx:id="colComptaJECHO" editable="false" maxWidth="1.7976931348623157E308" minWidth="50.0"
-                             prefWidth="-1.0" resizable="false" sortable="false" text="ECHO"/>
-                <TableColumn fx:id="colComptaJDIU" editable="false" maxWidth="1.7976931348623157E308" minWidth="50.0"
-                             prefWidth="-1.0" resizable="false" sortable="false" text="DIU"/>
-                <TableColumn editable="false" prefWidth="75.0" resizable="false" sortable="false" text="TP">
+                <TableColumn fx:id="colComptaJCS" editable="false" minWidth="50.0" prefWidth="-1.0" resizable="false"
+                             sortable="false" text="CS"/>
+                <TableColumn fx:id="colComptaJC2" editable="false" minWidth="50.0" prefWidth="-1.0" resizable="false"
+                             sortable="false" text="C2"/>
+                <TableColumn fx:id="colComptaJECHO" editable="false" minWidth="50.0" prefWidth="-1.0" resizable="false"
+                             sortable="false" text="ECHO"/>
+                <TableColumn fx:id="colComptaJDIU" editable="false" minWidth="50.0" prefWidth="-1.0" resizable="false"
+                             sortable="false" text="DIU"/>
+                <TableColumn editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false"
+                             sortable="false" text="TP">
                     <columns>
                         <TableColumn fx:id="colComptaJNbTP" editable="false" maxWidth="50.0" minWidth="50.0"
-                                     prefWidth="50.0" sortable="false" text="Nbs"/>
-                        <TableColumn fx:id="colComptaJTP" editable="false" prefWidth="75.0" resizable="false"
-                                     sortable="false" text="Montant"/>
+                                     prefWidth="50.0" resizable="false" sortable="false" text="Nbs"/>
+                        <TableColumn fx:id="colComptaJTP" editable="false" maxWidth="75.0" minWidth="75.0"
+                                     prefWidth="75.0" resizable="false" sortable="false" text="Montant"/>
                     </columns>
                 </TableColumn>
-                <TableColumn editable="false" minWidth="100.0" prefWidth="-1.0" resizable="false" sortable="false"
-                             text="Especes">
+                <TableColumn editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false"
+                             sortable="false" text="Especes">
                     <columns>
                         <TableColumn fx:id="colComptaJNbEspece" editable="false" maxWidth="50.0" minWidth="50.0"
-                                     prefWidth="50.0" sortable="false" text="Nbs"/>
+                                     prefWidth="50.0" resizable="false" sortable="false" text="Nbs"/>
                         <TableColumn fx:id="colComptaJEspece" editable="false" maxWidth="75.0" minWidth="75.0"
                                      prefWidth="75.0" sortable="false" text="Montant"/>
                     </columns>
                 </TableColumn>
-                <TableColumn editable="false" prefWidth="75.0" resizable="false" sortable="false" text="CB">
+                <TableColumn editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false"
+                             sortable="false" text="CB">
                     <columns>
                         <TableColumn fx:id="colComptaJNbCB" editable="false" maxWidth="50.0" minWidth="50.0"
-                                     prefWidth="50.0" sortable="false" text="Nbs"/>
+                                     prefWidth="50.0" resizable="false" sortable="false" text="Nbs"/>
                         <TableColumn fx:id="colComptaJCB" editable="false" maxWidth="75.0" minWidth="75.0"
                                      prefWidth="75.0" sortable="false" text="Montant"/>
                     </columns>
                 </TableColumn>
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Cheque">
+                <TableColumn editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" sortable="false"
+                             text="Cheque">
                     <columns>
                         <TableColumn fx:id="colComptaJNbCheque" editable="false" maxWidth="50.0" minWidth="50.0"
                                      prefWidth="50.0" sortable="false" text="Nbs"/>
@@ -52,16 +55,16 @@
                                      prefWidth="75.0" sortable="false" text="Montant"/>
                     </columns>
                 </TableColumn>
-                <TableColumn fx:id="colComptaJImpayer" editable="false" maxWidth="1.7976931348623157E308"
-                             prefWidth="75.0" resizable="false" sortable="false" text="Impayer"/>
-                <TableColumn fx:id="colComptaJRetrait" editable="false" maxWidth="1.7976931348623157E308"
-                             prefWidth="75.0" resizable="false" sortable="false" text="retrait"/>
-                <TableColumn fx:id="colComptaJSolde" editable="false" maxWidth="1.7976931348623157E308" prefWidth="75.0"
-                             resizable="false" sortable="false" text="solde precedent"/>
+                <TableColumn fx:id="colComptaJImpayer" editable="false" minWidth="75.0" prefWidth="75.0"
+                             resizable="false" sortable="false" text="Impayer"/>
+                <TableColumn fx:id="colComptaJRetrait" editable="false" minWidth="75.0" prefWidth="75.0"
+                             resizable="false" sortable="false" text="retrait"/>
+                <TableColumn fx:id="colComptaJSolde" editable="false" minWidth="75.0" prefWidth="75.0" resizable="false"
+                             sortable="false" text="solde precedent"/>
             </columns>
-            <BorderPane.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-            </BorderPane.margin>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
         </TableView>
     </center>
     <top>
@@ -92,29 +95,29 @@
         </ButtonBar>
     </top>
     <bottom>
-        <TableView fx:id="tblComptaM" maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="50.0"
-                   prefHeight="100.0" BorderPane.alignment="CENTER">
+        <TableView fx:id="tblComptaM" maxHeight="100.0" minHeight="50.0" prefHeight="100.0">
             <columns>
                 <TableColumn fx:id="colComptaMDate" editable="false" maxWidth="100.0" minWidth="50.0" prefWidth="100.0"
                              resizable="false" sortable="false" text="Date"/>
-                <TableColumn fx:id="colComptaMCS" editable="false" maxWidth="1.7976931348623157E308" minWidth="50.0"
-                             prefWidth="-1.0" resizable="false" sortable="false" text="CS"/>
-                <TableColumn fx:id="colComptaMC2" editable="false" maxWidth="1.7976931348623157E308" minWidth="50.0"
-                             prefWidth="-1.0" resizable="false" sortable="false" text="C2"/>
-                <TableColumn fx:id="colComptaMECHO" editable="false" maxWidth="1.7976931348623157E308" minWidth="50.0"
-                             prefWidth="-1.0" resizable="false" sortable="false" text="ECHO"/>
-                <TableColumn fx:id="colComptaMDIU" editable="false" maxWidth="1.7976931348623157E308" minWidth="50.0"
-                             prefWidth="-1.0" resizable="false" sortable="false" text="DIU"/>
-                <TableColumn editable="false" prefWidth="75.0" resizable="false" sortable="false" text="TP">
+                <TableColumn fx:id="colComptaMCS" editable="false" minWidth="50.0" prefWidth="-1.0" resizable="false"
+                             sortable="false" text="CS"/>
+                <TableColumn fx:id="colComptaMC2" editable="false" minWidth="50.0" prefWidth="-1.0" resizable="false"
+                             sortable="false" text="C2"/>
+                <TableColumn fx:id="colComptaMECHO" editable="false" minWidth="50.0" prefWidth="-1.0" resizable="false"
+                             sortable="false" text="ECHO"/>
+                <TableColumn fx:id="colComptaMDIU" editable="false" minWidth="50.0" prefWidth="-1.0" resizable="false"
+                             sortable="false" text="DIU"/>
+                <TableColumn editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false"
+                             sortable="false" text="TP">
                     <columns>
                         <TableColumn fx:id="colComptaMNbTP" editable="false" maxWidth="50.0" minWidth="50.0"
                                      prefWidth="50.0" sortable="false" text="Nbs"/>
-                        <TableColumn fx:id="colComptaMTP" editable="false" prefWidth="75.0" resizable="false"
-                                     sortable="false" text="Montant"/>
+                        <TableColumn fx:id="colComptaMTP" editable="false" maxWidth="75.0" minWidth="75.0"
+                                     prefWidth="75.0" resizable="false" sortable="false" text="Montant"/>
                     </columns>
                 </TableColumn>
-                <TableColumn editable="false" minWidth="100.0" prefWidth="-1.0" resizable="false" sortable="false"
-                             text="Especes">
+                <TableColumn editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false"
+                             sortable="false" text="Especes">
                     <columns>
                         <TableColumn fx:id="colComptaMNbEspece" editable="false" maxWidth="50.0" minWidth="50.0"
                                      prefWidth="50.0" sortable="false" text="Nbs"/>
@@ -122,7 +125,8 @@
                                      prefWidth="75.0" sortable="false" text="Montant"/>
                     </columns>
                 </TableColumn>
-                <TableColumn editable="false" prefWidth="75.0" resizable="false" sortable="false" text="CB">
+                <TableColumn editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false"
+                             sortable="false" text="CB">
                     <columns>
                         <TableColumn fx:id="colComptaMNbCB" editable="false" maxWidth="50.0" minWidth="50.0"
                                      prefWidth="50.0" sortable="false" text="Nbs"/>
@@ -130,7 +134,8 @@
                                      prefWidth="75.0" sortable="false" text="Montant"/>
                     </columns>
                 </TableColumn>
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Cheque">
+                <TableColumn editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" sortable="false"
+                             text="Cheque">
                     <columns>
                         <TableColumn fx:id="colComptaMNbCheque" editable="false" maxWidth="50.0" minWidth="50.0"
                                      prefWidth="50.0" sortable="false" text="Nbs"/>
@@ -138,16 +143,16 @@
                                      prefWidth="75.0" sortable="false" text="Montant"/>
                     </columns>
                 </TableColumn>
-                <TableColumn fx:id="colComptaMImpayer" editable="false" maxWidth="1.7976931348623157E308"
-                             prefWidth="75.0" resizable="false" sortable="false" text="Impayer"/>
-                <TableColumn fx:id="colComptaMRetrait" editable="false" maxWidth="1.7976931348623157E308"
-                             prefWidth="75.0" resizable="false" sortable="false" text="retrait"/>
-                <TableColumn fx:id="colComptaMSolde" editable="false" maxWidth="1.7976931348623157E308" prefWidth="75.0"
-                             resizable="false" sortable="false" text="solde"/>
+                <TableColumn fx:id="colComptaMImpayer" editable="false" minWidth="75.0" prefWidth="75.0"
+                             resizable="false" sortable="false" text="Impayer"/>
+                <TableColumn fx:id="colComptaMRetrait" editable="false" minWidth="75.0" prefWidth="75.0"
+                             resizable="false" sortable="false" text="retrait"/>
+                <TableColumn fx:id="colComptaMSolde" editable="false" minWidth="75.0" prefWidth="75.0" resizable="false"
+                             sortable="false" text="solde"/>
             </columns>
-            <BorderPane.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-            </BorderPane.margin>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
         </TableView>
     </bottom>
 </BorderPane>

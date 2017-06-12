@@ -15,7 +15,7 @@ public class DataBase {
             configuration.configure();
             // "jdbc:mysql://mysql.hostinger.fr/u508684160_gesti?serverTimezone=" + TimeZone.getDefault().getID()
             // jdbc:derby:bdd;create=true
-            configuration.setProperty("hibernate.connection.url", "jdbc:derby:bdd");
+            configuration.setProperty("hibernate.connection.url", "jdbc:derby:bdd;create=true");
 
             sessionFactory = configuration.buildSessionFactory();
 	        SESSION = sessionFactory.openSession();

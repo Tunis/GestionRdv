@@ -3,7 +3,6 @@ package app.controller;
 import app.Main;
 import app.util.AlerteUtil;
 import app.util.RegexUtil;
-import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyListWrapper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -195,20 +194,21 @@ public class TabComptaCtrl implements Initializable {
                     job.showPrintDialog(mainApp.getPrimaryStage());
                     Printable.print(job, Printable.createComptaJ(newValue), PageOrientation.LANDSCAPE);
                 } catch (Exception ex) {
-                    ex.printStackTrace();
-                    Platform.runLater(() -> AlerteUtil.showAlerte(mainApp.getPrimaryStage(), "Erreur d'impression", "Probleme lors de l'impression", "une erreur est survenu empechant l'impression de s'effectué.\n Veuillez reessayer, si le probleme persiste contacter l'administrateur."));
+                    AlerteUtil.showAlerte(mainApp.getPrimaryStage(), "Erreur d'impression", "Probleme lors de l'impression", "une erreur est survenu empechant l'impression de s'effectué.\n Veuillez reessayer, si le probleme persiste contacter l'administrateur.");
                 }
             }
         });
         tblComptaJ.setOnMouseClicked(e -> tblComptaJ.getSelectionModel().clearSelection());
 
         tblComptaM.setOnMouseClicked(e -> {
-            try {
-                PrinterJob job = PrinterJob.createPrinterJob();
-                job.showPrintDialog(mainApp.getPrimaryStage());
-                Printable.print(job, Printable.createComptaM(comptaMensuelle.get()), PageOrientation.PORTRAIT);
-            } catch (Exception ex) {
-                AlerteUtil.showAlerte(mainApp.getPrimaryStage(), "Erreur d'impression", "Probleme lors de l'impression", "une erreur est survenu empechant l'impression de s'effectué.\n Veuillez reessayer, si le probleme persiste contacter l'administrateur.");
+            if (comptaMensuelle.get() != null) {
+                try {
+                    PrinterJob job = PrinterJob.createPrinterJob();
+                    job.showPrintDialog(mainApp.getPrimaryStage());
+                    Printable.print(job, Printable.createComptaM(comptaMensuelle.get()), PageOrientation.PORTRAIT);
+                } catch (Exception ex) {
+                    AlerteUtil.showAlerte(mainApp.getPrimaryStage(), "Erreur d'impression", "Probleme lors de l'impression", "une erreur est survenu empechant l'impression de s'effectué.\n Veuillez reessayer, si le probleme persiste contacter l'administrateur.");
+                }
             }
             tblComptaM.getSelectionModel().clearSelection();
         });

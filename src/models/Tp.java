@@ -36,7 +36,6 @@ public class Tp {
     public LocalDate getPayer() {
         return payer;
     }
-
 	public void setPayer(LocalDate payer) {
 		this.payer = payer;
     }
@@ -45,7 +44,6 @@ public class Tp {
     public Paiement getPaiement() {
 		return paiement;
 	}
-
     public void setPaiement(Paiement paiement) {
         this.paiement = paiement;
 	}

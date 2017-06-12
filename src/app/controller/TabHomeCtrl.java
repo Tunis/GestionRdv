@@ -4,14 +4,12 @@ import app.Main;
 import app.util.AlerteUtil;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.print.PageOrientation;
 import javafx.print.PrinterJob;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import metier.action.MMedecin;
 import metier.action.MPatient;
@@ -53,8 +51,6 @@ public class TabHomeCtrl {
     private Button btnUpdateMedecin;
     @FXML
     private Button btnDeleteMedecin;
-    @FXML
-    private Label testPatient;
 
     private ObjectProperty<Patient> patient = new SimpleObjectProperty<>();
     private AutoCompletionBinding<Medecin> mAC;
@@ -174,7 +170,7 @@ public class TabHomeCtrl {
     }
 
     @FXML
-    private void printPlannings(ActionEvent actionEvent) {
+    private void printPlannings() {
         try {
             PrinterJob job = PrinterJob.createPrinterJob();
             job.showPrintDialog(mainApp.getPrimaryStage());

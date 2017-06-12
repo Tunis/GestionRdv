@@ -25,7 +25,6 @@
                 <Button fx:id="btnDeletePatient" mnemonicParsing="false" onAction="#handleDeletePatient"
                         text="Supprimer"/>
             </HBox>
-            <Label fx:id="testPatient"/>
         </VBox>
     </right>
     <left>

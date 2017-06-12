@@ -118,6 +118,7 @@ public class TabTpCtrl implements Initializable {
     public void updateData() {
         if (mainApp.medecinProperty().isNotNull().get()) {
             cbMedecin.setText(mainApp.getMedecin().toString());
+            tblTp.getItems().clear();
             tblTp.setItems(FXCollections.observableArrayList(mMedecin.getTp(mainApp.medecinProperty().get(), dateProperty.get())));
         }
     }

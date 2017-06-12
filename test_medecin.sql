@@ -1,1 +1,0 @@
-INSERT INTO test.medecin (id, email, firstName, lastName, telephone) VALUES (1, 'wazalop@gmail.com', 'P1', 'P1', '1111111');

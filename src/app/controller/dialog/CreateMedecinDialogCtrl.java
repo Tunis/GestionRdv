@@ -6,6 +6,7 @@ import app.util.RegexUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import metier.action.MMedecin;
 import metier.hibernate.data.exceptions.DbCreateException;
@@ -30,6 +31,12 @@ public class CreateMedecinDialogCtrl {
 	public void setDialogStage(Stage dialogStage, MMedecin mMedecin) {
         this.dialogStage = dialogStage;
         this.mMedecin = mMedecin;
+
+        dialogStage.getScene().setOnKeyReleased(ke -> {
+            if (ke.getCode().equals(KeyCode.ENTER)) {
+                handleSubmit();
+            }
+        });
     }
 	
 	@FXML

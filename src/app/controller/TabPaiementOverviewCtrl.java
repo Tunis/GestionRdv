@@ -42,8 +42,6 @@ public class TabPaiementOverviewCtrl implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// TODO: 03/06/2017 tout plein de out of bound exception ici !!!
-
 		/*
 			list rdv du jour :
 		 */

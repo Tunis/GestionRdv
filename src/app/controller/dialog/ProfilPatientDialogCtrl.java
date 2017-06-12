@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import metier.action.MPatient;
 import metier.hibernate.data.exceptions.DbGetException;
@@ -75,7 +76,13 @@ public class ProfilPatientDialogCtrl {
 		this.dialogStage = dialogStage;
 		this.mPatient = mPatient;
 		this.p = p;
-		
+
+		dialogStage.getScene().setOnKeyReleased(ke -> {
+			if (ke.getCode().equals(KeyCode.ENTER)) {
+				handleSubmit();
+			}
+		});
+
 		//Affiche le profil
 		displayProfil();
 		

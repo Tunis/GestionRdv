@@ -2,10 +2,10 @@ package app.controller.dialog;
 
 import app.util.AlerteUtil;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import metier.action.MMedecin;
 import metier.action.MPatient;
@@ -65,20 +65,26 @@ public class CreateRdvDialogCtrl implements Initializable {
 		this.dateRdv = dateRdv;
 		
 		displayRdv();
-    }
+
+		dialogStage.getScene().setOnKeyReleased(ke -> {
+			if (ke.getCode().equals(KeyCode.ENTER)) {
+				handleCreateRdv();
+			}
+		});
+	}
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        spDuree.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(15,120,30,15));
-        spHeure.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,23,8,1));
+		spDuree.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(15, 120, 15, 15));
+		spHeure.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,23,8,1));
         spMinute.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,59,0,15));
 
         cbType.setItems(FXCollections.observableArrayList(TypeRdv.values()));
     }
     
     @FXML
-    private void handleCreateRdv(ActionEvent event) {
-        if(isValid()){			
+	private void handleCreateRdv() {
+		if(isValid()){
 			String cotation = textFCotation.getText();
 			Duration duration = Duration.ofMinutes(spDuree.getValue());
 			TypeRdv typeRdv = cbType.getValue();

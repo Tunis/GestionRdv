@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import metier.action.MMedecin;
 import metier.action.MRdv;
@@ -58,6 +59,11 @@ public class EditRdvDialogCtrl {
 		this.rdv = rdv;
 		this.patientCtrl = patientCtrl;
 		this.mainApp = mainApp;
+        dialogStage.getScene().setOnKeyReleased(ke -> {
+            if (ke.getCode().equals(KeyCode.ENTER)) {
+                handleUpadte();
+            }
+        });
 
         if (rdv.getPaiement() != null && rdv.getPaiement().getDate() != null) {
             btnPayment.setDisable(true);
@@ -91,8 +97,8 @@ public class EditRdvDialogCtrl {
             });
         });
 
-        spDuree.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(15,120,30,15));
-		spDuree.getValueFactory().setValue((int) rdv.getDuration().toMinutes());
+        spDuree.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(15, 120, 15, 15));
+        spDuree.getValueFactory().setValue((int) rdv.getDuration().toMinutes());
 		
         spHeure.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,23,8,1));
         spHeure.getValueFactory().setValue(rdv.getTime().getHour());
