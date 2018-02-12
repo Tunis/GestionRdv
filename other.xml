@@ -1,0 +1,9 @@
+<application>
+  <component name="JavaFxSettings">
+    <option name="pathToSceneBuilder" value="D:/projects/SceneBuilder/SceneBuilder.exe" />
+    <option name="myPathToSceneBuilder" value="D:/projects/SceneBuilder/SceneBuilder.exe" />
+  </component>
+  <component name="RefactoringSettings">
+    <option name="INTRODUCE_LOCAL_CREATE_FINALS" value="false" />
+  </component>
+</application>
